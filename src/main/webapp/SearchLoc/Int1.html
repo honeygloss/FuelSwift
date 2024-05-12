@@ -9,16 +9,44 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-    	body{
-    		background: skyblue;
-    		color: black;
-    	}
+        body {
+            background: rgb(23, 59, 121);
+            color: black;
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+
+        /* Navigation Bar with Logo */
+        .navbar-custom {
+            background-color: transparent; /* Make the navbar background transparent */
+            position: fixed; /* Fix the navbar position */
+            top: 0; /* Position it at the top of the viewport */
+            left: 0; /* Position it at the left of the viewport */
+            width: 100%; /* Take the full width of the viewport */
+            z-index: 1000; /* Ensure it appears above other content */
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: auto;
+            margin-right: 5px; /* Add some spacing between the logo and text */
+        }
+
+        /* Style for the logo text */
+        .navbar-brand p {
+            margin: 0;
+            font-weight: bold;
+            color: yellow;
+            font-size: 12px;
+        }
+
         /* Centering the container */
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding-top: 60px; /* Add padding to account for the fixed navbar */
         }
 
         /* Styling the box */
@@ -38,91 +66,71 @@
    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="box">
-            <h1>Welcome to fuelSwift</h1>
-            
-            <form id="searchForm">
-                <div class="form-group">
-                    <label for="search">Search or Select your location:</label>
-                    <input type="text" class="form-control" id="searchInput" oninput="filterLocations()" placeholder="Type to search" onclick="toggleDropdown()">
-                </div>
-                <div class="dropdown">
-                    <div id="dropdownContent" class="dropdown-menu" style="width: 100%;">
-                        <!-- Dropdown options will be dynamically populated here -->
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="submitSearch()">Search</button>
-                    <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
-                </div>
-            </form>
 
-            <ul id="searchResults"></ul>
-        
+<!-- Navigation Bar with Logo -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid d-flex align-items-center">
+            <!-- Navbar Brand (Logo) -->
+            <a class="navbar-brand" href="#">
+                <img src="logo1.png" alt="Logo" width="50" height="45" class="d-inline-block align-text-top me-2">
+                <p style="font-weight: bold; color: yellow; font-size: 12px">FuelSwift</p>
+            </a>
         </div>
+    </nav>
+
+<div class="container">
+    <div class="box">
+        <h1>Welcome to fuelSwift</h1>
+        
+        <form id="searchForm">
+            <div class="form-group">
+                <label for="search">Search or Select your location:</label>
+                <input type="text" class="form-control" id="searchInput" oninput="filterLocations()" placeholder="Type to search" onclick="toggleDropdown()">
+            </div>
+            <div class="dropdown">
+                <div id="dropdownContent" class="dropdown-menu" style="width: 100%;">
+                    <!-- Dropdown options will be dynamically populated here -->
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" onclick="submitSearch()">Search</button>
+                <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+            </div>
+        </form>
+
+        <ul id="searchResults"></ul>
+    
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        // Sample list of locations
-        var locationList = ["Petron Ipoh, 31300 Perak, Perak", "Petron Kampar, 31900, Perak, Perak", "Petron Tapah, 35000 Perak, Perak", "Petron Bidor, 35500 Perak, Perak", "Petron Teluk Intan, 36000 Perak, Perak"];
+<script>
+    // Sample JavaScript code here
+</script>
 
-        // Populate the dropdown content with options
-        var dropdownContent = document.getElementById("dropdownContent");
-        locationList.forEach(function(location) {
-            var option = document.createElement("a");
-            option.classList.add("dropdown-item");
-            option.textContent = location;
-            option.href = "#";
-            option.onclick = function() {
-                document.getElementById("searchInput").value = location;
-                toggleDropdown();
-            };
-            dropdownContent.appendChild(option);
-        });
+<footer class="footer shadow" style="position: fixed; bottom: 0; width: 100%; background-color: rgb(23, 59, 121); padding: 5px;">
+    <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
+        <!-- Home Link -->
+        <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+            <img src="HomeIcon.png" alt="Home Icon" style="width: 25px; height: auto; margin-bottom: 2px;">
+            <p style="margin: 0; font-size: 12px; font-weight: bold;">Home</p>
+        </a>
+        <!-- History Link -->
+        <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+            <img src="history.png" alt="History Icon" style="width: 18px; height: auto; margin-bottom: 2px;">
+            <p style="margin: 0; font-size: 12px; font-weight: bold;">History</p>
+        </a>
+        <!-- Profile Link -->
+        <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+            <img src="profile.png" alt="Profile Icon" style="width: 23px; height: auto; margin-bottom: 2px;">
+            <p style="margin: 0; font-size: 12px; font-weight: bold;">Profile</p>
+        </a>
+    </div>
+</footer>
 
-        // Function to filter locations based on search input
-        function filterLocations() {
-            var input, filter, dropdownOptions, i;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            dropdownOptions = dropdownContent.getElementsByClassName("dropdown-item");
-            for (i = 0; i < dropdownOptions.length; i++) {
-                if (dropdownOptions[i].textContent.toUpperCase().indexOf(filter) > -1) {
-                    dropdownOptions[i].style.display = "";
-                } else {
-                    dropdownOptions[i].style.display = "none";
-                }
-            }
-        }
-
-        // Function to toggle dropdown visibility
-        function toggleDropdown() {
-            var dropdownContent = document.getElementById("dropdownContent");
-            dropdownContent.classList.toggle("show");
-        }
-
-        // Function to submit the search
-        function submitSearch() {
-            var searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
-            if (searchInput) {
-                alert("Searching for: " + searchInput);
-            } else {
-                alert("Please select a location.");
-            }
-        }
-
-        // Function to clear the search input and results
-        function clearSearch() {
-            document.getElementById("searchInput").value = "";
-            document.getElementById("search").selectedIndex = 0;
-            filterLocations(); // Reset search results
-        }
-    </script>
 </body>
 </html>
