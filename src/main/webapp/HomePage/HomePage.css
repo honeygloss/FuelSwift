@@ -1,0 +1,59 @@
+@charset "ISO-8859-1";
+ body {
+            min-height: 100vh; /* Ensure the body fills the viewport height */
+            display: flex;
+            flex-direction: column; /* Arrange child elements vertically */
+            justify-content: space-between; /* Push content to the top and bottom */
+            background-color: rgb(54, 54, 54); /* Set background color */
+            color: white; /* Set text color */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+
+        .container {
+            flex: 1; /* Allow container to expand to fill available space */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px; /* Add padding to the left and right sides */
+        }
+
+        .box-area {
+            background-color: rgb(56, 56, 56);
+            padding: 20px !important;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            
+        }
+
+		.footer {
+		    text-align: center;
+		    padding: 20px;
+		    width: 100%;
+		    flex-shrink: 0; /* Prevent footer from shrinking */
+		}
+		
+		.footer .navbar {
+		    display: flex;
+		    justify-content: center;
+		    gap: 2px; /* Reduce the gap between navbar links */
+		    margin-top: 10px;
+		}
+		
+		.footer .navbar a {
+		    color: white !important;
+		    padding: 5px; /* Add padding around navbar links */
+		}
+		
+		.footer .navbar a:hover {
+		    text-decoration: none; /* Remove underline on hover */
+		}
+
+        @media only screen and (max-width: 768px) {
+		    .container {
+		        padding: 0 20px; /* Reduced padding for smaller screens */
+		    } 
+    
+}
+        
