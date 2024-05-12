@@ -3,20 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <title>Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" >
+<!-- Add Bootstrap Icons -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
 body{
-padding-top:90px;
-background: black}
+	font-family: 'Poppins', sans-serif;
+     background-color: rgb(54, 54, 54);
+     margin: 50px auto;
+     padding: 0;
+}
+.box-area {
+     width: 930px;
+     margin: 100px auto;
+     padding: 50px;
+     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+     border: 2px solid rgb(33, 37, 41);
+     background-color: rgba(8,107,242,255);
+     border-radius: 10px;
+}
 .form-signup{
-margin:0 auto;
-max-width:400px;
-background-color: rgba(8,107,242,255);
-border-radius: 5px;
-padding: 15px;
+	margin:0 auto;
+	max-width:400px;
+	background-color: rgba(8,107,242,255);
+	border-radius: 5px;
+	padding: 15px;
 }
 .form-signup h2{
-text-align:center;}
+	text-align:center;}
 .btn {
     width: 100%;
     padding: 10px;
@@ -28,52 +43,46 @@ text-align:center;}
     text-align: center;
 }
 
-/* Adjust for mobile view */
-@media (max-width: 576px) {
-    .form-signup {
-        padding: 10px;
-    }
-}
 </style>
 </head>
 <body>
 <div class="container">
-<form class="form-signup">
-<h2>Register</h2>
-<p> Create our account it's free only take a minute.</p>
-<div class="form-group">
-<div class="row">
-<div class="col-md-6">
-<input type=text class="form-control" name=firstname placeholder="First Name">
-</div>
-<div class="col-md-6">
-<input type=text class="form-control" name=lastname placeholder="Last Name">
-</div>
-</div>
-</div>
-<div class="form-group">
-<input type="email" class="form-control" name="email" placeholder="Email">
-</div>
-<div class="form-group">
-<input type="text" class="form-control" name="plateNo" placeholder="Plate No">
-</div>
-<div class="form-group">
-<input type="text" class="form-control" name="geranNo" placeholder="Geran No">
-</div>
-<div class="form-group">
-<input type="password" class="form-control" name="password" placeholder="Password">
-</div>
-<div class="form-group">
-<input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
-</div>
-<div class="form-group">
-<lable>
-<input type="checkbox" name="">
-I accept the <a href="a">Terms of Use </a> & <a href="">Privacy Policy </a>
-</lable>
-</div>
-<input type="submit" class="btn btn-success btn-block" name="" value=Submit>
-</form> 
+	<form class="form-signup">
+	<h2>Register</h2>
+	<p> Create our account it's free only take a minute.</p>
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-6">
+			<input type=text class="form-control" name=firstname placeholder="First Name">
+			</div>
+			<div class="col-md-6">
+			<input type=text class="form-control" name=lastname placeholder="Last Name">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+	<input type="email" class="form-control" name="email" placeholder="Email">
+	</div>
+	<div class="form-group">
+	<input type="text" class="form-control" name="plateNo" placeholder="Plate No">
+	</div>
+	<div class="form-group">
+	<input type="text" class="form-control" name="geranNo" placeholder="Geran No">
+	</div>
+	<div class="form-group">
+	<input type="password" class="form-control" name="password" placeholder="Password">
+	</div>
+	<div class="form-group">
+	<input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
+	</div>
+	<div class="form-group">
+	<lable>
+	<input type="checkbox" name="">
+	I accept the <a href="a">Terms of Use </a> & <a href="">Privacy Policy </a>
+	</lable>
+	</div>
+	<input type="submit" class="btn btn-success btn-block" name="" value=Submit>
+	</form> 
 </div>
 </body>
 </html>
