@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Half Page Color</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -79,6 +81,32 @@
             background-color: azure;
             color: black;
         }
+
+        /* Responsive styles */
+        @media (max-width: 576px) {
+            .half-page {
+                height: 30%;
+            }
+            .content {
+                font-size: 20px;
+            }
+            .button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .rectangle input[type="text"] {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .option-button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .pay-now-button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -87,31 +115,35 @@
         <p>FuelSwift Kampar, 31900, Perak, Perak</p>
         <p>Select a pump:</p>
         <div class="button-container">
-            <button class="button" onclick="selectPump(1)">1</button>
-            <button class="button" onclick="selectPump(2)">2</button>
-            <button class="button" onclick="selectPump(3)">3</button>
-            <button class="button" onclick="selectPump(4)">4</button>
-            <button class="button" onclick="selectPump(5)">5</button>
-            <button class="button" onclick="selectPump(6)">6</button>
+            <button class="btn btn-primary" onclick="selectPump(1)">1</button>
+            <button class="btn btn-primary" onclick="selectPump(2)">2</button>
+            <button class="btn btn-primary" onclick="selectPump(3)">3</button>
+            <button class="btn btn-primary" onclick="selectPump(4)">4</button>
+            <button class="btn btn-primary" onclick="selectPump(5)">5</button>
+            <button class="btn btn-primary" onclick="selectPump(6)">6</button>
         </div>
 
         <div class="rectangle">
             <label for="amount">Amount (RM)</label>
-            <input type="text" id="amount" placeholder="Enter amount">
+            <input type="text" class="form-control" id="amount" placeholder="Enter amount">
             <label for="litres">Litres (L)</label>
-            <input type="text" id="litres" placeholder="Enter litres">
+            <input type="text" class="form-control" id="litres" placeholder="Enter litres">
         </div>
 
         <div class="option-buttons">
-            <button class="option-button" onclick="selectOption('RM20')">RM20</button>
-            <button class="option-button" onclick="selectOption('RM40')">RM40</button>
-            <button class="option-button" onclick="selectOption('RM60')">RM60</button>
-            <button class="option-button" onclick="selectOption('other')">Other</button>
-            <button class="option-button" onclick="selectOption('full tank')">Full Tank</button>
+            <button class="btn btn-secondary" onclick="selectOption('RM20')">RM20</button>
+            <button class="btn btn-secondary" onclick="selectOption('RM40')">RM40</button>
+            <button class="btn btn-secondary" onclick="selectOption('RM60')">RM60</button>
+            <button class="btn btn-secondary" onclick="selectOption('other')">Other</button>
         </div>
 
-        <button class="pay-now-button" onclick="payNow()">Pay Now</button>
+        <button class="btn btn-success" onclick="payNow()">Pay Now</button>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         function selectPump(pumpNumber) {
