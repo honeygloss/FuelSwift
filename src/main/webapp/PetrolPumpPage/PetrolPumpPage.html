@@ -8,6 +8,7 @@
         body {
             margin: 0;
             padding: 0;
+            font-size: 24px;
         }
 
         .half-page {
@@ -21,57 +22,41 @@
         }
 
         .content {
-            height: 50vh; /* Half of the viewport height */
-            width: 100%;
+            height: 50%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-size: 24px;
-            position: relative;
-            flex-direction: column; /* Arrange elements vertically */
+            padding-top: 50px;
         }
-      
+
         .button-container {
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 0px; /* Add some space below the buttons */
+            margin-bottom: 20px;
         }
 
         .button {
             padding: 10px 20px;
-            margin: 20px;
+            margin: 10px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 50%;
         }
 
-        /* Style for the input and select elements inside the rectangle */
-        .rectangle input[type="text"],
-        .rectangle select {
-        	text-align: center;
-            flex: 1; /* Each element takes up equal space */
+        .rectangle input[type="text"] {
             padding: 10px;
             margin: 5px;
             border: 2px solid #000;
         }
-       
-        /* Style for left and right parts of the rectangle */
-        .left-part,
-        .right-part {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex: 1; /* Each part takes up equal space */
-        }
 
-        /* Style for the option buttons */
         .option-buttons {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 20px;
         }
 
         .option-button {
@@ -84,7 +69,6 @@
             background-color: #f0f0f0;
         }
 
-        /* Style for the "Pay Now" button */
         .pay-now-button {
             padding: 15px 30px;
             margin: 20px;
@@ -92,7 +76,7 @@
             cursor: pointer;
             border-radius: 5px;
             border: none;
-            background-color: azure; /* Green color */
+            background-color: azure;
             color: black;
         }
     </style>
@@ -100,32 +84,24 @@
 <body>
     <div class="half-page"></div>
     <div class="content">
-        <div class="rectangle">
-            <p>FuelSwift Kampar, 31900, Perak, Perak</p>
-        </div>
+        <p>FuelSwift Kampar, 31900, Perak, Perak</p>
         <p>Select a pump:</p>
         <div class="button-container">
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(1)">1</button>
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(2)">2</button>
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(3)">3</button>
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(4)">4</button>
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(5)">5</button>
-            <button class="button" style="transform: rotate(360deg);" onclick="selectPump(6)">6</button>
-        </div>
-        
-        <!-- Rectangle with two parts -->
-        <div class="rectangle">
-            <div class="left-part">
-                <label for="amount">Amount (RM)</label>
-                <input type="text" id="amount" placeholder="Enter amount">
-            </div>
-            <div class="right-part">
-                <label for="litres">Litres (L)</label>
-                <input type="text" id="litres" placeholder="Enter litres">
-            </div>
+            <button class="button" onclick="selectPump(1)">1</button>
+            <button class="button" onclick="selectPump(2)">2</button>
+            <button class="button" onclick="selectPump(3)">3</button>
+            <button class="button" onclick="selectPump(4)">4</button>
+            <button class="button" onclick="selectPump(5)">5</button>
+            <button class="button" onclick="selectPump(6)">6</button>
         </div>
 
-        <!-- Option buttons -->
+        <div class="rectangle">
+            <label for="amount">Amount (RM)</label>
+            <input type="text" id="amount" placeholder="Enter amount">
+            <label for="litres">Litres (L)</label>
+            <input type="text" id="litres" placeholder="Enter litres">
+        </div>
+
         <div class="option-buttons">
             <button class="option-button" onclick="selectOption('RM20')">RM20</button>
             <button class="option-button" onclick="selectOption('RM40')">RM40</button>
@@ -134,24 +110,20 @@
             <button class="option-button" onclick="selectOption('full tank')">Full Tank</button>
         </div>
 
-        <!-- Pay Now button -->
         <button class="pay-now-button" onclick="payNow()">Pay Now</button>
     </div>
 
     <script>
         function selectPump(pumpNumber) {
             alert("You selected Pump " + pumpNumber);
-            // You can add your logic here to handle the selected pump
         }
 
         function selectOption(option) {
             alert("You selected: " + option);
-            // You can add your logic here to handle the selected option
         }
 
         function payNow() {
             alert("Payment processed successfully!");
-            // You can add your logic here to handle the payment process
         }
     </script>
 </body>
