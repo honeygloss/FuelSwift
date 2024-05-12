@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to fuelSwift</title>
     
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
     	body{
     		background: skyblue;
@@ -20,66 +23,14 @@
 
         /* Styling the box */
         .box {
-             max-width: 800px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-       
         }
 
-        /* Style to remove bullets from the list */
-        #searchResults {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Increasing the height of the heading */
-        h1 {
-            line-height: 2; /* Adjust as needed */
-            margin-bottom: 20px; /* Add some space below the heading */
-            text-align: center; /* Center the heading text */
-        }
-
-        /* Style for the search input */
-        #searchInput {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        /* Style for the dropdown */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* Style for the dropdown content */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-            z-index: 1;
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-        }
-
-        /* Style for the dropdown options */
-        .dropdown-option {
-            padding: 12px 16px;
-            cursor: pointer;
-        }
-
-        /* Style for showing dropdown content */
-        .show {
-            display: block;
-        }
         /* Style for the submit button */
         #submitBtn {
             float: right;
@@ -92,15 +43,19 @@
             <h1>Welcome to fuelSwift</h1>
             
             <form id="searchForm">
-                <label for="search">Search or Select your location:</label><br>
+                <div class="form-group">
+                    <label for="search">Search or Select your location:</label>
+                    <input type="text" class="form-control" id="searchInput" oninput="filterLocations()" placeholder="Type to search" onclick="toggleDropdown()">
+                </div>
                 <div class="dropdown">
-                    <input type="text" id="searchInput" oninput="filterLocations()" placeholder="Type to search" onclick="toggleDropdown()">
-                    <div id="dropdownContent" class="dropdown-content">
+                    <div id="dropdownContent" class="dropdown-menu" style="width: 100%;">
                         <!-- Dropdown options will be dynamically populated here -->
                     </div>
-                </div><br><br>
-                <button type="button" onclick="searchSearch()">Search</button>
-                <button type="button" onclick="clearSearch()">Clear</button>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="submitSearch()">Search</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+                </div>
             </form>
 
             <ul id="searchResults"></ul>
@@ -108,16 +63,22 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
         // Sample list of locations
-        var locationList = ["FuelSwift Ipoh, 31300 Perak, Perak", "FuelSwift Kampar, 31900, Perak, Perak", "FuelSwift Tapah, 35000 Perak, Perak", "FuelSwift Bidor, 35500 Perak, Perak", "FuelSwift Teluk Intan, 36000 Perak, Perak"];
+        var locationList = ["Petron Ipoh, 31300 Perak, Perak", "Petron Kampar, 31900, Perak, Perak", "Petron Tapah, 35000 Perak, Perak", "Petron Bidor, 35500 Perak, Perak", "Petron Teluk Intan, 36000 Perak, Perak"];
 
         // Populate the dropdown content with options
         var dropdownContent = document.getElementById("dropdownContent");
         locationList.forEach(function(location) {
-            var option = document.createElement("div");
-            option.classList.add("dropdown-option");
+            var option = document.createElement("a");
+            option.classList.add("dropdown-item");
             option.textContent = location;
+            option.href = "#";
             option.onclick = function() {
                 document.getElementById("searchInput").value = location;
                 toggleDropdown();
@@ -130,7 +91,7 @@
             var input, filter, dropdownOptions, i;
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
-            dropdownOptions = dropdownContent.getElementsByClassName("dropdown-option");
+            dropdownOptions = dropdownContent.getElementsByClassName("dropdown-item");
             for (i = 0; i < dropdownOptions.length; i++) {
                 if (dropdownOptions[i].textContent.toUpperCase().indexOf(filter) > -1) {
                     dropdownOptions[i].style.display = "";
@@ -146,15 +107,9 @@
             dropdownContent.classList.toggle("show");
         }
 
-        // Function to handle selection of a location
-        function onLocationSelected() {
-            var selectedLocation = document.getElementById("search").value;
-            alert("You selected: " + selectedLocation);
-        }
-
         // Function to submit the search
         function submitSearch() {
-            var searchInput = document.getElementById("search").value.trim().toLowerCase();
+            var searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
             if (searchInput) {
                 alert("Searching for: " + searchInput);
             } else {
@@ -166,7 +121,7 @@
         function clearSearch() {
             document.getElementById("searchInput").value = "";
             document.getElementById("search").selectedIndex = 0;
-            searchList(); // Reset search results
+            filterLocations(); // Reset search results
         }
     </script>
 </body>
