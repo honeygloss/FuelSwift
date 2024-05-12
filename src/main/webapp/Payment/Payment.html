@@ -15,23 +15,23 @@
             <div class="col-md-12 right-box">
                 <h2 class="text-center">Payment Details</h2>
                 <form>
-                    <div class="input-group mb-3">
-                        <label for="cardNumber" class="form-label text-white">Card Number :</label>
-                        <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number">
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="expiryDate" class="form-label text-white">Expiry Date :</label>
-                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="cvv" class="form-label text-white">CVV :</label>
-                        <input type="text" class="form-control" id="cvv" placeholder="CVV">
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="cardHolder" class="form-label text-white">Cardholder Name :</label>
-                        <input type="text" class="form-control" id="cardHolder" placeholder="Enter cardholder name">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Pay Now</button>
+                
+                <div class="form-group">
+				Card Number :<input type="card number" class="form-control" name="card number" placeholder="XXXX XXXX XXXX XXXX">
+				</div>
+                <div class="form-group">
+				Expiry Date :<input type="expiry date" class="form-control" name="expiry date" placeholder="MM/YY">
+				</div>
+                <div class="form-group">
+				CVV :<input type="CVV" class="form-control" name="CVV" placeholder="CVV">
+                </div>
+               	<div class="form-group">
+				Cardholder Name :<input type="cardHolder" class="form-control" name="cardHolder" placeholder="Enter cardholder name">
+				</div>
+                <div class="form-group" id="editBtn">
+				 <button type="submit" class="btn btn-primary w-100">Pay Now</button>
+				</div>
+                   
                 </form>
             </div>
         </div>

@@ -7,13 +7,14 @@ body {
 }
 
 .box-area {
-    width: 930px;
-    margin: 0 auto;
+    width: 90%; /* Adjusted width to fit screen */
+    max-width: 930px; /* Added max-width to ensure it doesn't get too wide */
+    margin: 40px auto; /* Centering horizontally */
     padding: 40px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     border: 2px solid rgb(33, 37, 41);
     background-color: rgb(56, 56, 56);
-    border-radius: 30px;
+    border-radius: 15px; /* Rounded corners */
 }
 
 .box-area h2 {
@@ -53,8 +54,9 @@ body {
 
 @media only screen and (max-width: 768px) {
     .box-area {
-        width: auto;
-        margin: 0 10px;
+        width: 90%; /* Adjusted width to fit screen */
+        max-width: 100%; /* Added max-width to ensure it doesn't get too wide */
+        margin: 40px auto; /* Centering horizontally */
     }
 
     .left-box {
