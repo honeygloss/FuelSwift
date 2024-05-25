@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuelSwift HomePage | FuelSwift</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(54, 54, 54);
+            margin: 0;
+            padding: 0;
+        }
+		
+		/*Transaction css*/
+        .box-area-alt {
+            padding-top: 5px; /* Reduce the top padding */
+            padding-bottom: 10px; /* Add some bottom padding for spacing */
+            margin-top: 10px; /* Adjust the top margin */
+        }
+
+        .box-area-alt h1 {
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .transaction-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            color: white;
+            background-color: rgb(33, 37, 41);
+            border-radius: 5px;
+        }
+
+        .transaction-item p {
+            margin: 0;
+        }
+
+        .navbar-brand p {
+            margin-bottom: 0; /* Remove the bottom margin */
+        }
+
+        @media only screen and (max-width: 576px) {
+            .box-area-alt {
+                margin: 20px auto; /* Centering horizontally */
+            }
+            .transaction-item {
+                font-size: 12px;
+            }
+        }
+        
+        /*Profile css*/
+        .box-area-alt-alt {
+			
+				width: 400px;
+			    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+			    border: 2px solid rgb(33, 37,41); /* Set border to primary color *//* Set the background color for the box area */
+				margin: auto; /* Center horizontally */
+			    margin-top: 20px; /* Adjust top margin for vertical centering */
+			    padding: 20px; /* Add padding for better appearance */
+			
+		}
+		.btn {
+		    width: 100%;
+		    padding: 10px;
+		    background-color: rgb(20, 36, 105); /* Default background color */
+		    color: yellow; /* Default text color */
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    text-align: center;
+		}
+		@media only screen and (max-width: 768px) {
+            .box-area-alt-alt {
+                width: 100%; /* Adjusts the width to 90% of the viewport width */
+            }
+        }
+        .box-area-alt-alt, .row, .container {
+			    border: none;
+		}
+		/*------------ Custom Placeholder ------------*/
+		::placeholder{
+			   font-size: 16px;
+		}
+		.rounded-5{
+			   border-radius: 30px;
+		}
+		label{
+			font-weight:bold;
+			color: white;
+		}
+		
+		
+			
+    </style>
+</head>
+<body style="background-color: rgb(54, 54, 54);">
+    <!-- Navigation Bar with Logo -->
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid d-flex align-items-center">
+                <!-- Navbar Brand (Logo) -->
+                <a class="navbar-brand" href="#">
+                    <img src="logo1.png" alt="Logo" width="50" height="45" class="d-inline-block align-text-top me-2">
+                    <p style="font-weight: bold; color: yellow; font-size: 12px;">FuelSwift</p>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Container -->
+        <div class="content">
+            <!-- Home Page Content -->
+            <div id="home-page" class="container">
+                <!-- Points Container -->
+                <div class="row mb-2 rounded-5 p-4 shadow box-area d-flex justify-content-center" style="background-color: rgb(33, 37, 41);">
+                    <!-- Right Box -->
+                    <div class="col-md-6 right-box mb-3" style="padding: 0 20px; align-items: center;">
+                        <div class="row align-items-center">
+                            <div class="header-text mb-2 mt-2">
+                                <h5 style=" text-align: center;font-weight: bold; color: white">Welcome, *Username*</h5>
+                                <h1 style=" text-align: center; font-weight: bold; font-size: 80px; margin-bottom: 10px; margin-top: 20px; color: white">0.00</h1>
+                                <h2 style="text-align: center; font-size: 15px; color: white">Points</h2>
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <!-- Vehicle Number Plate Container -->
+                <div class="row rounded-2 mb-5 p-2 shadow box-area d-flex justify-content-center" style="max-height: 50px; text-align:center; background-color: rgb(33, 37, 41);">
+                    <!-- Plate Number -->
+                    <div class="col-6">
+                        <div class="header-text">
+                            <h4 style="font-weight: bold; font-size: 10px; color: white;">Plate Number</h4>
+                            <div class="dropdown">
+				                <button style="width: fit-content;"class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+				                    Select Vehicle
+				                </button>
+				                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="vehicleDropdown">
+				                    <!-- Dropdown items for vehicle information will be added dynamically -->
+				                </ul>
+				            </div>
+                        </div>
+                    </div>
+                    <!-- Vehicle type -->
+                    <div class="col-6">
+                        <div class="header-text">
+                            <h4 style="font-weight: bold; font-size: 10px; color: white;">Vehicle type</h4>
+				            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Current Fuel Price -->
+			    <div class="row justify-content-center">
+			        <div class="col d-flex justify-content-center align-items-center">
+			            <div class="text-center">
+			                <h4 style="font-weight: bold; color: yellow;">Current Fuel Price</h4>
+			                <h1 style="font-size: 40px; font-weight: bold; color: white;">RM2.50/L</h1>
+			                <p style="font-size: 16px; color: white;">Updated: May 25, 2024</p>
+			            </div>
+			        </div>
+			    </div>
+                <!-- Options -->
+                <div class="row justify-content-center align-items-center mx-auto">
+                    <!-- First Image and Link -->
+                        <a href="#" class="d-flex flex-column align-items-center justify-content-center" >
+                            <img src="fuel.png" style="width: 50%; height: 50%;" class="mb-2">
+                        </a>
+                        <p class="text-center" style="font-weight: bold; color: yellow;">Fuel Stations</p>
+                     
+                </div>
+            </div>
+
+            <!-- Transaction History Content -->
+            <div id="transaction-history" class="container box-area-alt" style="display: none;">
+                <h1 style="font-weight: bold;">Transaction History</h1>
+                <div class="transaction-item">
+                    <p>Transaction ID: #XXX123456</p>
+                    <p>Date: 2024-05-12</p>
+                    <p>Amount: RM XX.XX</p>
+                    <p>Status: Completed</p>
+                </div>
+                <div class="transaction-item">
+                    <p>Transaction ID: #XXX789012</p>
+                    <p>Date: 2024-05-10</p>
+                    <p>Amount: RM XX.XX</p>
+                    <p>Status: Pending</p>
+                </div>
+                <div class="transaction-item">
+                    <p>Transaction ID: #XXX345678</p>
+                    <p>Date: 2024-05-08</p>
+                    <p>Amount: RM XX.XX</p>
+                    <p>Status: Completed</p>
+                </div>
+            </div>
+        </div>
+        <!---------------------------------------- Profile -------------------------------- -->
+		 
+		 <div id="profile" style="display: none;">
+                <!-- Icon below Navigation Bar -->
+                <div class="container d-flex justify-content-center align-items-center ">
+			        <img src="profile.png" width="40" height="40">
+			        <h1 style="color: white; margin-right: 10px; font-weight: bold;">Fatin</h1>
+    			</div>
+
+	    <div class="row rounded-5 p-4 shadow box-area-alt-alt " style="background-color: rgb(54, 54, 54)">
+	        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
+	           
+	            <div class="form-group mb-3">
+	                <label class="form-label">Full Name</label>
+	                <p class="form-control form-control-lg bg-light fs-6 " name="fullname">Fatin Humaira</p>
+	            </div>
+	            <div class="form-group mb-3">
+	                <label class="form-label">Email</label>
+	                <p class="form-control form-control-lg bg-light fs-6 " name="email">fatin@gmail.com</p>
+	            </div>
+	            <div class="form-group mb-3">
+	                <label class="form-label">Plate No</label>
+	                <p class="form-control form-control-lg bg-light fs-6" name="plateNo">WRZ 1234</p>
+	            </div>
+	            <div class="form-group mb-3">
+	                <label class="form-label">Geran No</label>
+	                <p class="form-control form-control-lg bg-light fs-6" name="geranNo">1234</p>
+	            </div>
+	            <div class="input-group-alt mb-3">
+	                <button class="btn custombutton btn-lg w-100 fs-6 " style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="edit()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
+	            </div>
+	            <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
+	                <button type="submit" class="btn btn-success btn-block">Update</button>
+	            </div>
+	            <div class="input-group-alt mb-3">
+				    <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(54, 54, 54); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
+				        Logout <i class="bi bi-box-arrow-right"></i>
+				    </a>
+				</div>
+	        </div>
+	    </div>
+		</div>
+       
+
+        <!-- Footer -->
+        <footer class="footer box-area fixed-bottom" style="background-color:rgb(54, 54, 54);">
+            <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
+                <!-- Home Link -->
+                <a href="#" id="home-link" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+                    <img src="HomeIcon.png" alt="Home Icon" style="width: 25px; height: auto; margin-bottom: 2px;">
+                    <p style="margin: 0; font-size: 12px; font-weight: bold;">Home</p>
+                </a>
+                <!-- History Link -->
+                <a href="#" id="history-link" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+                    <img src="history.png" alt="History Icon" style="width: 18px; height: auto; margin-bottom: 2px;">
+                    <p style="margin: 0; font-size: 12px; font-weight: bold;">History</p>
+                </a>
+                <!-- Profile Link -->
+                <a href="#" id="profile-link" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
+                    <img src="profile.png" alt="Profile Icon" style="width: 23px; height: auto; margin-bottom: 2px;">
+                    <p style="margin: 0; font-size: 12px; font-weight: bold;">Profile</p>
+                </a>
+            </div>
+        </footer>
+    </div>
+  
+
+    <script>
+        document.getElementById('home-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('transaction-history').style.display = 'none';
+            document.getElementById('profile').style.display = 'none';
+        });
+
+        document.getElementById('history-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('transaction-history').style.display = 'block';
+            document.getElementById('profile').style.display = 'none';
+        });
+        
+        document.getElementById('profile-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('transaction-history').style.display = 'none';
+            document.getElementById('profile').style.display = 'block';
+        });
+        function edit() {
+            // Hide profile information and show input fields
+            document.getElementById("firstName").innerHTML = '<input type="text" class="form-control" name="firstname" placeholder="Fatin">';
+            document.getElementById("lastName").innerHTML = '<input type="text" class="form-control" name="lastname" placeholder="Humaira">';
+            document.getElementById("email").innerHTML = '<input type="email" class="form-control" name="email" placeholder="fatin@gmail.com">';
+            document.getElementById("plateNo").innerHTML
+        }
+     // Assume you have fetched the plate number and vehicle type from the database
+        var plateNumber = "ABC 1234";
+        var vehicleType = "Car";
+
+        // Get the dropdown menu where the dropdown items will be appended
+        var vehicleDropdown = document.getElementById("vehicleDropdown");
+
+        // Create dropdown items for plate number and vehicle type
+        var plateNumberItem = document.createElement("li");
+        plateNumberItem.innerHTML = '<a class="dropdown-item" href="#">Plate Number: ' + plateNumber + '</a>';
+
+        var vehicleTypeItem = document.createElement("li");
+        vehicleTypeItem.innerHTML = '<a class="dropdown-item" href="#">Vehicle Type: ' + vehicleType + '</a>';
+
+        // Append dropdown items to the dropdown menu
+        vehicleDropdown.appendChild(plateNumberItem);
+        vehicleDropdown.appendChild(vehicleTypeItem);
+
+
+    </script>
+    
+</body>
+</html>
+   

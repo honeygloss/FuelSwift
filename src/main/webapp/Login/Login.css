@@ -12,7 +12,7 @@ body{
 .box-area, .row, .container {
     margin: 0;
     padding: 0;
-    borderr: none;
+    border: none;
 }
 /*------------ Right box ------------*/
 .right-box{

@@ -8,6 +8,7 @@
     <title>FuelSwift Login | FuelSwift</title>
 </head>
 <body style="background-color: rgb(54, 54, 54);">
+<form action="" method=get>
     <!----------------------- Main Container -------------------------->
      <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <!----------------------- Login Container -------------------------->
@@ -25,13 +26,13 @@
        <div class="col-md-6 right-box">
           <div class="row align-items-center">
                 <div class="header-text mb-4">
-                     <h2 style="text-align: center; font-weight: bold">FuelSwift</h2>
+                     <h1 style="text-align: center; font-weight: bold; color:yellow;">FuelSwift</h1>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Email address">
+                    <input type="text" name = userName class="form-control form-control-lg bg-light fs-6" placeholder="Email address">
                 </div>
                 <div class="input-group mb-1">
-                    <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password">
+                    <input type="password" name = password class="form-control form-control-lg bg-light fs-6" placeholder="Password">
                 </div>
                 <div class="input-group mb-3 d-flex justify-content-between">
                     <div class="form-check">
@@ -50,5 +51,6 @@
        </div> 
       </div>
     </div>
+    </form>
 </body>
 </html>

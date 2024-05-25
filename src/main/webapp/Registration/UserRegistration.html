@@ -2,87 +2,96 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Registration</title>
+<title>Registration | FuelSwift</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" >
 <!-- Add Bootstrap Icons -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-<style type="text/css">
-body{
-	font-family: 'Poppins', sans-serif;
-     background-color: rgb(54, 54, 54);
-     margin: 50px auto;
-     padding: 0;
-}
-.box-area {
-     width: 930px;
-     margin: 100px auto;
-     padding: 50px;
-     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-     border: 2px solid rgb(33, 37, 41);
-     background-color: rgba(8,107,242,255);
-     border-radius: 10px;
-}
-.form-signup{
-	margin:0 auto;
-	max-width:400px;
-	background-color: rgba(8,107,242,255);
-	border-radius: 5px;
-	padding: 15px;
-}
-.form-signup h2{
-	text-align:center;}
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: rgb(20, 36, 105); /* Default background color */
-    color: yellow; /* Default text color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-}
+ <style>
+			body{
+			    font-family: 'Poppins', sans-serif;
+			    background: rgb(54, 54, 54);
+			    margin: 0;
+		        padding: 0;
+		        height: 100vh; /* Ensures the body takes full viewport height */
+		        display: flex;
+		        justify-content: center;
+		        align-items: center;
+			}
+			/*------------ Register container ------------*/
+			.box-area{
+				display:inline block;
+				width: 400px;
+			    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+			    border: 2px solid rgb(33, 37,41); /* Set border to primary color *//* Set the background color for the box area */
+				margin: 0;
+			    padding: 0;
+			}
+			.box-area, .row, .container {
+			    border: none;
+			}
+			/*------------ Custom Placeholder ------------*/
+			::placeholder{
+			    font-size: 16px;
+			}
+			.rounded-5{
+			    border-radius: 30px;
+			}
+			@media only screen and (max-width: 768px) {
+            .box-area {
+                width: 100%; /* Adjusts the width to 90% of the viewport width */
+            }
+        }
 
-</style>
+    </style>
 </head>
 <body>
-<div class="container">
-	<form class="form-signup">
-	<h2>Register</h2>
-	<p> Create our account it's free only take a minute.</p>
-	<div class="form-group">
-		<div class="row">
-			<div class="col-md-6">
-			<input type=text class="form-control" name=firstname placeholder="First Name">
-			</div>
-			<div class="col-md-6">
-			<input type=text class="form-control" name=lastname placeholder="Last Name">
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-	<input type="email" class="form-control" name="email" placeholder="Email">
-	</div>
-	<div class="form-group">
-	<input type="text" class="form-control" name="plateNo" placeholder="Plate No">
-	</div>
-	<div class="form-group">
-	<input type="text" class="form-control" name="geranNo" placeholder="Geran No">
-	</div>
-	<div class="form-group">
-	<input type="password" class="form-control" name="password" placeholder="Password">
-	</div>
-	<div class="form-group">
-	<input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
-	</div>
-	<div class="form-group">
-	<lable>
-	<input type="checkbox" name="">
-	I accept the <a href="a">Terms of Use </a> & <a href="">Privacy Policy </a>
-	</lable>
-	</div>
-	<input type="submit" class="btn btn-success btn-block" name="" value=Submit>
-	</form> 
-</div>
+    <form action="" method="get">
+        <!----------------------- Main Container -------------------------->
+     <div class="container d-flex justify-content-center align-items-center min-vh-100 m-0 p-0">
+    <!----------------------- Register Container -------------------------->
+      <div class="row rounded-5 p-5 bg-primary shadow box-area" style="background-color: rgb(56, 56, 56);">
+            
+                    <div class="row align-items-center d-flex justify-content-center align-items-center">
+                        <div class="header-text mb-3">
+                            <h1 style="text-align: center; font-weight: bold; color:yellow;">Register</h1>
+                       </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="firstname" placeholder="First Name">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="lastname" placeholder="Last Name">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control form-control-lg bg-light fs-6" name="email" placeholder="Email">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="plateNo" placeholder="Plate No">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="geranNo" placeholder="Geran No">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control form-control-lg bg-light fs-6" name="password" placeholder="Password">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control form-control-lg bg-light fs-6" name="confirm_password" placeholder="Confirm Password">
+                        </div>
+                        <div class="input-group mb-3 d-flex justify-content-between">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="formCheck">
+                                <label for="formCheck" class="form-check-label text-secondary"><small style="color: black;">I accept the <a href="a">Terms of Use</a> & <a href="">Privacy Policy</a></small></label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button class="btn custombutton btn-lg w-100 fs-6" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Sign Up</button>
+                        </div>
+                        <div class="row mb-4">
+		                    <small>Already have an account? <a href="#" style="color: yellow;">Sign in</a></small>
+		                </div>
+                    </div>
+                </div>
+            </div>
+    </form>
 </body>
 </html>

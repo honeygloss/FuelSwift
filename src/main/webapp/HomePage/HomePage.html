@@ -12,6 +12,7 @@
 </head>
 <body style="background-color: rgb(54, 54, 54);">
 	<!-- Navigation Bar with Logo -->
+	<div class="wrapper">
 	<nav class="navbar navbar-expand-lg navbar-custom">
 	    <div class="container-fluid d-flex align-items-center">
 	        <!-- Navbar Brand (Logo) -->
@@ -22,40 +23,40 @@
 	    </div>
 	</nav>
     <!----------------------- Main Container -------------------------->
+     <div class="content">
      <div class="container">
     <!----------------------- Points Container -------------------------->
-       <div class="row mb-2 rounded-5 p-4 shadow box-area" style="background-color: rgb(23, 59, 121); padding-left: 20px; padding-right: 20px;">
+       <div class="row mb-2 rounded-5 p-4 shadow box-area d-flex justify-content-center" style="background-color: rgb(23, 59, 121);">
     <!-------------------- ------ Right Box ---------------------------->
-       <div class="col-md-6 right-box mb-4"  style="padding: 0 20px;">
-          <div class="row align-items-center">
-                <div class="header-text mb-3">
-                	<h4 style="text-align: center; font-weight: bold; color: yellow">Welcome, *Username*</h4>
-                	<h1 style="text-align: center; font-weight: bold; font-size: 90px; margin-bottom: 10px; margin-top: 20px; color: white">0.00</h1>
+       <div class="col-md-6 right-box mb-4"  style="padding: 0 20px; align-items: center;">
+          <div class="row align-items-center" >
+                <div class="header-text mb-2 mt-2">
+                	<h4 style=" text-align: center;font-weight: bold; color: yellow">Welcome, *Username*</h4>
+                	<h1 style=" text-align: center; font-weight: bold; font-size: 90px; margin-bottom: 10px; margin-top: 20px; color: white">0.00</h1>
                      <h2 style="text-align: center; font-size: 15px; color: white">Points</h2>
                 </div>
           </div>
        </div> 	 
        </div>
        <!-- Vehicle Number Plate Container -->
-    <div class="row rounded-2 mb-5 p-2 bg-secondary shadow box-area" style="max-height: 50px; text-align:center; max-width: 500px;">
+    <div class="row rounded-2 mb-5 p-2 bg-secondary shadow box-area d-flex justify-content-center" style="max-height: 50px; text-align:center;">
          <!-- Plate Number -->
-    <div class="col-6">
-        <div class="header-text">
-            <h4 style="font-weight: bold; font-size: 10px; color: white;">Plate Number</h4>
-            <p style="font-size: 8px; color: yellow;">ABC 1234</p>
-        </div>
-    </div>
-    <!-- Vehicle type -->
-    <div class="col-6">
-        <div class="header-text">
-            <h4 style="font-weight: bold; font-size: 10px; color: white;">Vehicle type</h4>
-            <p style="font-size: 8px; color: yellow;">Car</p>
-        </div>
-    </div>
+	    <div class="col-6">
+	        <div class="header-text">
+	            <h4 style="font-weight: bold; font-size: 10px; color: white;">Plate Number</h4>
+	            <p style="font-size: 8px; color: yellow;">ABC 1234</p>
+	        </div>
+	    </div>
+	    <!-- Vehicle type -->
+	    <div class="col-6">
+	        <div class="header-text">
+	            <h4 style="font-weight: bold; font-size: 10px; color: white;">Vehicle type</h4>
+	            <p style="font-size: 8px; color: yellow;">Car</p>
+	        </div>
+	    </div>
     </div>
     <!-------------------- ------ Right Box ---------------------------->
-       <div class="col-md-6 right-box mb-5 p-5">
-          <div class="row align-items-center">
+          <div class="row align-items-center p-5">
                  <!-- First Image and Link -->
         <div class="col-6 mb-4">
             <a href="#" class="d-flex flex-column align-items-center justify-content-center">
@@ -69,12 +70,12 @@
                 <img src="history.png" style="width: 45%; height: auto;" class="mb-2">
              </a>
                 <p class="text-center" style="font-weight: bold; color: yellow;">History</p>
-        </div>
        </div> 	 
        </div>
-       </div> 
+       </div>
+     </div> 
    <!-- ----footer-- -->
-	<footer class="footer shadow box-area" style="background-color: rgb(23, 59, 121); padding: 5px;">
+	<footer class="footer box-area fixed-bottom" style="background-color: rgb(23, 59, 121);">
 	    <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
 	        <!-- Home Link -->
 	        <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
@@ -93,8 +94,6 @@
 	        </a>
 	    </div>
 	</footer>
-
-
-
+</div>
 </body>
 </html>
