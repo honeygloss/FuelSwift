@@ -8,8 +8,6 @@
 		    display: flex; /* Use flexbox */
 		    flex-direction: column; /* Arrange child elements vertically */
 		}
-        
-
         .container {
             flex: 1; /* Allow container to expand to fill available space */
             display: flex;
@@ -22,8 +20,7 @@
             padding: 20px !important;
             border-radius: 10px;
             box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            
+            margin-bottom: 20px; 
         }
          .wrapper {
          	min-height: 100vh !important;
@@ -55,4 +52,5 @@
         .footer .navbar a:hover {
             text-decoration: none;
         }
+        
    		

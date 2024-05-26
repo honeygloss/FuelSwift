@@ -65,7 +65,7 @@
 			    padding: 20px; /* Add padding for better appearance */
 			
 		}
-		.btn {
+		.btn-alt {
 		    width: 100%;
 		    padding: 10px;
 		    background-color: rgb(20, 36, 105); /* Default background color */
@@ -130,39 +130,39 @@
                     </div>     
                 </div>
                 <!-- Vehicle Number Plate Container -->
-                <div class="row rounded-2 mb-5 p-2 shadow box-area d-flex justify-content-center" style="max-height: 50px; text-align:center; background-color: rgb(33, 37, 41);">
-                    <!-- Plate Number -->
-                    <div class="col-6">
-                        <div class="header-text">
-                            <h4 style="font-weight: bold; font-size: 10px; color: white;">Plate Number</h4>
-                            <div class="dropdown">
-				                <button style="width: fit-content;"class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-				                    Select Vehicle
-				                </button>
-				                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="vehicleDropdown">
-				                    <!-- Dropdown items for vehicle information will be added dynamically -->
-				                </ul>
+					<div class="row rounded-2 mb-5 p-1 shadow box-area d-flex justify-content-center align-items-center" style="max-height: 55px; text-align:center; background-color: rgb(33, 37, 41);">
+					    <!-- Plate Number -->
+					    <div class="col-6 mt-1">
+					        <div class="header-text">
+					            <h4 style="font-weight: bold; font-size: 10px; color: white; margin-bottom:0;">Plate Number</h4>
+					            <div class="dropdown">
+					                <button class="btn dropdown-toggle m-0 mt-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(33, 37, 41); color:yellow; font-size:8px;">
+					                    Select Vehicle
+					                </button>
+					                <ul class="dropdown-menu m-0 mt-0" aria-labelledby="dropdownMenuButton" id="vehicleDropdown" style="background-color: rgb(33, 37, 41); font-size:8px;">
+					                    <!-- Dropdown items for vehicle information will be added dynamically -->
+					                </ul>
+					            </div>
+					        </div>
+					    </div>
+					    <!-- Vehicle type -->
+					    <div class="col-6 mt-1">
+					        <div class="header-text">
+					            <h4 class=" mt-0 mb-0" style="font-weight: bold; font-size: 10px; color: white;">Vehicle Type</h4>
+					            <p class=" m-0 mt-0 p-2" id="vehicleType" style="font-size: 8px; color: yellow;"></p>
+					        </div>
+					    </div>
+					</div>
+				    <!-- Current Fuel Price -->
+				    <div class="row justify-content-center">
+				        <div class="col d-flex justify-content-center align-items-center">
+				            <div class="text-center">
+				                <h4 style="font-weight: bold; color: yellow;">Current Fuel Price</h4>
+				                <h1 style="font-size: 40px; font-weight: bold; color: white;">RM2.50/L</h1>
+				                <p style="font-size: 16px; color: white;">Updated: May 25, 2024</p>
 				            </div>
-                        </div>
-                    </div>
-                    <!-- Vehicle type -->
-                    <div class="col-6">
-                        <div class="header-text">
-                            <h4 style="font-weight: bold; font-size: 10px; color: white;">Vehicle type</h4>
-				            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Current Fuel Price -->
-			    <div class="row justify-content-center">
-			        <div class="col d-flex justify-content-center align-items-center">
-			            <div class="text-center">
-			                <h4 style="font-weight: bold; color: yellow;">Current Fuel Price</h4>
-			                <h1 style="font-size: 40px; font-weight: bold; color: white;">RM2.50/L</h1>
-			                <p style="font-size: 16px; color: white;">Updated: May 25, 2024</p>
-			            </div>
-			        </div>
-			    </div>
+				        </div>
+				    </div>
                 <!-- Options -->
                 <div class="row justify-content-center align-items-center mx-auto">
                     <!-- First Image and Link -->
@@ -211,7 +211,7 @@
 	           
 	            <div class="form-group mb-3">
 	                <label class="form-label">Full Name</label>
-	                <p class="form-control form-control-lg bg-light fs-6 " name="fullname">Fatin Humaira</p>
+	                <p class="form-control form-control-lg bg-light fs-6 " name="fullname"  id="fullname"  >Fatin Humaira</p>
 	            </div>
 	            <div class="form-group mb-3">
 	                <label class="form-label">Email</label>
@@ -219,17 +219,31 @@
 	            </div>
 	            <div class="form-group mb-3">
 	                <label class="form-label">Plate No</label>
-	                <p class="form-control form-control-lg bg-light fs-6" name="plateNo">WRZ 1234</p>
+	                <div class="dropdown" id="plateNo">
+					                <button class="btn dropdown-toggle m-0 mt-0 fs-6 w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color:black;">
+					                    Select Vehicle
+					                </button>
+					                <ul class="dropdown-menu m-0 mt-0 fs-6" aria-labelledby="dropdownMenuButton" id="vehicleDropdown" style="background-color: white;">
+					                    <!-- Dropdown items for vehicle information will be added dynamically -->
+					                </ul>
+					</div>
 	            </div>
 	            <div class="form-group mb-3">
 	                <label class="form-label">Geran No</label>
-	                <p class="form-control form-control-lg bg-light fs-6" name="geranNo">1234</p>
+	                <div class="dropdown" id="geranNo">
+					                <button class="btn dropdown-toggle m-0 mt-0 fs-6 w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color:black;">
+					                    Select Vehicle <!--- adjust based on the first database output -->
+					                </button>
+					                <ul class="dropdown-menu m-0 mt-0 fs-6" aria-labelledby="dropdownMenuButton" id="vehicleDropdown" style="background-color: white;">
+					                    <!-- Dropdown items for vehicle information will be added dynamically -->
+					                </ul>
+					</div>
 	            </div>
-	            <div class="input-group-alt mb-3">
-	                <button class="btn custombutton btn-lg w-100 fs-6 " style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="edit()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
+	            <div class="input-group-alt mb-3" id="editBtn">
+	                <button class="btn-alt custombutton btn-lg w-100 fs-6 " style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="edit()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
 	            </div>
 	            <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
-	                <button type="submit" class="btn btn-success btn-block">Update</button>
+	                <button type="submit" class="btn-alt btn-success btn-block">Update</button>
 	            </div>
 	            <div class="input-group-alt mb-3">
 				    <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(54, 54, 54); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
@@ -263,56 +277,190 @@
         </footer>
     </div>
   
+	<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 
-    <script>
-        document.getElementById('home-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('home-page').style.display = 'block';
-            document.getElementById('transaction-history').style.display = 'none';
-            document.getElementById('profile').style.display = 'none';
-        });
 
-        document.getElementById('history-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('transaction-history').style.display = 'block';
-            document.getElementById('profile').style.display = 'none';
+<script>
+    document.getElementById('home-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('home-page').style.display = 'block';
+        document.getElementById('transaction-history').style.display = 'none';
+        document.getElementById('profile').style.display = 'none';
+    });
+
+    document.getElementById('history-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('transaction-history').style.display = 'block';
+        document.getElementById('profile').style.display = 'none';
+    });
+
+    document.getElementById('profile-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('transaction-history').style.display = 'none';
+        document.getElementById('profile').style.display = 'block';
+    });
+	
+    document.addEventListener('DOMContentLoaded', function() {
+        window.edit = function() {
+        	 var editBtn = document.getElementById('editBtn');
+             if (editBtn) {
+            	 editBtn.style.display = 'none';
+             }
+        	 // Hide profile information and show input fields
+            var originalFullname = document.getElementById("fullname");
+            var originalPlateNo = document.getElementById("plateNo");
+            var originalGeranNo = document.getElementById("geranNo");
+
+            // Hide original input boxes
+            originalFullname.style.display = 'none';
+            originalPlateNo.style.display = 'none';
+            originalGeranNo.style.display = 'none';
+
+            // Create and append new input fields
+            var fullnameInput = createInput('fullname', 'Fatin Humaira');
+            var plateNoInput = createInput('plateNo', 'WRZ 1234');
+            var geranNoInput = createInput('geranNo', '1234');
+
+            originalFullname.parentNode.appendChild(fullnameInput);
+            originalPlateNo.parentNode.appendChild(plateNoInput);
+            originalGeranNo.parentNode.appendChild(geranNoInput);
+         // Show the update button
+            toggleUpdateButton();
+         
+        }
+
+        // Function to create input element
+        function createInput(name, placeholder) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control';
+            input.name = name;
+            input.placeholder = placeholder;
+            return input;
+        }
+
+        // Function to show or hide the update button
+        function toggleUpdateButton() {
+            var updateBtn = document.getElementById('updateBtn');
+            if (updateBtn.style.display === 'none') {
+                updateBtn.style.display = 'block';
+            } else {
+                updateBtn.style.display = 'none';
+            }
+        }
+     // Add event listener for the update button
+        var updateBtn = document.getElementById('updateBtn');
+        updateBtn.addEventListener('click', function() {
+            // Update the input fields
+            var fullnameInput = document.querySelector('input[name="fullname"]');
+            var plateNoInput = document.querySelector('input[name="plateNo"]');
+            var geranNoInput = document.querySelector('input[name="geranNo"]');
+
+            var originalFullname = document.getElementById("fullname");
+            var originalPlateNo = document.getElementById("plateNo");
+            var originalGeranNo = document.getElementById("geranNo");
+
+            originalFullname.textContent = fullnameInput.value;
+            originalPlateNo.textContent = plateNoInput.value;
+            originalGeranNo.textContent = geranNoInput.value;
+
+            // Hide the update button
+            updateBtn.style.display = 'none';
+
+            // Show the edit button
+            var editBtn = document.getElementById('editBtn');
+            if (editBtn) {
+                editBtn.style.display = 'block';
+            }
         });
         
-        document.getElementById('profile-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('transaction-history').style.display = 'none';
-            document.getElementById('profile').style.display = 'block';
+     // Add event listeners for the dropdown items
+        var dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                var selectedPlateNo = item.textContent.trim(); // Assuming the plate number is the text content of the dropdown item
+                // Use AJAX to retrieve the corresponding Geran No from the database based on the selected Plate No
+                // Update the displayed Geran No accordingly
+                // Example:
+                var selectedGeranNo = getGeranNoFromDatabase(selectedPlateNo); // Function to retrieve Geran No from the database
+                // Update the displayed Geran No
+                document.getElementById("geranNo").textContent = selectedGeranNo;
+            });
         });
-        function edit() {
-            // Hide profile information and show input fields
-            document.getElementById("firstName").innerHTML = '<input type="text" class="form-control" name="firstname" placeholder="Fatin">';
-            document.getElementById("lastName").innerHTML = '<input type="text" class="form-control" name="lastname" placeholder="Humaira">';
-            document.getElementById("email").innerHTML = '<input type="email" class="form-control" name="email" placeholder="fatin@gmail.com">';
-            document.getElementById("plateNo").innerHTML
+
+        // Function to simulate AJAX call to retrieve Geran No from the database
+        function getGeranNoFromDatabase(plateNo) {
+            // This is a placeholder function to simulate retrieving Geran No from the database
+            // In a real scenario, you would make an AJAX call to your server to fetch the Geran No based on the selected Plate No
+            // Here, we'll simply return a hardcoded value for demonstration purposes
+            // You should replace this with your actual AJAX call
+            // For example:
+            // return fetch('/getGeranNo', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ plateNo: plateNo }),
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+            // .then(response => response.json())
+            // .then(data => data.geranNo)
+            // .catch(error => console.error('Error fetching Geran No:', error));
+
+            // Placeholder hardcoded value (replace with actual AJAX call)
+            // For demonstration purposes, we'll return a hardcoded value based on the selected Plate No
+            // Replace this with your actual AJAX call
+            if (plateNo === 'ABC 1234') {
+                return 'Geran No for ABC 1234';
+            } else if (plateNo === 'XYZ 5678') {
+                return 'Geran No for XYZ 5678';
+            } else {
+                return 'Geran No for other plate numbers';
+            }
         }
-     // Assume you have fetched the plate number and vehicle type from the database
-        var plateNumber = "ABC 1234";
-        var vehicleType = "Car";
-
-        // Get the dropdown menu where the dropdown items will be appended
-        var vehicleDropdown = document.getElementById("vehicleDropdown");
-
-        // Create dropdown items for plate number and vehicle type
-        var plateNumberItem = document.createElement("li");
-        plateNumberItem.innerHTML = '<a class="dropdown-item" href="#">Plate Number: ' + plateNumber + '</a>';
-
-        var vehicleTypeItem = document.createElement("li");
-        vehicleTypeItem.innerHTML = '<a class="dropdown-item" href="#">Vehicle Type: ' + vehicleType + '</a>';
-
-        // Append dropdown items to the dropdown menu
-        vehicleDropdown.appendChild(plateNumberItem);
-        vehicleDropdown.appendChild(vehicleTypeItem);
-
-
-    </script>
     
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const vehicles = [
+            { plateNumber: "ABC 1234", vehicleType: "Car" },
+            { plateNumber: "XYZ 5678", vehicleType: "Truck" },
+            { plateNumber: "LMN 9101", vehicleType: "Bike" }
+        ];
+
+        const vehicleDropdown = document.getElementById("vehicleDropdown");
+        const vehicleTypeElement = document.getElementById("vehicleType");
+
+        function updateVehicleType(plateNumber) {
+            const vehicle = vehicles.find(v => v.plateNumber === plateNumber);
+            if (vehicle) {
+                vehicleTypeElement.textContent = vehicle.vehicleType;
+            } else {
+                vehicleTypeElement.textContent = "";
+            }
+        }
+
+        vehicles.forEach(vehicle => {
+            const dropdownItem = document.createElement("li");
+            dropdownItem.innerHTML = `<a class="dropdown-item fixed-dropdown" style="color: yellow;" href="#">${vehicle.plateNumber}</a>`;
+            dropdownItem.addEventListener('click', function() {
+                document.getElementById("dropdownMenuButton").textContent = vehicle.plateNumber;
+                updateVehicleType(vehicle.plateNumber);
+            });
+            vehicleDropdown.appendChild(dropdownItem);
+        });
+    });
+   
+    function logout() {
+        // Perform logout functionality here
+        // For example, redirecting the user to the logout page
+        window.location.href = "logout.php"; // Change "logout.php" to the actual logout URL
+    }
+</script> 
 </body>
 </html>
    
