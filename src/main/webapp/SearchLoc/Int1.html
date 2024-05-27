@@ -3,36 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to fuelSwift</title>
+    <title>Welcome to FuelSwift</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-        body {
+        body, .h1 {
+         	font-family: 'Poppins', sans-serif;
             background: rgb(20, 36, 105);
             color: black;
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            margin: 0;
+            padding: 0;
         }
 
-        /* Navigation Bar with Logo */
         .navbar-custom {
-            background-color: transparent; /* Make the navbar background transparent */
-            position: fixed; /* Fix the navbar position */
-            top: 0; /* Position it at the top of the viewport */
-            left: 0; /* Position it at the left of the viewport */
-            width: 100%; /* Take the full width of the viewport */
-            z-index: 1000; /* Ensure it appears above other content */
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
         .navbar-brand img {
             width: 50px;
             height: auto;
-            margin-right: 5px; /* Add some spacing between the logo and text */
+            margin-right: 5px;
         }
 
-        /* Style for the logo text */
         .navbar-brand p {
             margin: 0;
             font-weight: bold;
@@ -40,91 +39,70 @@
             font-size: 12px;
         }
 
-        /* Centering the container */
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            padding-top: 60px; /* Add padding to account for the fixed navbar */
+            padding-top: 60px;
         }
 
-        /* Styling the box */
-        .box {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Style for the submit button */
         #submitBtn {
             float: right;
         }
-   </style>
+
+        .box-area {
+            width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgb(33, 37, 41);
+            background: white;
+            margin: auto;
+            margin-top: 50px;
+            padding: 20px;
+            border: none;
+        }
+
+        .dropdown-menu {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Navigation Bar with Logo -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid d-flex align-items-center">
-            <!-- Navbar Brand (Logo) -->
-            <a class="navbar-brand" href="#">
-                <img src="logo1.png" alt="Logo" width="50" height="45" class="d-inline-block align-text-top me-2">
-                <p style="font-weight: bold; color: yellow; font-size: 12px">FuelSwift</p>
-            </a>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid d-flex align-items-center">
+        <a class="navbar-brand" href="#">
+            <img src="logo1.png" alt="Logo" width="50" height="45" class="d-inline-block align-text-top me-2">
+            <p>FuelSwift</p>
+        </a>
+    </div>
+</nav>
 
 <div class="container">
-    <div class="box">
-        <h1>Welcome to fuelSwift</h1>
-        
+    <div class="box-area bg-white rounded">
+        <h1 style="font-weight: bold;">Fuel Stations</h1>
+        <div id="map" style="height: 400px; width: 100%;"></div>
         <form id="searchForm">
             <div class="form-group">
-                <label for="search">Search or Select your location:</label>
-                <input type="text" class="form-control" id="searchInput" oninput="filterLocations()" placeholder="Type to search" onclick="toggleDropdown()">
+                <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
+                <div id="dropdownContent" class="dropdown-menu"></div>
             </div>
-            <div class="dropdown">
-                <div id="dropdownContent" class="dropdown-menu" style="width: 100%;">
-                    <!-- Dropdown options will be dynamically populated here -->
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" onclick="submitSearch()">Search</button>
-                <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
-            </div>
+            <ul id="searchResults"></ul>
         </form>
-
-        <ul id="searchResults"></ul>
-    
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    // Sample JavaScript code here
-</script>
-
 <footer class="footer shadow" style="position: fixed; bottom: 0; width: 100%; background-color: rgb(23, 59, 121); padding: 5px;">
     <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
-        <!-- Home Link -->
         <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
             <img src="HomeIcon.png" alt="Home Icon" style="width: 25px; height: auto; margin-bottom: 2px;">
             <p style="margin: 0; font-size: 12px; font-weight: bold;">Home</p>
         </a>
-        <!-- History Link -->
         <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
             <img src="history.png" alt="History Icon" style="width: 18px; height: auto; margin-bottom: 2px;">
             <p style="margin: 0; font-size: 12px; font-weight: bold;">History</p>
         </a>
-        <!-- Profile Link -->
         <a href="#" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
             <img src="profile.png" alt="Profile Icon" style="width: 23px; height: auto; margin-bottom: 2px;">
             <p style="margin: 0; font-size: 12px; font-weight: bold;">Profile</p>
@@ -132,5 +110,90 @@
     </div>
 </footer>
 
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDadD1AX1TDGeh5fDvKU6nRTYjtrjYMcCY&libraries=places&callback=initMap" async defer></script>
+
+<script>
+    let map;
+    let markers = [];
+
+    const locations = [
+        { title: "Shell Tapah", address: "123 Tapah Road, Tapah, Malaysia", coords: { lat: 4.2005, lng: 101.2557 } },
+        { title: "Petronas Tapah", address: "456 Main Street, Tapah, Malaysia", coords: { lat: 4.2006, lng: 101.2560 } },
+        { title: "Petrol Station A", address: "789 Another St, Tapah, Malaysia", coords: { lat: 4.2010, lng: 101.2570 } },
+        // Add more petrol pump locations as needed
+    ];
+
+    function initMap() {
+        const center = { lat: 4.2005, lng: 101.2557 };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: center,
+        });
+
+        locations.forEach(location => {
+            const marker = new google.maps.Marker({
+                position: location.coords,
+                map: map,
+                title: location.title
+            });
+            markers.push(marker);
+        });
+
+        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchInput'));
+        autocomplete.setFields(['geometry', 'name']);
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) return;
+
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+            new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+            });
+        });
+    }
+
+    function filterLocations() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const dropdown = document.getElementById('dropdownContent');
+        dropdown.innerHTML = '';
+
+        const filteredLocations = locations.filter(location => {
+            return location.title.toLowerCase().includes(input) || location.address.toLowerCase().includes(input);
+        });
+
+        filteredLocations.forEach(location => {
+            const option = document.createElement('a');
+            option.className = 'dropdown-item';
+            option.textContent = `${location.title} - ${location.address}`;
+            option.href = '#';
+            option.onclick = () => selectLocation(location);
+            dropdown.appendChild(option);
+        });
+
+        dropdown.style.display = input ? 'block' : 'none';
+    }
+
+    function selectLocation(location) {
+        map.setCenter(location.coords);
+        map.setZoom(15);
+        const marker = new google.maps.Marker({
+            position: location.coords,
+            map: map,
+            title: location.title
+        });
+        markers.push(marker);
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
+
+</script>
 </body>
 </html>

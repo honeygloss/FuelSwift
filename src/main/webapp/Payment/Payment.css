@@ -1,70 +1,54 @@
 @charset "UTF-8";
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: rgb(54, 54, 54);
-    margin: 0;
-    padding: 0;
-}
+	body, h2, label{
+	    font-family: 'Poppins', sans-serif;
+	    background-color: rgb(54, 54, 54);
+	    margin: 0;
+	    padding: 0;
+	    color: white;
+	}
+	.container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+        }
+        .footer-text {
+            text-align: center;
+            color: #6c757d;
+            margin-top: auto;
+            padding-top: 20px;
+            padding-bottom: 5px;
+        }
+	.form-control {
+	    background-color: rgb(240, 248, 255);
+	    color: black;
+	    border: 1px solid rgb(33, 37, 41);
+	    border-radius: 5px;
+	    padding: 10px;
+	}
 
-.box-area {
-    width: 90%; /* Adjusted width to fit screen */
-    max-width: 930px; /* Added max-width to ensure it doesn't get too wide */
-    margin: 40px auto; /* Centering horizontally */
-    padding: 40px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgb(33, 37, 41);
-    background-color: rgb(56, 56, 56);
-    border-radius: 15px; /* Rounded corners */
-}
 
-.box-area h2 {
-    color: black;
-}
-
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: white;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgb(33, 37, 41);
-    border-radius: 5px;
-}
-
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: rgb(20, 36, 105);
-    color: yellow;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: rgb(20, 36, 105);
-}
-
-@media only screen and (max-width: 768px) {
-    .box-area {
-        width: 90%; /* Adjusted width to fit screen */
-        max-width: 100%; /* Added max-width to ensure it doesn't get too wide */
-        margin: 40px auto; /* Centering horizontally */
-    }
-
-    .left-box {
-        height: 100px;
-        overflow: hidden;
-    }
-
-    .right-box {
-        padding: 20px;
-    }
-}
+	.btn-outline-primary:hover,
+	.btn-check:checked + .btn-outline-primary {
+	    background-color: rgb(20, 36, 105);
+	    color: white;
+	    border: 1px solid rgb(20, 36, 105);
+	}
+	
+	.btn-primary {
+	    background-color: rgb(20, 36, 105);
+	    color: yellow;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+	}
+	
+	.btn-primary:hover {
+	    background-color: rgb(10, 26, 85);
+	    color: white;
+	}

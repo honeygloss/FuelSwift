@@ -11,7 +11,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: rgb(54, 54, 54);
+            /*background-color: rgb(54, 54, 54);*/
+            background-color: rgb(20, 36, 105);
             margin: 0;
             padding: 0;
         }
@@ -62,8 +63,7 @@
 			    border: 2px solid rgb(33, 37,41); /* Set border to primary color *//* Set the background color for the box area */
 				margin: auto; /* Center horizontally */
 			    margin-top: 20px; /* Adjust top margin for vertical centering */
-			    padding: 20px; /* Add padding for better appearance */
-			
+			    padding: 20px; /* Add padding for better appearance */		
 		}
 		.btn-alt {
 		    width: 100%;
@@ -94,12 +94,28 @@
 			font-weight:bold;
 			color: white;
 		}
-		
-		
+		/*------------ Fuel Station------------*/
+		.box-area-alt-alt-alt {
+            width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgb(33, 37, 41);
+            background: white;
+            margin: auto;
+            margin-top: 50px;
+            padding: 20px;
+            border: none;
+        }
+        .container-alt {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding-top: 60px;
+        }
 			
     </style>
 </head>
-<body style="background-color: rgb(54, 54, 54);">
+<body>
     <!-- Navigation Bar with Logo -->
     <div class="wrapper">
         <nav class="navbar navbar-expand-lg navbar-custom">
@@ -114,7 +130,7 @@
 
         <!-- Main Container -->
         <div class="content">
-            <!-- Home Page Content -->
+            <!-- ---------------------------------------- Home Page Content ----------------------------------------------------------------------------------->
             <div id="home-page" class="container">
                 <!-- Points Container -->
                 <div class="row mb-2 rounded-5 p-4 shadow box-area d-flex justify-content-center" style="background-color: rgb(33, 37, 41);">
@@ -166,7 +182,7 @@
                 <!-- Options -->
                 <div class="row justify-content-center align-items-center mx-auto">
                     <!-- First Image and Link -->
-                        <a href="#" class="d-flex flex-column align-items-center justify-content-center" >
+                        <a href="/FuelSwift/SearchLoc/Int1.html" id="fuelStations-link" class="d-flex flex-column align-items-center justify-content-center" >
                             <img src="fuel.png" style="width: 50%; height: 50%;" class="mb-2">
                         </a>
                         <p class="text-center" style="font-weight: bold; color: yellow;">Fuel Stations</p>
@@ -174,7 +190,7 @@
                 </div>
             </div>
 
-            <!-- Transaction History Content -->
+            <!--------------------------------- Transaction History ---------------------------------------->
             <div id="transaction-history" class="container box-area-alt" style="display: none;">
                 <h1 style="font-weight: bold;">Transaction History</h1>
                 <div class="transaction-item">
@@ -197,8 +213,8 @@
                 </div>
             </div>
         </div>
+        
         <!---------------------------------------- Profile -------------------------------- -->
-		 
 		 <div id="profile" style="display: none;">
                 <!-- Icon below Navigation Bar -->
                 <div class="container d-flex justify-content-center align-items-center ">
@@ -206,7 +222,7 @@
 			        <h1 style="color: white; margin-right: 10px; font-weight: bold;">Fatin</h1>
     			</div>
 
-	    <div class="row rounded-5 p-4 shadow box-area-alt-alt " style="background-color: rgb(54, 54, 54)">
+	    <div class="row rounded-5 p-4 shadow box-area-alt-alt " style="background-color: rgb(20, 36, 105)">
 	        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
 	           
 	            <div class="form-group mb-3">
@@ -246,7 +262,7 @@
 	                <button type="submit" class="btn-alt btn-success btn-block">Update</button>
 	            </div>
 	            <div class="input-group-alt mb-3">
-				    <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(54, 54, 54); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
+				    <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(20, 36, 105); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
 				        Logout <i class="bi bi-box-arrow-right"></i>
 				    </a>
 				</div>
@@ -254,9 +270,25 @@
 	    </div>
 		</div>
        
+        <!---------------------------------------- Fuel Stations -------------------------------- -->
+        <div id="fuelStations" style="display: none;">
+		 <div class="container-alt">
+		    <div class="box-area-alt-alt-alt bg-white rounded">
+		        <h1 style="font-weight: bold;">Fuel Stations</h1>
+		        <div id="map" style="height: 400px; width: 100%;"></div>
+		        <form id="searchForm">
+		            <div class="form-group">
+		                <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
+		                <div id="dropdownContent" class="dropdown-menu"></div>
+		            </div>
+		            <ul id="searchResults"></ul>
+		        </form>
+		    </div>
+		</div>
+		</div>
 
         <!-- Footer -->
-        <footer class="footer box-area fixed-bottom" style="background-color:rgb(54, 54, 54);">
+        <footer class="footer box-area fixed-bottom" style="background-color: rgb(23, 59, 121);">
             <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
                 <!-- Home Link -->
                 <a href="#" id="home-link" style="text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center;">
@@ -281,7 +313,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDadD1AX1TDGeh5fDvKU6nRTYjtrjYMcCY&libraries=places&callback=initMap" async defer></script>
 
 <script>
     document.getElementById('home-link').addEventListener('click', function(event) {
@@ -289,6 +325,7 @@
         document.getElementById('home-page').style.display = 'block';
         document.getElementById('transaction-history').style.display = 'none';
         document.getElementById('profile').style.display = 'none';
+        document.getElementById('fuelStations').style.display = 'none';
     });
 
     document.getElementById('history-link').addEventListener('click', function(event) {
@@ -296,6 +333,7 @@
         document.getElementById('home-page').style.display = 'none';
         document.getElementById('transaction-history').style.display = 'block';
         document.getElementById('profile').style.display = 'none';
+        document.getElementById('fuelStations').style.display = 'none';
     });
 
     document.getElementById('profile-link').addEventListener('click', function(event) {
@@ -303,6 +341,15 @@
         document.getElementById('home-page').style.display = 'none';
         document.getElementById('transaction-history').style.display = 'none';
         document.getElementById('profile').style.display = 'block';
+        document.getElementById('fuelStations').style.display = 'none';
+    });
+    
+    document.getElementById('fuelStations-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('transaction-history').style.display = 'none';
+        document.getElementById('profile').style.display = 'none';
+        document.getElementById('fuelStations').style.display = 'block';
     });
 	
     document.addEventListener('DOMContentLoaded', function() {
@@ -460,7 +507,83 @@
         // For example, redirecting the user to the logout page
         window.location.href = "logout.php"; // Change "logout.php" to the actual logout URL
     }
-</script> 
+
+
+    let map;
+    let markers = [];
+
+    const locations = [
+        { title: "Shell Tapah", address: "123 Tapah Road, Tapah, Malaysia", coords: { lat: 4.2005, lng: 101.2557 } },
+        { title: "Petronas Tapah", address: "456 Main Street, Tapah, Malaysia", coords: { lat: 4.2006, lng: 101.2560 } },
+        { title: "Petrol Station A", address: "789 Another St, Tapah, Malaysia", coords: { lat: 4.2010, lng: 101.2570 } },
+        // Add more petrol pump locations as needed
+    ];
+
+    function initMap() {
+        const center = { lat: 4.2005, lng: 101.2557 };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: center,
+        });
+
+        locations.forEach(location => {
+            const marker = new google.maps.Marker({
+                position: location.coords,
+                map: map,
+                title: location.title
+            });
+            markers.push(marker);
+        });
+
+        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchInput'));
+        autocomplete.setFields(['geometry', 'name']);
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) return;
+
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+            new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+            });
+        });
+    }
+
+    function filterLocations() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const dropdown = document.getElementById('dropdownContent');
+        dropdown.innerHTML = '';
+
+        const filteredLocations = locations.filter(location => {
+            return location.title.toLowerCase().includes(input) || location.address.toLowerCase().includes(input);
+        });
+
+        filteredLocations.forEach(location => {
+            const option = document.createElement('a');
+            option.className = 'dropdown-item';
+            option.textContent = `${location.title} - ${location.address}`;
+            option.href = '#';
+            option.onclick = () => selectLocation(location);
+            dropdown.appendChild(option);
+        });
+
+        dropdown.style.display = input ? 'block' : 'none';
+    }
+
+    function selectLocation(location) {
+        map.setCenter(location.coords);
+        map.setZoom(15);
+        const marker = new google.maps.Marker({
+            position: location.coords,
+            map: map,
+            title: location.title
+        });
+        markers.push(marker);
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
+</script>
 </body>
 </html>
    
