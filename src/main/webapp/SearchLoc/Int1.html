@@ -116,9 +116,20 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDadD1AX1TDGeh5fDvKU6nRTYjtrjYMcCY&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
 
 <script>
+function loadGoogleMapsAPI() {
+    fetch('http://localhost:3000/maps-api')
+        .then(response => response.text())
+        .then(script => {
+            const scriptElement = document.createElement('script');
+            scriptElement.type = 'text/javascript';
+            scriptElement.text = script;
+            document.body.appendChild(scriptElement);
+        })
+        .catch(error => console.error('Error loading Google Maps API:', error));
+}
     let map;
     let markers = [];
 

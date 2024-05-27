@@ -182,7 +182,7 @@
                 <!-- Options -->
                 <div class="row justify-content-center align-items-center mx-auto">
                     <!-- First Image and Link -->
-                        <a href="/FuelSwift/SearchLoc/Int1.html" id="fuelStations-link" class="d-flex flex-column align-items-center justify-content-center" >
+                        <a href=# id="fuelStations-link" class="d-flex flex-column align-items-center justify-content-center" >
                             <img src="fuel.png" style="width: 50%; height: 50%;" class="mb-2">
                         </a>
                         <p class="text-center" style="font-weight: bold; color: yellow;">Fuel Stations</p>
@@ -317,7 +317,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDadD1AX1TDGeh5fDvKU6nRTYjtrjYMcCY&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
 
 <script>
     document.getElementById('home-link').addEventListener('click', function(event) {
@@ -508,7 +508,21 @@
         window.location.href = "logout.php"; // Change "logout.php" to the actual logout URL
     }
 
+    function loadGoogleMapsAPI() {
+    	const apiUrl = 'http://localhost:3000/maps-api';
 
+        fetch(apiUrl)
+            .then(response => response.text())
+            .then(script => {
+                const scriptElement = document.createElement('script');
+                scriptElement.type = 'text/javascript';
+                scriptElement.text = script;
+                document.body.appendChild(scriptElement);
+            })
+            .catch(error => console.error('Error loading Google Maps API:', error));
+    }
+
+    loadGoogleMapsAPI();
     let map;
     let markers = [];
 
