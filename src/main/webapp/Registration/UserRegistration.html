@@ -8,9 +8,9 @@
 <!-- Add Bootstrap Icons -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
  <style>
-			body{
+			body, input-group{
 			    font-family: 'Poppins', sans-serif;
-			    background: rgb(54, 54, 54);
+			    background: rgb(20, 36, 105);
 			    margin: 0;
 		        padding: 0;
 		        height: 100vh; /* Ensures the body takes full viewport height */
@@ -18,11 +18,16 @@
 		        justify-content: center;
 		        align-items: center;
 			}
-			/*------------ Register container ------------*/
+			/* Apply font-family to input fields */
+			.input-group .form-control {
+			    font-family: 'Poppins', sans-serif;
+			    font-size: 16px;			    
+			}
+	/*------------ Register container ------------*/
 			.box-area{
 				display:inline block;
 				width: 400px;
-			    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+			    box-shadow: 0 60px 80px rgba(0, 0, 0, 0);
 			    border: 2px solid rgb(33, 37,41); /* Set border to primary color *//* Set the background color for the box area */
 				margin: 0;
 			    padding: 0;
@@ -33,35 +38,49 @@
 			/*------------ Custom Placeholder ------------*/
 			::placeholder{
 			    font-size: 16px;
+			    font-family: 'Poppins', sans-serif;
 			}
-			.rounded-5{
+			.rounded-5, .input-group{
 			    border-radius: 30px;
 			}
 			@media only screen and (max-width: 768px) {
-            .box-area {
-                width: 100%; /* Adjusts the width to 90% of the viewport width */
-            }
+	            .box-area {
+	                width: 100%; /* Adjusts the width to 90% of the viewport width */
+	            }            
+       	 	}
+       	 
+        .dropdown-toggle-end {
+            width: 100%;
+        	right: 0;
         }
+         .footer-text {
+		    text-align: center;
+		    color: #6c757d;
+		    margin-top: auto;
+		    padding: 10px 0; /* Adjusted padding */
+		    font-size: 15px; 
+		    width: 100%; /* Ensure it takes up the full width */
+		    position: absolute; /* Position it absolutely */
+		    bottom: 0; /* Align it to the bottom */
+		}
+
 
     </style>
 </head>
 <body>
     <form action="" method="get">
         <!----------------------- Main Container -------------------------->
-     <div class="container d-flex justify-content-center align-items-center min-vh-100 m-0 p-0">
+     <div class="container d-flex justify-content-center align-items-center min-vh-100 ">
     <!----------------------- Register Container -------------------------->
-      <div class="row rounded-5 p-5 bg-primary shadow box-area" style="background-color: rgb(56, 56, 56);">
+      <div class="row rounded-5 p-5 shadow box-area" style="background-color: rgb(20, 36, 105);">
             
                     <div class="row align-items-center d-flex justify-content-center align-items-center">
                         <div class="header-text mb-3">
                             <h1 style="text-align: center; font-weight: bold; color:yellow;">Register</h1>
                        </div>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="firstname" placeholder="First Name">
-                        </div>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="lastname" placeholder="Last Name">
-                        </div>
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" name="fullName" placeholder="Full Name">
+                        </div>             
                         <div class="input-group mb-3">
                             <input type="email" class="form-control form-control-lg bg-light fs-6" name="email" placeholder="Email">
                         </div>
@@ -71,6 +90,16 @@
                         <div class="input-group mb-3">
                             <input type="text" class="form-control form-control-lg bg-light fs-6" name="geranNo" placeholder="Geran No">
                         </div>
+					    <div class="dropdown mb-3 fs-6 w-100 ">
+                        <button class="btn form-control-lg dropdown-toggle dropdown-toggle-end" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="color:black; background-color:white;">
+                            Vehicle type
+                        </button>
+                        <ul class="dropdown-menu fs-6 w-100" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" onclick="selectVehicleType('Car')">Car</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="selectVehicleType('Motorcycle')">Motorcycle</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="selectVehicleType('Truck')">Truck</a></li>
+                        </ul>
+                    </div>
                         <div class="input-group mb-3">
                             <input type="password" class="form-control form-control-lg bg-light fs-6" name="password" placeholder="Password">
                         </div>
@@ -80,18 +109,30 @@
                         <div class="input-group mb-3 d-flex justify-content-between">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="formCheck">
-                                <label for="formCheck" class="form-check-label text-secondary"><small style="color: black;">I accept the <a href="a">Terms of Use</a> & <a href="">Privacy Policy</a></small></label>
+                                <label for="formCheck" class="form-check-label text-secondary"><small style="color: black;">I accept the <a href="a" style="color:yellow;">Terms of Use</a> & <a href="" style="color:yellow;">Privacy Policy</a></small></label>
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <button class="btn custombutton btn-lg w-100 fs-6" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Sign Up</button>
+                            <button class="btn custombutton btn-lg w-100 fs-6" style="font-size: 16px; background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Sign Up</button>
                         </div>
                         <div class="row mb-4">
-		                    <small>Already have an account? <a href="#" style="color: yellow;">Sign in</a></small>
+		                    <small>Already have an account? <a href="/FuelSwift/Login/Login.html" style="color: yellow;">Sign in</a></small>
 		                </div>
                     </div>
                 </div>
             </div>
     </form>
+    <div class="footer-text">
+     	<small>&copy; FuelSwift</small>
+	</div>
+    <!-- Bootstrap JS (Optional, for dropdown functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+        // Function to handle selection of vehicle type
+        function selectVehicleType(type) {
+            // Update the button text with the selected vehicle type
+            document.getElementById('dropdownMenuButton').innerText = type;
+        }
+    </script>
 </body>
 </html>

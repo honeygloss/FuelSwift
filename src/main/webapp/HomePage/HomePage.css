@@ -1,13 +1,5 @@
 @charset "ISO-8859-1";
-		html,body {
-	        height: 100% !important;
-		    background-color: rgb(54, 54, 54); /* Set background color */
-		    color: white; /* Set text color */
-		    margin: 0; /* Remove default margin */
-		    padding: 0; /* Remove default padding */
-		    display: flex; /* Use flexbox */
-		    flex-direction: column; /* Arrange child elements vertically */
-		}
+		
         .container {
             flex: 1; /* Allow container to expand to fill available space */
             display: flex; 
@@ -28,17 +20,12 @@
             flex-direction: column;
             
         }
-        .content {
-            flex: 1 !important;
-        }
-
 		.footer {
 	            width: 100%;
 	            flex-shrink: 0;
 	            position: fixed !important;
 	            bottom:0 !important;
-         }
-         
+         }    
         .footer .navbar {
             display: flex;
             justify-content: space-around;
@@ -52,5 +39,8 @@
         .footer .navbar a:hover {
             text-decoration: none;
         }
-        
-   		
+		 .content {
+		    flex: 1; /* Allow content to expand */
+		    overflow-y: auto; /* Enable vertical scrolling */
+		}
+		   		

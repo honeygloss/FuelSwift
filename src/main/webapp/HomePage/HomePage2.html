@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FuelSwift HomePage | FuelSwift</title>
+    <title>HomePage | FuelSwift</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">    
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            /*background-color: rgb(54, 54, 54);*/
-            background-color: rgb(20, 36, 105);
-            margin: 0;
-            padding: 0;
-        }
-		
+		    font-family: 'Poppins', sans-serif;
+		    background-color: rgb(20, 36, 105);
+		    margin: 0;
+		    padding: 0;
+		    /* overflow: hidden; */ /* Remove this line to enable scrolling */
+		    height: 100% !important;
+		    display: flex; /* Use flexbox */
+		    flex-direction: column; /* Arrange child elements vertically */
+		}
+		#home-page {
+    		overflow-y: auto; /* Enable vertical scrolling for the home page */
+		}
+		#fuelStations {
+    		overflow: hidden; /* Disable scrolling on the fuel stations page */
+		}
+		.no-scroll {
+    		overflow: hidden !important;
+		}
 		/*Transaction css*/
         .box-area-alt {
             padding-top: 5px; /* Reduce the top padding */
@@ -94,25 +105,83 @@
 			font-weight:bold;
 			color: white;
 		}
-		/*------------ Fuel Station------------*/
+		        /* FUEL STATIONS */
+		#fuelStations {
+		    border: none;
+		    margin: 0;
+		    padding: 0;
+		}
+		.container-alt {
+		    justify-content: center;
+		    align-items: center;
+		    height: 100vh;
+		    overflow: hidden;
+		    border: none;
+		    margin: 0;
+		    padding: 0;
+		}
 		.box-area-alt-alt-alt {
-            width: 400px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgb(33, 37, 41);
-            background: white;
-            margin: auto;
-            margin-top: 50px;
-            padding: 20px;
-            border: none;
-        }
-        .container-alt {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding-top: 60px;
-        }
-			
+		    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+		    background: white;
+		    padding: 20px;
+		    overflow-y: hidden;
+		    border: none;
+		    display: flex;
+		    flex-direction: column;
+		    max-width: 800px; /* Adjust the max-width value as needed */
+		    margin: 0 auto; /* Center the box horizontally */
+		}
+		.result-item {
+		    display: flex;
+		    justify-content: space-between; /* Distribute space between child elements */
+		    align-items: center;
+		    border-top: 1px solid #ddd;
+		    border-bottom: 1px solid #ddd;
+		    padding: 10px 0;
+		    cursor: pointer;
+		    transition: background-color 0.3s, color 0.3s;
+		}
+		.result-item:hover {
+		    background-color: #f8f9fa;
+		    color: #0056b3;
+		}
+		.result-info {
+		    flex-grow: 1; /* Allow this div to grow and take up available space */
+		}
+		.result-title {
+		    font-weight: bold;
+		}
+		.result-rating {
+		    color: #f39c12;
+		}
+		.result-address {
+		    margin: 5px 0;
+		}
+		.result-actions a {
+		    margin-right: 10px;
+		}
+		#results {
+		    max-height: 250px;
+		    overflow-y: auto;
+		    border-radius: 4px;
+		    padding: 10px;
+		    flex-grow: 1;
+		}
+		.form-group {
+		    margin-bottom: 10px;
+		}
+		/* Additional CSS for rounded circle buttons */
+		.btn-circle {
+		    width: 40px;
+		    height: 40px;
+		    border-radius: 50%;
+		    border: 2px solid #0056b3;
+		    background-color: #ffffff;
+		    display: inline-flex;
+		    align-items: center;
+		    justify-content: center;
+		    margin-right: 10px;
+		}
     </style>
 </head>
 <body>
@@ -180,13 +249,12 @@
 				        </div>
 				    </div>
                 <!-- Options -->
-                <div class="row justify-content-center align-items-center mx-auto">
+                <div class="row justify-content-center align-items-center mx-auto mb-5">
                     <!-- First Image and Link -->
                         <a href=# id="fuelStations-link" class="d-flex flex-column align-items-center justify-content-center" >
                             <img src="fuel.png" style="width: 50%; height: 50%;" class="mb-2">
                         </a>
-                        <p class="text-center" style="font-weight: bold; color: yellow;">Fuel Stations</p>
-                     
+                        <p class="text-center" style="font-weight: bold; color: yellow;">Fuel Stations</p> 
                 </div>
             </div>
 
@@ -271,21 +339,194 @@
 		</div>
        
         <!---------------------------------------- Fuel Stations -------------------------------- -->
-        <div id="fuelStations" style="display: none;">
-		 <div class="container-alt">
-		    <div class="box-area-alt-alt-alt bg-white rounded">
-		        <h1 style="font-weight: bold;">Fuel Stations</h1>
-		        <div id="map" style="height: 400px; width: 100%;"></div>
-		        <form id="searchForm">
-		            <div class="form-group">
-		                <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
-		                <div id="dropdownContent" class="dropdown-menu"></div>
-		            </div>
-		            <ul id="searchResults"></ul>
-		        </form>
-		    </div>
-		</div>
-		</div>
+         <div id="fuelStations" style="display:none;">
+    <div class="container-alt">
+        <div class="box-area-alt-alt-alt bg-white rounded" style="height:80%">
+            <h1 style="font-weight: bold;">Fuel Stations</h1>
+            <div id="map" style="height: 400px;"></div>
+            <form id="searchForm">
+                <div class="form-group mt-2">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
+                </div>
+                <div id="results" class="row">
+                    <div class="result-item" onclick="handleClick(0)">
+                        <div class="result-info">
+                            <div class="result-title">Petron Tapah Road</div>
+                            <div class="result-rating">4.0 ★★★★☆ (246)</div>
+                            <div class="result-address">Petrol Station - KM8, Tapah Rd</div>
+                            <div class="result-hours">Open 24 hours · 1-300-22-8211</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.182198,101.208029&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=6161286462136182391" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(1)">
+                        <div class="result-info">
+                            <div class="result-title">Petron Tapah (Fl)</div>
+                            <div class="result-rating">4.0 ★★★★☆ (219)</div>
+                            <div class="result-address">Petrol Station - PT 4800-1, Jalan Temoh</div>
+                            <div class="result-hours">Open 24 hours · 05-401 2900</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.217218,101.237452&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3321883033827026345" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(2)">
+                        <div class="result-info">
+                            <div class="result-title">PETRONAS</div>
+                            <div class="result-rating">4.0 ★★★★☆ (303)</div>
+                            <div class="result-address">Petrol Station - Lot 1317, GRN 12990, Jalan Bidor</div>
+                            <div class="result-hours">Open 24 hours</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.194683,101.261567&z=18&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=2054500792220682713" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(3)">
+                        <div class="result-info">
+                            <div class="result-title">Petronas Tapah (PLUS)</div>
+                            <div class="result-rating">4.0 ★★★★☆ (1,308)</div>
+                            <div class="result-address">Petrol Station - Lebuhraya Utara Selatan, Kawasan Rehat & Rawat Hala Utara</div>
+                            <div class="result-hours">Open 24 hours · 03-4293 7580</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.179547,101.289099&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10541676871044767881" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(4)">
+                        <div class="result-info">
+                            <div class="result-title">BHPetrol Tapah 2</div>
+                            <div class="result-rating">4.0 ★★★★☆ (138)</div>
+                            <div class="result-address">Petrol Station - Lot 5541-1, Jalan Bidor</div>
+                            <div class="result-hours">Open 24 hours · 05-401 1086</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.19347,101.263341&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=13100363592971762713" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(5)">
+                        <div class="result-info">
+                            <div class="result-title">Shell</div>
+                            <div class="result-rating">4.0 ★★★★☆ (374)</div>
+                            <div class="result-address">Petrol Station - Kaw R&R Tapah, North-South Expy</div>
+                            <div class="result-hours">Open 24 hours · 05-401 3863</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.179088,101.290875&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10937259924059749594" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(6)">
+                        <div class="result-info">
+                            <div class="result-title">Shell</div>
+                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
+                            <div class="result-address">Petrol Station - North-South Expy</div>
+                            <div class="result-hours">Open 24 hours · 05-401 6785</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.179141,101.289432&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=18170086032194273371" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(7)">
+                        <div class="result-info">
+                            <div class="result-title">Shell</div>
+                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
+                            <div class="result-address">Petrol Station - A10 Lot 10746, Grn 42493</div>
+                            <div class="result-hours">Closes 11 pm · 013-858 8828</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.162338,101.180408&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=15688763625513908972" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(8)">
+                        <div class="result-info">
+                            <div class="result-title">Petronas Bidor</div>
+                            <div class="result-rating">4.0 ★★★★☆ (273)</div>
+                            <div class="result-address">Petrol Station - 945, Jalan Tapah</div>
+                            <div class="result-hours">Open 24 hours · 1-300-88-8181</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(9)">
+                        <div class="result-info">
+                            <div class="result-title">Caltex Bidor</div>
+                            <div class="result-rating">4.0 ★★★★☆ (134)</div>
+                            <div class="result-address">Petrol Station - 62-C, Jalan Besar</div>
+                            <div class="result-hours">Open 24 hours</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(10)">
+                        <div class="result-info">
+                            <div class="result-title">Petron Bidor</div>
+                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
+                            <div class="result-address">Petrol Station - LT 2672, Jalan Besar</div>
+                            <div class="result-hours">Open 24 hours · 05-434 1337</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="#" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                        <div class="result-item" onclick="handleClick(11)">
+                        <div class="result-info">
+                            <div class="result-title">Shell</div>
+                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
+                            <div class="result-address">Petrol Station - Lot 2674, Jalan Besar</div>
+                            <div class="result-hours">Open 24 hours · 05-434 1566</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.115132,101.290396&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3302995116548542083" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>
+                         <div class="result-item" onclick="handleClick(12)">
+                         <div class="result-info">
+                            <div class="result-title">BHPetrol Ladang Bikam (Northbound)</div>
+                            <div class="result-rating">4.0 ★★★★☆ (322)</div>
+                            <div class="result-address">Petrol Station - Kaw. Hentian Ladang Bikam Arah U/S</div>
+                            <div class="result-hours">Open 24 hours · 011-4061 9260</div>
+                        </div>
+                        <div class="result-actions">
+                            <a href="https://maps.google.com/maps?ll=4.0495,101.310348&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=282603716767156735" class="btn btn-circle btn-sm">
+                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+                            </a>
+                        </div>
+                        </div>                       
+                    </div>
+                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
+				    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+					</div> 
+                </form>
+            </div>
+        </div>
+    </div>
+
 
         <!-- Footer -->
         <footer class="footer box-area fixed-bottom" style="background-color: rgb(23, 59, 121);">
@@ -334,6 +575,7 @@
         document.getElementById('transaction-history').style.display = 'block';
         document.getElementById('profile').style.display = 'none';
         document.getElementById('fuelStations').style.display = 'none';
+
     });
 
     document.getElementById('profile-link').addEventListener('click', function(event) {
@@ -350,7 +592,15 @@
         document.getElementById('transaction-history').style.display = 'none';
         document.getElementById('profile').style.display = 'none';
         document.getElementById('fuelStations').style.display = 'block';
+        toggleScroll(); // Call toggleScroll function here
     });
+
+    function toggleScroll() {
+        var fuelStationsPage = document.getElementById("fuelStations");
+        fuelStationsPage.style.overflow = (fuelStationsPage.style.overflow === 'hidden') ? 'auto' : 'hidden';
+    }
+
+
 	
     document.addEventListener('DOMContentLoaded', function() {
         window.edit = function() {
@@ -507,7 +757,7 @@
         // For example, redirecting the user to the logout page
         window.location.href = "logout.php"; // Change "logout.php" to the actual logout URL
     }
-
+	// GOOGLE MAPS 
     function loadGoogleMapsAPI() {
     	const apiUrl = 'http://localhost:3000/maps-api';
 
@@ -527,21 +777,31 @@
     let markers = [];
 
     const locations = [
-        { title: "Shell Tapah", address: "123 Tapah Road, Tapah, Malaysia", coords: { lat: 4.2005, lng: 101.2557 } },
-        { title: "Petronas Tapah", address: "456 Main Street, Tapah, Malaysia", coords: { lat: 4.2006, lng: 101.2560 } },
-        { title: "Petrol Station A", address: "789 Another St, Tapah, Malaysia", coords: { lat: 4.2010, lng: 101.2570 } },
-        // Add more petrol pump locations as needed
-    ];
+        { title: "Petron Tapah Road", address: "KM8, Tapah Rd, Kampung Baru 5, 35400 Tapah Road, Perak", coords: { lat: 4.182220948309242, lng: 101.2080520567422 } },
+        { title: "Petron Tapah", address: " PT 4800-1, Jalan Temoh, 35000 Tapah, Perak", coords: { lat: 4.217226171841645, lng:  101.2374431331133 } },
+        { title: "Petronas", address: "Lot 1317, GRN 12990, Jalan Bidor, 35000 Tapah, Perak", coords: { lat: 4.194367865722428, lng: 101.26132444108521 } },
+        { title: "Petronas Tapah (PLUS)", address: "Lebuhraya Utara Selatan, Kawasan Rehat & Rawat Hala Utara, 35000 Tapah, Perak", coords: { lat: 4.179572447300953, lng: 101.28907041163741 } },
+        { title: "BHPetrol Tapah 2", address: "Lot 5541-2, Jalan Bidor, 35000 Tapah, Perak", coords: { lat: 4.193499665733948, lng: 101.26329401163741 } },
+        { title: "Shell", address: "Kaw R&R Tapah, North-South Expy, Arah Selatan, 35000 Tapah, Perak", coords: { lat: 4.1790730346943485, lng: 101.29098599998079 } },
+        { title: "Shell", address: "North-South Expy, 35000 Tapah, Perak", coords: { lat: 4.179242147307275, lng: 101.28922500611534 } },
+        { title: "Shell", address: "A10 Lot 10746, Grn 42493, Kampung Pekan Kecil, 35400 Tapah Road, Perak", coords: { lat: 4.162339235467068, lng: 101.1803410883242 } },
+        { title: "Petronas Bidor", address: "945, Jalan Tapah, Pekan Bidor, 35500 Bidor, Perak", coords: { lat: 4.119925974633446, lng: 101.2843875593715 } },
+        { title: "Caltex Bidor", address: "62-C, Jalan Besar, 35500 Bidor, Perak", coords: { lat: 4.115131862458604, lng: 101.29674717780777 } },
+        { title: "Petron Bidor", address: "LT 2672, Jalan Besar, 35500 Bidor, Perak", coords: { lat: 4.120439627796194, lng: 101.28541752757454 } },
+        { title: "Shell", address: "Lot 2674, Jalan Besar, 35500 Bidor, Perak", coords: { lat: 4.115131862458604, lng: 101.29039570722249 } },
+        { title: "BHPetrol Ladang Bikam (NorthBound)", address: "Kaw. Hentian Ladang Bikam Arah U/S, 35600 Sungkai, Perak", coords: { lat: 4.0495, lng: 101.310348 } },
 
+    ];
+	
     function initMap() {
         const center = { lat: 4.2005, lng: 101.2557 };
 
         map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 13,
+            zoom: 10,
             center: center,
         });
 
-        locations.forEach(location => {
+        locations.forEach((location, index) => {
             const marker = new google.maps.Marker({
                 position: location.coords,
                 map: map,
@@ -549,53 +809,43 @@
             });
             markers.push(marker);
         });
-
-        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchInput'));
-        autocomplete.setFields(['geometry', 'name']);
-        autocomplete.addListener('place_changed', () => {
-            const place = autocomplete.getPlace();
-            if (!place.geometry) return;
-
-            map.setCenter(place.geometry.location);
-            map.setZoom(15);
-            new google.maps.Marker({
-                position: place.geometry.location,
-                map: map,
-            });
-        });
     }
 
     function filterLocations() {
         const input = document.getElementById('searchInput').value.toLowerCase();
-        const dropdown = document.getElementById('dropdownContent');
-        dropdown.innerHTML = '';
+        const resultItems = document.querySelectorAll('.result-item');
 
-        const filteredLocations = locations.filter(location => {
-            return location.title.toLowerCase().includes(input) || location.address.toLowerCase().includes(input);
+        let firstMatch = null;
+
+        resultItems.forEach((item, index) => {
+            const title = locations[index].title.toLowerCase();
+            const address = locations[index].address.toLowerCase();
+            
+            if (title.includes(input) || address.includes(input)) {
+                item.style.display = '';
+                if (!firstMatch) {
+                    firstMatch = item;
+                }
+            } else {
+                item.style.display = 'none';
+            }
         });
 
-        filteredLocations.forEach(location => {
-            const option = document.createElement('a');
-            option.className = 'dropdown-item';
-            option.textContent = `${location.title} - ${location.address}`;
-            option.href = '#';
-            option.onclick = () => selectLocation(location);
-            dropdown.appendChild(option);
-        });
-
-        dropdown.style.display = input ? 'block' : 'none';
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
-    function selectLocation(location) {
+    function handleClick(index) {
+        const location = locations[index];
         map.setCenter(location.coords);
         map.setZoom(15);
-        const marker = new google.maps.Marker({
-            position: location.coords,
-            map: map,
-            title: location.title
-        });
-        markers.push(marker);
-        document.getElementById('dropdownContent').style.display = 'none';
+        markers[index].setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(() => markers[index].setAnimation(null), 1400);
+    }
+    
+    function fuelNow() {
+        window.location.href = "/FuelSwift/PetrolPumpPage/PetrolPumpPage.html";
     }
 </script>
 </body>
