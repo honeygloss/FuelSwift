@@ -22,6 +22,7 @@
     		font-family: 'Poppins', sans-serif; /* Ensure font family is applied to form labels */
 			color: white;
 		}
+		
 		.box-area{			
 				width: 400px;
 			    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -45,8 +46,53 @@
             text-align: center;
             color: #6c757d;
             margin-top: auto;
-            padding: 10px 0;
+            padding: 8px 0;
             font-size: 15px; 
+        }
+        .toggle-switch {
+		    display: flex;
+		    justify-content: flex-end; /* Align to the right */
+		    margin-top: 10px;
+		}
+
+		.toggle-switch input {
+		    display: none;
+		}
+
+        .toggle-switch label {
+            cursor: pointer;
+            text-indent: -9999px;
+            width: 40px;
+            height: 20px;
+            background: grey;
+            display: block;
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .toggle-switch label:after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle-switch input:checked + label {
+            background: yellow;
+        }
+
+        .toggle-switch input:checked + label:after {
+            left: calc(100% - 3px);
+            transform: translateX(-100%);
+        }
+
+        .toggle-switch label:active:after {
+            width: 30px;
         }
     </style>
 </head>
@@ -63,14 +109,14 @@
         </div>
     </nav>
 	
-	<H3 style="text-align: center; font-weight: bold; color: white;">Petron Kampar, 31900, Perak, Perak</H3>
+	<H3 style="text-align: center; font-weight: bold; color: white; margin-bottom:0px;">Petron Kampar, 31900, Perak, Perak</H3>
 	<div class="container d-flex justify-content-center align-items-center">    
     <!-----------------------  Container -------------------------->
     <div class="row rounded-5 p-5 shadow box-area">
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12 text-center mb-3">
                 <div class="header-text">
-                    <h5 style=" color: white;">Select a pump:</h5>
+                    <h5 style="color: white;">Select a pump:</h5>
                 </div>
                 <div>
                     <button class="btn btn-custom" onclick="selectPump(1)">1</button>
@@ -81,26 +127,62 @@
                     <button class="btn btn-custom" onclick="selectPump(6)">6</button>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12 mb-1">
                 <div class="form-group mb-3">
                     <label class="form-label" for="amount">Amount (RM)</label>
                     <input type="text" class="form-control" id="amount" placeholder="Enter amount" oninput="calculateLitres()">        
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12 mb-1">
                 <div class="form-group mb-3">
                     <label class="form-label" for="litres">Litres (L)</label>
                     <input type="text" class="form-control bg-secondary" id="litres" placeholder="0.00" style="color:white; border: none;" readonly>
                 </div>
             </div>
             <div class="col-md-12 text-center mb-3">
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <button class="btn btn-custom" onclick="selectOption('20')">RM20</button>
                     <button class="btn btn-custom" onclick="selectOption('40')">RM40</button>
                     <button class="btn btn-custom" onclick="selectOption('60')">RM60</button>
                 </div>
-            </div>
-            <div class="col-md-12 text-center mb-3">
+			    <div class="col-md-12 toggle-switch">
+				    <div class="row">
+				            <span class="text-white" id="currentPts" style="font-size: 14px; position: absolute; left:0;">Use points</span>	        
+				        <div class="col" style="position: relative;">
+				            <input type="checkbox" id="switch" style="position: absolute; right:0;"/>
+				            <label class="text-white" for="switch" style="position: absolute; right:0;">Toggle</label>
+				        </div>
+				    </div>
+					<div class="mb-3" style="border-bottom: 1px solid gray; margin-top: 5px;"></div>		
+				</div>
+				<div class="mb-3" style="border-bottom: 1px solid gray; margin-top: 5px;"></div>		
+				<div class="col-md-12 mb-4">
+				    <div class="row" style="font-size: 17px; left:0;">
+				            <span class="text-white" style="font-size: 12px; position: absolute; left:0;">Amount:</span>	        
+				        <div class="col" style="font-size: 17px; right:0;">
+				            <span class="text-white" style="font-size: 12px; position: absolute; right:0;" id="amount2">RM 0.00</span>	        
+				        </div>
+				    </div>
+				</div>
+				<div class="col-md-12 mb-4">
+				    <div class="row" style="font-size: 17px; left:0;">
+				            <span class="text-white" style="font-size: 12px; position: absolute; left:0;">Points Redeem:</span>	        
+				        <div class="col" style="font-size: 17px; right:0;">
+				            <span class="text-white" style="font-size: 12px; position: absolute; right:0;" id="ptsRedeem">RM 0.00</span>	        
+				        </div>
+				    </div>
+				</div>
+				<div class="col-md-12 mb-4">
+				    <div class="row" style="font-size: 17px; left:0;">
+				            <span class="text-white" style="font-size: 14px; position: absolute; left:0;">Total Amount:</span>	        
+				        <div class="col" style="font-size: 17px; right:0;">
+				            <span class="text-white" style="font-size: 14px; position: absolute; right:0;" id="totAmount">RM 0.00</span>	        
+				        </div>
+				    </div>
+				</div>
+			 </div>
+			</div>
+            <div class="col-md-12 text-center">
                 <button class="btn btn-primary" onclick="payNow()">Pay Now</button>
             </div>
         </div>
@@ -117,7 +199,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-
         function selectOption(option) {
             if (option !== 'other') {
                 document.getElementById('amount').value = option;
@@ -134,6 +215,37 @@
             const litres = amount / pricePerLiter;
             document.getElementById('litres').value = litres.toFixed(2); // Update litres input field
         }
+        // Define initial current points
+        let currentPoints = 1; // Assuming starting points
+
+        // Function to handle toggle click
+        function handleToggle() {
+        	 const toggle = document.getElementById('switch');
+             const amountInput = document.getElementById('amount');
+             const totalAmountElement = document.getElementById('totAmount');
+             const originalAmountElement = document.getElementById('amount2'); // Updated this line
+
+             const amount = parseFloat(amountInput.value); // Get the total amount
+             const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
+             const currentPointsElement = document.getElementById('currentPts');
+             
+             if (toggle.checked) {
+                 // Deduct points if toggle is checked
+                 const deductedAmount = amount - pointsToDeduct;
+                 // Update UI with new total amount value
+                 totalAmountElement.innerText = `RM ${deductedAmount.toFixed(2)}`;
+                 currentPointsElement.innerText = `Redeem ${currentPoints}pts`;
+                 originalAmountElement.innerText = `RM ${amount.toFixed(2)}`; // Updated this line to show original amount
+                 document.getElementById('ptsRedeem').innerText = `-RM ${pointsToDeduct}`;
+             } else {
+                 // If toggle is unchecked, show the original amount
+                 totalAmountElement.innerText = `RM ${amount.toFixed(2)}`;
+                 originalAmountElement.innerText = `RM ${amount.toFixed(2)}`; // Updated this line to show original amount
+                 currentPointsElement.innerText = `Use points`; // Added this line to reset the label
+             }
+         }
+         // Add event listener to toggle
+         document.getElementById('switch').addEventListener('change', handleToggle);
 </script>
 </body>
 </html>

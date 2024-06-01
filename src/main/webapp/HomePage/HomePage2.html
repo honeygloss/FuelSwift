@@ -18,6 +18,89 @@
 		    height: 100% !important;
 		    display: flex; /* Use flexbox */
 		    flex-direction: column; /* Arrange child elements vertically */
+		}		
+	  #loading-overlay {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    background-color: rgb(33, 37, 41, 0.7); /* Semi-transparent background */
+		    z-index: 9999; /* Ensure it sits above all other content */
+		    flex-direction: column; /* Stack the loader and text */
+		}
+		
+		#loading-overlay p {
+		    margin-top: 10px;
+		    font-size: 20px;
+		    color: yellow; /* Adjust text color as needed */
+		}
+		
+		.loader {
+		    animation: rotate 1s infinite;
+		    height: 50px;
+		    width: 50px;
+		}
+		
+		.loader:before,
+		.loader:after {
+		    border-radius: 50%;
+		    content: "";
+		    display: block;
+		    height: 20px;
+		    width: 20px;
+		}
+		
+		.loader:before {
+		    animation: ball1 1s infinite;
+		    background-color: yellow;
+		    box-shadow: 30px 0 0 rgb(20, 36, 105);
+		    margin-bottom: 10px;
+		}
+		
+		.loader:after {
+		    animation: ball2 1s infinite;
+		    background-color: rgb(20, 36, 105);
+		    box-shadow: 30px 0 0 yellow;
+		}
+		
+		@keyframes rotate {
+		    0% { transform: rotate(0deg) scale(0.8); }
+		    50% { transform: rotate(360deg) scale(1.2); }
+		    100% { transform: rotate(720deg) scale(0.8); }
+		}
+		
+		@keyframes ball1 {
+		    0% {
+		        box-shadow: 30px 0 0 rgb(20, 36, 105);
+		    }
+		    50% {
+		        box-shadow: 0 0 0 rgb(20, 36, 105);
+		        margin-bottom: 0;
+		        transform: translate(15px, 15px);
+		    }
+		    100% {
+		        box-shadow: 30px 0 0 rgb(20, 36, 105);
+		        margin-bottom: 10px;
+		    }
+		}
+		
+		@keyframes ball2 {
+		    0% {
+		        box-shadow: 30px 0 0 yellow;
+		    }
+		    50% {
+		        box-shadow: 0 0 0 yellow;
+		        margin-top: -20px;
+		        transform: translate(15px, 15px);
+		    }
+		    100% {
+		        box-shadow: 30px 0 0 yellow;
+		        margin-top: 0;
+		    }
 		}
 		#home-page {
     		overflow-y: auto; /* Enable vertical scrolling for the home page */
@@ -527,7 +610,11 @@
         </div>
     </div>
 
-
+		 <div id="loading-overlay">
+	        <span class="loader"></span>
+	        <p>Loading...</p>
+    	</div>
+		
         <!-- Footer -->
         <footer class="footer box-area fixed-bottom" style="background-color: rgb(23, 59, 121);">
             <div class="navbar" style="display: flex; justify-content: space-around; align-items: center;">
@@ -847,6 +934,15 @@
     function fuelNow() {
         window.location.href = "/FuelSwift/PetrolPumpPage/PetrolPumpPage.html";
     }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate loading completion after 3 seconds for demo purposes
+        setTimeout(function() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }, 3000);
+    });
+
+
 </script>
 </body>
 </html>
