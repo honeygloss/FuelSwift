@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/fuelSwiftDB";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/fuelswift";
     private String jdbcUsername = "root";
-    private String jdbcPassword = "password";
+    private String jdbcPassword = "root";
 
     private static final String SELECT_ALL_CUSTOMERS = "SELECT * FROM customers";
 
