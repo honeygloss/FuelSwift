@@ -18,9 +18,7 @@
                 e.printStackTrace();
             }
         }
-    %>    
-    
-    
+    %>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +27,11 @@
     <title>Pump | FuelSwift</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
     <style>
         body {
         	font-family: 'Poppins', sans-serif;
@@ -127,7 +130,6 @@
     </style>
 </head>
 <body>
-
 	<!-- Navigation Bar with Logo -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid d-flex align-items-center">
@@ -200,7 +202,7 @@
 				    <div class="row" style="font-size: 17px; left:0;">
 				            <span class="text-white" style="font-size: 12px; position: absolute; left:0;">Points Redeem:</span>	        
 				        <div class="col" style="font-size: 17px; right:0;">
-				            <span class="text-white" style="font-size: 12px; position: absolute; right:0;" id="ptsRedeem">RM 0.00</span>	        
+				            <span class="text-white" style="font-size: 12px; position: absolute; right:0;" id="ptsRedeem">-RM 0.00</span>	        
 				        </div>
 				    </div>
 				</div>
@@ -219,74 +221,62 @@
             </div>
         </div>
     </div>
-</div>
  <div class="footer-text">
      <small>&copy; FuelSwift</small>
 </div>
-
-
-    <!-- Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
-		//Define initial current points
-		const currentPoints = 1; // Assuming starting points
-		
-		function selectOption(option) {
-		    if (option !== 'other') {
-		        document.getElementById('amount').value = option;
-		        calculateLitres();
-		    }
-		}
-		function payNow() {
-		    window.location.href = "/FuelSwift/Payment/Payment.html"
-		}
-		
-		const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
-		function calculateLitres() {
-		    const amount = document.getElementById('amount');
-		    const litres = amount / pricePerLiter;
-		    document.getElementById('litres').value = litres.toFixed(2); // Update litres input field
-		}
-		// Function to handle toggle click
-		function handleToggle() {
-			 const toggle = document.getElementById('switch');
-		     const amountInput = document.getElementById('amount');
-		     const totalAmountElement = document.getElementById('totAmount');
-		     const originalAmountElement = document.getElementById('amount2'); // Updated this line
-			
-		     const amount = parseFloat(amountInput.innerText); // Get the total amount
-		     const pointsToDeduct = 10 * 0.10; // Calculate points to deduct (1 point = 10 cents)
-		     const currentPointsElement = document.getElementById('currentPts');
-		     
-		     console.log(`points to deduct ${pointsToDeduct} selected`); // For testing purposes
-		     
-		     if (toggle.checked) {
-		         // Deduct points if toggle is checked
-		         const deductedAmount = amount - pointsToDeduct;
-		         // Update UI with new total amount value
-		         totalAmountElement.innerText = `RM ${deductedAmount.toFixed(2)}`;
-		         currentPointsElement.innerText = `Redeem ${currentPoints}pts`;
-		         originalAmountElement.innerText = `RM ${amount.toFixed(2)}`; // Updated this line to show original amount
-		         document.getElementById('ptsRedeem').innerText = `-RM ${pointsToDeduct}`;
-		     } else {
-		         // If toggle is unchecked, show the original amount
-		         totalAmountElement.innerText = `RM ${amount.toFixed(2)}`;
-		         originalAmountElement.innerText = `RM ${amount.toFixed(2)}`; // Updated this line to show original amount
-		         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
-		     }
-		 }
-		
-		function selectPump(index) {
-		    // Function logic to handle pump selection
-		    console.log(`Pump ${index} selected`); // For testing purposes
-		    document.getElementById('selectedPump').innerText = index;
-		}
-        
-         // Add event listener to toggle
-         document.getElementById('switch').addEventListener('change', handleToggle);
+function selectOption(option) {
+    if (option !== 'other') {
+        document.getElementById('amount').value = option;
+        calculateLitres();
+    }
+}
+function payNow() {
+    window.location.href = "/FuelSwift/Payment/Payment.html"
+}
+
+const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
+function calculateLitres() {
+    const amount = document.getElementById('amount').value / 1;
+    const litres = amount / pricePerLiter;
+    document.getElementById('litres').value = litres.toFixed(2); // Update litres input field
+    document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+    document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2); 
+}
+// Define initial current points
+let currentPoints = 1; // Assuming starting points
+
+// Function to handle toggle click
+function handleToggle() {
+	 const toggle = document.getElementById('switch');
+	 const amount = document.getElementById('amount').value / 1;
+     const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
+     const currentPointsElement = document.getElementById('currentPts');
+     
+     if (toggle.checked) {
+         // Deduct points if toggle is checked
+         const deductedAmount = amount - pointsToDeduct;
+         // Update UI with new total amount value
+         document.getElementById('totAmount').innerText = 'RM' + deductedAmount.toFixed(2);
+         currentPointsElement.innerText = 'Redeem ' + currentPoints + ' pts';
+         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+         document.getElementById('ptsRedeem').innerText = '-RM' + pointsToDeduct;
+     } else {
+         // If toggle is unchecked, show the original amount
+         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+    	 document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2);
+    	 document.getElementById('ptsRedeem').innerText = '-RM0.00';
+         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
+     }
+ }
+
+function selectPump(index) {
+    // Function logic to handle pump selection
+    console.log(`Pump ${index} selected`); // For testing purposes
+    document.getElementById('selectedPump').innerText = index;
+}
+ // Add event listener to toggle
+ document.getElementById('switch').addEventListener('change', handleToggle);
          
 </script>
 </body>
