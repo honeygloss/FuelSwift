@@ -290,6 +290,27 @@
 		.selected {
 		    color: #01579B; /* Ensures text is readable */
 		}
+		
+		.form-select {
+		    font-size: 1rem; /* Match font size */
+		    line-height: 1.5; /* Match line height */
+		    cursor: pointer; /* Use pointer cursor */
+		    border: 1px solid #ced4da; /* Match border */
+		    border-radius: 0.25rem; /* Match border radius */
+		}
+		
+		.disabled-field:disabled {
+	        background-color: #e9ecef; /* Light gray */
+	        color: #6c757d; /* Gray text color */
+	        border: 1px solid #ced4da; /* Gray border */
+	    }
+	
+	    .editable-field {
+	        background-color: #ffffff; /* White background */
+	        border: 2px solid #007bff; /* Bold blue border */
+	        box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* More pronounced blue shadow */
+	        color: #000000; /* Black text color */
+	    }
     </style>
 </head>
 <body>
@@ -388,247 +409,247 @@
         </div>
         
         <!---------------------------------------- Profile -------------------------------- -->
-		 <div id="profile" style="display: none;">
-                <!-- Icon below Navigation Bar -->
-                <div class="container d-flex justify-content-center align-items-center ">
-			        <img src="profile.png" width="40" height="40">
-			        <h1 style="color: white; margin-right: 10px; font-weight: bold;">Fatin</h1>
-    			</div>
-
-	    <div class="row rounded-5 p-4 shadow box-area-alt-alt " style="background-color: rgb(20, 36, 105)">
-	        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
-	           
-	            <div class="form-group mb-3">
-	                <label class="form-label">Full Name</label>
-	                <input class="form-control form-control-lg bg-light fs-6 " name="fullname"  id="fullname" placeholder="Fatin Humaira" disabled>
-	                
-	            </div>
-	            <div class="form-group mb-3">
-	                <label class="form-label">Email</label>
-	                <p class="form-control form-control-lg bg-light fs-6 " name="email">fatin@gmail.com</p>
-	            </div>
-	            <div class="form-group mb-3">
-	                <label class="form-label">Gender</label>
-	                <div class="dropdown" id="gender">
-					  <select class="form-select m-0 mt-0 fs-6" id="genderSelect" style="background-color: white; color: black; width: 330px; padding: 0.5rem 1rem;" disabled>
-					    <option value="" selected disabled>Select Gender</option>
-					    <option value="male">Male</option>
-					    <option value="female">Female</option>
-					    <option value="other">Rather not say</option>
-					  </select>
-					</div>
-				</div>
-	            <div class="form-group mb-3">
-	                <label class="form-label">Phone Number</label>
-	                 <div class="input-group">
-		                <span class="input-group-text">+60</span>
-		                <input class="form-control form-control-lg bg-light fs-6 " name=phoneNo id="phoneNo" placeholder="Enter Phone Number" disabled>
-		             </div>
-	            </div>
-	            <div class="input-group-alt mb-3" id="editBtn">
-	                <button class="btn-alt custombutton btn-lg w-100 fs-6 " style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="enableEditing()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
-	            </div>
-	            <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
-	                <button type="submit" class="btn-alt btn-success btn-block">Update</button>
-	                <button type="button" class="btn-alt btn-danger btn-block mt-2" onclick="cancelEditing()">Cancel</button>
-            	</div>
-	            <div class="input-group-alt mb-3">
-				    <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(20, 36, 105); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
-				        Logout <i class="bi bi-box-arrow-right"></i>
-				    </a>
-				</div>
-	        </div>
-	    </div>
+		<div id="profile" style="display: none;">
+		    <!-- Icon below Navigation Bar -->
+		    <div class="container d-flex justify-content-center align-items-center">
+		        <i class="bi bi-person-circle" style="color: #cccccc; margin-right: 20px; font-size: 2rem;"></i>
+		        <h2 style="color: white; margin-right: 10px; font-weight: bold;">Fatin</h2>
+		    </div>
+		
+		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
+		        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
+		            <form id="profileForm" action="/FuelSwift/UpdateProfileServlet" method="post" onsubmit="handleSubmit(event)">
+		                <div class="form-group mb-3">
+		                    <label class="form-label">Full Name</label>
+		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>
+		                </div>
+		                <div class="form-group mb-3">
+		                    <label class="form-label">Email</label>
+		                    <p class="form-control form-control-lg bg-light fs-6" name="email">fatin@gmail.com</p>
+		                </div>
+		                <div class="form-group mb-3">
+		                    <label class="form-label">Gender</label>
+		                    <div class="dropdown" id="gender">
+		                        <select class="form-select m-0 mt-0 fs-6 disabled-field" id="genderSelect" name="gender" style="background-color: white; color: black; width: 330px; padding: 0.5rem 1rem;" disabled>
+		                            <option value="" selected disabled>Select Gender</option>
+		                            <option value="male">Male</option>
+		                            <option value="female">Female</option>
+		                            <option value="other">Rather not say</option>
+		                        </select>
+		                    </div>
+		                </div>
+		                <div class="form-group mb-3">
+		                    <label class="form-label">Phone Number</label>
+		                    <div class="input-group">
+		                        <span class="input-group-text">+60</span>
+		                        <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="phoneNo" id="phoneNo" placeholder="Enter Phone Number" disabled>
+		                    </div>
+		                </div>
+		                <div class="input-group-alt mb-3" id="editBtn">
+		                    <button type="button" class="btn-alt custombutton btn-lg w-100 fs-6" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="enableEditing()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
+		                </div>
+		                <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
+		                    <button type="submit" class="btn-alt btn-success btn-block">Update</button>
+		                    <button type="button" class="btn-alt btn-danger btn-block mt-2" onclick="cancelEditing()">Cancel</button>
+		                </div>
+		            </form>
+		            <div class="input-group-alt mb-3">
+		                <a href="#" class="btn custombutton btn-lg w-100 fs-6" onclick="logout()" style="background-color: rgb(20, 36, 105); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">
+		                    Logout <i class="bi bi-box-arrow-right"></i>
+		                </a>
+		            </div>
+		        </div>
+		    </div>
 		</div>
        
-        <!---------------------------------------- Fuel Stations -------------------------------- -->
+		<!---------------------------------------- Fuel Stations -------------------------------- -->
          <div id="fuelStations" style="display:none;">
-    <div class="container-alt">
-        <div class="box-area-alt-alt-alt bg-white rounded" style="height:80%">
-            <h1 style="font-weight: bold;">Fuel Stations</h1>
-            <div id="map" style="height: 400px;"></div>
-            <form id="searchForm">
-                <div class="form-group mt-2">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
-                </div>
-                <div id="results" class="row">
-                    <div class="result-item" onclick="handleClick(0)">
-                        <div class="result-info">
-                            <div class="result-title">Petron Tapah Road</div>
-                            <div class="result-rating">4.0 ★★★★☆ (246)</div>
-                            <div class="result-address">Petrol Station - KM8, Tapah Rd</div>
-                            <div class="result-hours">Open 24 hours · 1-300-22-8211</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.182198,101.208029&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=6161286462136182391" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(1)">
-                        <div class="result-info">
-                            <div class="result-title">Petron Tapah (Fl)</div>
-                            <div class="result-rating">4.0 ★★★★☆ (219)</div>
-                            <div class="result-address">Petrol Station - PT 4800-1, Jalan Temoh</div>
-                            <div class="result-hours">Open 24 hours · 05-401 2900</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.217218,101.237452&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3321883033827026345" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(2)">
-                        <div class="result-info">
-                            <div class="result-title">PETRONAS</div>
-                            <div class="result-rating">4.0 ★★★★☆ (303)</div>
-                            <div class="result-address">Petrol Station - Lot 1317, GRN 12990, Jalan Bidor</div>
-                            <div class="result-hours">Open 24 hours</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.194683,101.261567&z=18&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=2054500792220682713" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(3)">
-                        <div class="result-info">
-                            <div class="result-title">Petronas Tapah (PLUS)</div>
-                            <div class="result-rating">4.0 ★★★★☆ (1,308)</div>
-                            <div class="result-address">Petrol Station - Lebuhraya Utara Selatan, Kawasan Rehat & Rawat Hala Utara</div>
-                            <div class="result-hours">Open 24 hours · 03-4293 7580</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.179547,101.289099&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10541676871044767881" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(4)">
-                        <div class="result-info">
-                            <div class="result-title">BHPetrol Tapah 2</div>
-                            <div class="result-rating">4.0 ★★★★☆ (138)</div>
-                            <div class="result-address">Petrol Station - Lot 5541-1, Jalan Bidor</div>
-                            <div class="result-hours">Open 24 hours · 05-401 1086</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.19347,101.263341&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=13100363592971762713" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(5)">
-                        <div class="result-info">
-                            <div class="result-title">Shell</div>
-                            <div class="result-rating">4.0 ★★★★☆ (374)</div>
-                            <div class="result-address">Petrol Station - Kaw R&R Tapah, North-South Expy</div>
-                            <div class="result-hours">Open 24 hours · 05-401 3863</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.179088,101.290875&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10937259924059749594" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(6)">
-                        <div class="result-info">
-                            <div class="result-title">Shell</div>
-                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
-                            <div class="result-address">Petrol Station - North-South Expy</div>
-                            <div class="result-hours">Open 24 hours · 05-401 6785</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.179141,101.289432&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=18170086032194273371" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(7)">
-                        <div class="result-info">
-                            <div class="result-title">Shell</div>
-                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
-                            <div class="result-address">Petrol Station - A10 Lot 10746, Grn 42493</div>
-                            <div class="result-hours">Closes 11 pm · 013-858 8828</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.162338,101.180408&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=15688763625513908972" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(8)">
-                        <div class="result-info">
-                            <div class="result-title">Petronas Bidor</div>
-                            <div class="result-rating">4.0 ★★★★☆ (273)</div>
-                            <div class="result-address">Petrol Station - 945, Jalan Tapah</div>
-                            <div class="result-hours">Open 24 hours · 1-300-88-8181</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="#" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(9)">
-                        <div class="result-info">
-                            <div class="result-title">Caltex Bidor</div>
-                            <div class="result-rating">4.0 ★★★★☆ (134)</div>
-                            <div class="result-address">Petrol Station - 62-C, Jalan Besar</div>
-                            <div class="result-hours">Open 24 hours</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="#" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(10)">
-                        <div class="result-info">
-                            <div class="result-title">Petron Bidor</div>
-                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
-                            <div class="result-address">Petrol Station - LT 2672, Jalan Besar</div>
-                            <div class="result-hours">Open 24 hours · 05-434 1337</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="#" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                        <div class="result-item" onclick="handleClick(11)">
-                        <div class="result-info">
-                            <div class="result-title">Shell</div>
-                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
-                            <div class="result-address">Petrol Station - Lot 2674, Jalan Besar</div>
-                            <div class="result-hours">Open 24 hours · 05-434 1566</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.115132,101.290396&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3302995116548542083" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>
-                         <div class="result-item" onclick="handleClick(12)">
-                         <div class="result-info">
-                            <div class="result-title">BHPetrol Ladang Bikam (Northbound)</div>
-                            <div class="result-rating">4.0 ★★★★☆ (322)</div>
-                            <div class="result-address">Petrol Station - Kaw. Hentian Ladang Bikam Arah U/S</div>
-                            <div class="result-hours">Open 24 hours · 011-4061 9260</div>
-                        </div>
-                        <div class="result-actions">
-                            <a href="https://maps.google.com/maps?ll=4.0495,101.310348&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=282603716767156735" class="btn btn-circle btn-sm">
-                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
-                            </a>
-                        </div>
-                        </div>                       
-                    </div>
-                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
-				    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
-					</div> 
-                </form>
-            </div>
-        </div>
-    </div>
+	    <div class="container-alt">
+	        <div class="box-area-alt-alt-alt bg-white rounded" style="height:80%">
+	            <h1 style="font-weight: bold;">Fuel Stations</h1>
+	            <div id="map" style="height: 400px;"></div>
+	            <form id="searchForm">
+	                <div class="form-group mt-2">
+	                    <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
+	                </div>
+	                <div id="results" class="row">
+	                    <div class="result-item" onclick="handleClick(0)">
+	                        <div class="result-info">
+	                            <div class="result-title">Petron Tapah Road</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (246)</div>
+	                            <div class="result-address">Petrol Station - KM8, Tapah Rd</div>
+	                            <div class="result-hours">Open 24 hours · 1-300-22-8211</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.182198,101.208029&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=6161286462136182391" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(1)">
+	                        <div class="result-info">
+	                            <div class="result-title">Petron Tapah (Fl)</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (219)</div>
+	                            <div class="result-address">Petrol Station - PT 4800-1, Jalan Temoh</div>
+	                            <div class="result-hours">Open 24 hours · 05-401 2900</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.217218,101.237452&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3321883033827026345" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(2)">
+	                        <div class="result-info">
+	                            <div class="result-title">PETRONAS</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (303)</div>
+	                            <div class="result-address">Petrol Station - Lot 1317, GRN 12990, Jalan Bidor</div>
+	                            <div class="result-hours">Open 24 hours</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.194683,101.261567&z=18&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=2054500792220682713" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(3)">
+	                        <div class="result-info">
+	                            <div class="result-title">Petronas Tapah (PLUS)</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (1,308)</div>
+	                            <div class="result-address">Petrol Station - Lebuhraya Utara Selatan, Kawasan Rehat & Rawat Hala Utara</div>
+	                            <div class="result-hours">Open 24 hours · 03-4293 7580</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.179547,101.289099&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10541676871044767881" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(4)">
+	                        <div class="result-info">
+	                            <div class="result-title">BHPetrol Tapah 2</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (138)</div>
+	                            <div class="result-address">Petrol Station - Lot 5541-1, Jalan Bidor</div>
+	                            <div class="result-hours">Open 24 hours · 05-401 1086</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.19347,101.263341&z=22&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=13100363592971762713" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(5)">
+	                        <div class="result-info">
+	                            <div class="result-title">Shell</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (374)</div>
+	                            <div class="result-address">Petrol Station - Kaw R&R Tapah, North-South Expy</div>
+	                            <div class="result-hours">Open 24 hours · 05-401 3863</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.179088,101.290875&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=10937259924059749594" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(6)">
+	                        <div class="result-info">
+	                            <div class="result-title">Shell</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
+	                            <div class="result-address">Petrol Station - North-South Expy</div>
+	                            <div class="result-hours">Open 24 hours · 05-401 6785</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.179141,101.289432&z=20&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=18170086032194273371" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(7)">
+	                        <div class="result-info">
+	                            <div class="result-title">Shell</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (597)</div>
+	                            <div class="result-address">Petrol Station - A10 Lot 10746, Grn 42493</div>
+	                            <div class="result-hours">Closes 11 pm · 013-858 8828</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.162338,101.180408&z=21&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=15688763625513908972" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(8)">
+	                        <div class="result-info">
+	                            <div class="result-title">Petronas Bidor</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (273)</div>
+	                            <div class="result-address">Petrol Station - 945, Jalan Tapah</div>
+	                            <div class="result-hours">Open 24 hours · 1-300-88-8181</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="#" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(9)">
+	                        <div class="result-info">
+	                            <div class="result-title">Caltex Bidor</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (134)</div>
+	                            <div class="result-address">Petrol Station - 62-C, Jalan Besar</div>
+	                            <div class="result-hours">Open 24 hours</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="#" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(10)">
+	                        <div class="result-info">
+	                            <div class="result-title">Petron Bidor</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
+	                            <div class="result-address">Petrol Station - LT 2672, Jalan Besar</div>
+	                            <div class="result-hours">Open 24 hours · 05-434 1337</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="#" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                        <div class="result-item" onclick="handleClick(11)">
+	                        <div class="result-info">
+	                            <div class="result-title">Shell</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (181)</div>
+	                            <div class="result-address">Petrol Station - Lot 2674, Jalan Besar</div>
+	                            <div class="result-hours">Open 24 hours · 05-434 1566</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.115132,101.290396&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=3302995116548542083" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>
+	                         <div class="result-item" onclick="handleClick(12)">
+	                         <div class="result-info">
+	                            <div class="result-title">BHPetrol Ladang Bikam (Northbound)</div>
+	                            <div class="result-rating">4.0 ★★★★☆ (322)</div>
+	                            <div class="result-address">Petrol Station - Kaw. Hentian Ladang Bikam Arah U/S</div>
+	                            <div class="result-hours">Open 24 hours · 011-4061 9260</div>
+	                        </div>
+	                        <div class="result-actions">
+	                            <a href="https://maps.google.com/maps?ll=4.0495,101.310348&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=282603716767156735" class="btn btn-circle btn-sm">
+	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
+	                            </a>
+	                        </div>
+	                        </div>                       
+	                    </div>
+	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
+					    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+						</div> 
+	                </form>
+	            </div>
+	        </div>
+	    </div>
 
 		 <div id="loading-overlay">
 	        <span class="loader"></span>
@@ -656,6 +677,7 @@
             </div>
         </footer>
         
+        
         <!-- Modal HTML -->
 	    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	      <div class="modal-dialog" role="document">
@@ -672,9 +694,10 @@
 	        </div>
 	      </div>
 	    </div>
+        
     </div>
     
-    <!-- Edit Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -814,25 +837,80 @@
         // Enable input fields
         document.getElementById('fullname').disabled = false;
         document.getElementById('phoneNo').disabled = false;
-
-        // Enable the dropdown button and its menu
         document.getElementById('genderSelect').disabled = false;
+
+        // Remove the disabled-field class and add the editable-field class
+        document.getElementById('fullname').classList.remove('disabled-field');
+        document.getElementById('phoneNo').classList.remove('disabled-field');
+        document.getElementById('genderSelect').classList.remove('disabled-field');
+
+        document.getElementById('fullname').classList.add('editable-field');
+        document.getElementById('phoneNo').classList.add('editable-field');
+        document.getElementById('genderSelect').classList.add('editable-field');
+
         // Show the Update and Cancel buttons, hide the Edit button
         document.getElementById('updateBtn').style.display = 'block';
         document.getElementById('editBtn').style.display = 'none';
     }
 
     function cancelEditing() {
-        // Disable input fields
+        // Disable input fields  
         document.getElementById('fullname').disabled = true;
         document.getElementById('phoneNo').disabled = true;
-
-        // Disable the dropdown button and its menu
         document.getElementById('genderSelect').disabled = true;
+
+        // Remove the editable-field class and add the disabled-field class
+        document.getElementById('fullname').classList.remove('editable-field');
+        document.getElementById('phoneNo').classList.remove('editable-field');
+        document.getElementById('genderSelect').classList.remove('editable-field');
+
+        document.getElementById('fullname').classList.add('disabled-field');
+        document.getElementById('phoneNo').classList.add('disabled-field');
+        document.getElementById('genderSelect').classList.add('disabled-field');
 
         // Hide the Update and Cancel buttons, show the Edit button
         document.getElementById('updateBtn').style.display = 'none';
         document.getElementById('editBtn').style.display = 'block';
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent the form from submitting the default way
+
+        // Disable input fields  
+        document.getElementById('fullname').disabled = true;
+        document.getElementById('phoneNo').disabled = true;
+        document.getElementById('genderSelect').disabled = true;
+
+        // Remove the editable-field class and add the disabled-field class
+        document.getElementById('fullname').classList.remove('editable-field');
+        document.getElementById('phoneNo').classList.remove('editable-field');
+        document.getElementById('genderSelect').classList.remove('editable-field');
+
+        document.getElementById('fullname').classList.add('disabled-field');
+        document.getElementById('phoneNo').classList.add('disabled-field');
+        document.getElementById('genderSelect').classList.add('disabled-field');
+
+        // Hide the Update and Cancel buttons, show the Edit button
+        document.getElementById('updateBtn').style.display = 'none';
+        document.getElementById('editBtn').style.display = 'block';
+
+        // Get form data
+        var formData = new FormData(document.getElementById('profileForm'));
+
+        // Send the form data using fetch
+        fetch('http://localhost:8080/your-web-app/UpdateProfileServlet', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(result => {
+            console.log('Success:', result);
+            // You can add any additional success handling here if needed
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // You can add any error handling here if needed
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1138,7 +1216,7 @@
 
 	let selectedIndex = null;
     
-    function handleClick(index) {
+	function handleClick(index) {
         const location = locations[index];
         map.setCenter(location.coords);
         map.setZoom(15);
@@ -1162,9 +1240,11 @@
             const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
+            
+            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}`;
 
-            // Redirect to petrolPump.jsp with index, title, and address as query parameters
-            window.location.href = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}`;
+    	    // Redirect to the payment page with the constructed URL
+    	    window.location.href = url;
         
         } else {
             $('#locationModal').modal('show');
