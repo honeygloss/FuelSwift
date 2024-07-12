@@ -231,9 +231,6 @@ function selectOption(option) {
         calculateLitres();
     }
 }
-function payNow() {
-    window.location.href = "/FuelSwift/Payment/Payment.html"
-}
 
 const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
 function calculateLitres() {
@@ -245,12 +242,11 @@ function calculateLitres() {
 }
 // Define initial current points
 let currentPoints = 1; // Assuming starting points
-
+const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
 // Function to handle toggle click
 function handleToggle() {
 	 const toggle = document.getElementById('switch');
 	 const amount = document.getElementById('amount').value / 1;
-     const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
      const currentPointsElement = document.getElementById('currentPts');
      
      if (toggle.checked) {
@@ -270,13 +266,36 @@ function handleToggle() {
      }
  }
 
-function selectPump(index) {
-    // Function logic to handle pump selection
-    console.log(`Pump ${index} selected`); // For testing purposes
-    document.getElementById('selectedPump').innerText = index;
-}
  // Add event listener to toggle
  document.getElementById('switch').addEventListener('change', handleToggle);
+ 
+ function selectPump(index) {
+	    document.getElementById('selectedPump').innerText = index;
+	}
+ 
+ function payNow() {
+	    // Retrieve values needed for parameters
+	    const index = document.getElementById('selectedPump').innerText;
+	    const totAmount = document.getElementById('totAmount').innerText;
+	    const amount = document.getElementById('amount').value;
+	    const pointsRed = document.getElementById('ptsRedeem').innerText;
+	    const litres = document.getElementById('litres').value;
+	    const currentPts = currentPoints;
+	    
+
+	    // Retrieve indexParam from JSP scripting
+	    const indexParam = '<%=indexParam %>'; // Replace with actual JSP variable name if different
+	    const titleParam = '<%=titleParam %>';
+	    // Construct the URL with parameters
+	    const url = `/FuelSwift/Payment/payment.jsp?index=`+ index + `&litres=` + litres + `&currentPts=` + currentPts +`&pointsRed=` + pointsRed + `&totAmount=` + totAmount + `&amount=` + amount +  `&indexParam=` + indexParam + `&title=` + titleParam;
+	    
+	    // Debugging: Output constructed URL to console
+	    console.log("index" + index);
+	    console.log("Redirecting to: " + url);
+
+	    // Redirect to the payment page with the constructed URL
+	    window.location.href = url;
+	}
          
 </script>
 </body>
