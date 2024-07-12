@@ -71,7 +71,7 @@ public class servletCustomer extends HttpServlet {
             ps.setString(7, confirmPassword);
 
             ps.executeUpdate();
-            response.sendRedirect("Login.jsp");
+            response.sendRedirect("/FuelSwift/Login/Login.jsp");
         } catch (NumberFormatException e) {
             out.println("Error: ID must be a valid integer.");
         } catch (ClassNotFoundException | SQLException e) {

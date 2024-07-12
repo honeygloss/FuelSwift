@@ -11,4 +11,16 @@
         <servlet-name>servletCustomer</servlet-name>
         <url-pattern>/Registration/servletCustomer</url-pattern>
     </servlet-mapping>
+    <servlet>
+    <description></description>
+    <display-name>servletLogin</display-name>
+    <servlet-name>servletLogin</servlet-name>
+    <servlet-class>LoginJava.servletLogin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>servletLogin</servlet-name>
+    <url-pattern>/LoginJava/servletLogin</url-pattern>
+  </servlet-mapping>
+    
+    
 </web-app>

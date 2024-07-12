@@ -140,7 +140,7 @@
  </style>
 </head>
 <body style="background-color: rgb(20, 36, 105);">
-<form action="" method=get>
+<form action="/FuelSwift/LoginJava/servletLogin" method=post>
     <!----------------------- Main Container -------------------------->
      <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <!----------------------- Login Container -------------------------->
