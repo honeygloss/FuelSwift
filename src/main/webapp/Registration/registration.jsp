@@ -169,7 +169,7 @@
     </style>
 </head>
 <body>
-    <form action="servletCustomer" method="get" onsubmit="return validateSelection()">
+    <form action="servletCustomer" method="post" onsubmit="return validateSelection()">
         <!----------------------- Main Container -------------------------->
      <div class="container d-flex justify-content-center align-items-center min-vh-100 ">
     <!----------------------- Register Container -------------------------->

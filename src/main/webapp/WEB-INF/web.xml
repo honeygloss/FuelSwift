@@ -5,10 +5,10 @@
     version="3.1">
     <servlet>
         <servlet-name>servletCustomer</servlet-name>
-        <servlet-class>servletCustomer</servlet-class>
+        <servlet-class>Customer.servletCustomer</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>servletCustomer</servlet-name>
-        <url-pattern>/servletCustomer</url-pattern>
+        <url-pattern>/Registration/servletCustomer</url-pattern>
     </servlet-mapping>
 </web-app>
