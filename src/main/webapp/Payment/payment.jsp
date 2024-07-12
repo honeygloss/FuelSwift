@@ -4,10 +4,10 @@
     <%
     	// points = total points collected, currentPts = points redeemed pointsEarned = new points earned
 	    String title = request.getParameter("title");
-	    int pumpNum = Integer.parseInt(request.getParameter("index")); // Convert to int
 	    String current = request.getParameter("currentPts"); // Convert to int
-	    
+	    String pump = request.getParameter("index");
 	    int currentPts = -1;
+	    int pumpNum = 0; 
 	    if (current != null && ! current.isEmpty()) {
             try {
             	currentPts = Integer.parseInt(current);		// points redeemed (or not)
@@ -16,10 +16,19 @@
                 e.printStackTrace();
             }
         }
+	    if(pump != null && !pump.isEmpty()){
+	    	try{
+	    		pumpNum = Integer.parseInt(pump);
+	    	}catch (NumberFormatException e) {
+                // Handle parsing error if necessary
+                e.printStackTrace();
+            }
+	    }
 	    
 	    // Remove "RM" prefix and convert to appropriate data type
 	    String totAmountStr = request.getParameter("totAmount").substring(2); // Remove "RM"
 	    double totAmount = Double.parseDouble(totAmountStr); // Convert to double
+	    String formattedAmount = String.format("%.2f", totAmount);
 	    String pointsRed = request.getParameter("pointsRed");
 	    double amount = Double.parseDouble(request.getParameter("amount")); // Convert to double
 	    double litres = Double.parseDouble(request.getParameter("litres"));
@@ -49,18 +58,6 @@
 </head>
 <body>
 
-	<input type="hidden" id="title" value="<%= title %>">
-    <input type="hidden" id="pumpNum" value="<%= pumpNum %>">
-    <input type="hidden" id="currentPts" value="<%= currentPts %>">
-    <input type="hidden" id="totAmount" value="<%= totAmount %>">
-    <input type="hidden" id="pointsRed" value="<%= pointsRed %>">
-    <input type="hidden" id="amount" value="<%= amount %>">
-    <input type="hidden" id="locNum" value="<%= locNum %>">
-    <input type="hidden" id="transactionId" value="<%= transactionId %>">
-    <input type="hidden" id="pointsEarned" value="<%= pointsEarned %>">
-    <input type="hidden" id="points" value="<%= points %>">
-    <input type="hidden" id="litres" value="<%= litres %>">
-    
 <div class="container d-flex justify-content-center align-items-center min-vh-100">    
     <div class="row p-3">   
         <div class="header-text mb-4 mt-5">
@@ -68,7 +65,7 @@
         </div>
         <h6 id="timer" style="text-align: center; color: yellow; margin-top: 15px"></h6>
         <div class="col-md-12">   	
-            <form>
+            <form action="" method="POST">
                 <div class="form-group mb-3">
                     <label for="cardType" class="form-label text-white">Card Type</label>
                     <div class="btn-group w-100" role="group" aria-label="Card Type">
@@ -143,7 +140,7 @@
                 <h3 style="text-align: center"><%=title %></h3>
                 <p><h6 id="receiptDate" style="text-align: center"></h6></p>
                 <p>Transaction ID: #<%=transactionId %></p>
-                <p>Total Amount: RM<%=totAmount %></p>
+                <p>Total Amount: RM<%=formattedAmount %></p>
                 <!-- Example content, replace with actual receipt details -->
             </div>
             <div class="modal-footer">
@@ -152,6 +149,21 @@
         </div>
     </div>
 </div>
+
+	<input type="hidden" id="title" value="<%= title %>">
+    <input type="hidden" id="pumpNum" value="<%= pumpNum %>">
+    <input type="hidden" id="currentPts" value="<%= currentPts %>">
+    <input type="hidden" id="totAmount" value="<%= totAmount %>">
+    <input type="hidden" id="pointsRed" value="<%= pointsRed %>">
+    <input type="hidden" id="amount" value="<%= amount %>">
+    <input type="hidden" id="locNum" value="<%= locNum %>">
+    <input type="hidden" id="transactionId" value="<%= transactionId %>">
+    <input type="hidden" id="pointsEarned" value="<%= pointsEarned %>">
+    <input type="hidden" id="points" value="<%= points %>">
+    <input type="hidden" id="litres" value="<%= litres %>">
+    <input type="hidden" id="dateFuel" value="">
+    <input type="hidden" id="paymentMethod" name="cardType" value="">
+    <input type="hidden" id="timeFuel" value="">
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -218,13 +230,21 @@
         return date.toLocaleDateString('en-GB', options);
     }
 
+ // Function to format time only
+    function formatTime(date) {
+        return date.toLocaleTimeString('en-US');
+    }
+
     // Get current date and time
     var currentDate = new Date();
     var formattedDate = formatDate(currentDate);
     var dateFuel = formatDateDayMonthYear(currentDate);
+    var timeFuel = formatTime(currentDate);
 
     // Set the formatted date and time in the modal
     document.getElementById('receiptDate').innerText = formattedDate;
+    document.getElementById('dateFuel').value = dateFuel;
+    document.getElementById('timeFuel').value = timeFuel;
     
     function showReceiptModal() {
     	clearInterval(timerInterval);
@@ -236,58 +256,52 @@
         document.getElementById("cardHolder").disabled = true;
         document.querySelector("button[type=button]").disabled = true;
         
+        var title = document.getElementById('title').value;
+        var pumpNum = document.getElementById('pumpNum').value;
+        var currentPts = document.getElementById('currentPts').value;
+        var totAmount = document.getElementById('totAmount').value;
+        var pointsRed = document.getElementById('pointsRed').value;
+        var amount = document.getElementById('amount').value;
+        var locNum = document.getElementById('locNum').value;
+        var transactionId = document.getElementById('transactionId').value;
+        var pointsEarned = document.getElementById('pointsEarned').value;
+        var points = document.getElementById('points').value;
+        var litres = document.getElementById('litres').value;
+        var dateFuel = document.getElementById('dateFuel').value;
+        var paymentMethod = document.getElementById('paymentMethod').value;
+        var timeFuel = document.getElementById('timeFuel').value;
 
-     // Collect the JSP data
-        var pumpNum = document.getElementById("pumpNum").value;
-        var currentPts = document.getElementById("currentPts").value;
-        var totAmount = document.getElementById("totAmount").value;
-        var amount = document.getElementById("amount").value;
-        var locNum = document.getElementById("locNum").value;
-        var transactionId = document.getElementById("transactionId").value;
-        var pointsEarned = document.getElementById("pointsEarned").value;
-        var points = document.getElementById("points").value;
-        var litres = document.getElementById("litres").value;
-        var cardType = document.querySelector('input[name="cardType"]:checked').id;
-        // Collect the card details
-        var cardNumber = document.getElementById("cardNumber").value;
-        var expiryDate = document.getElementById("expiryDate").value;
-        var cvv = document.getElementById("cvv").value;
-        var cardHolder = document.getElementById("cardHolder").value;
-
-        // Send the data asynchronously to servlet using fetch API
-        fetch('/FuelSwift/Transaction/transactionServlet', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                pumpNum: pumpNum,
-                currentPts: currentPts,
-                totAmount: totAmount,
-                amount: amount,
-                locNum: locNum,
-                transactionId: transactionId,
-                pointsEarned: pointsEarned,
-                points: points,
-                litres: litres,
-                dateFuel: dateFuel,
-                cardType: cardType,
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cvv: cvv,
-                cardHolder: cardHolder
-                // Add more fields as needed
-            })
-        })
-        .then(response => {
-            // Handle response if needed
-            console.log('Data sent successfully.');
-        })
-        .catch(error => {
-            console.error('Error sending data:', error);
-        });
-     	
+        console.log("Title: ", title);
+        console.log("Pump Number: ", pumpNum);
+        console.log("Current Points: ", currentPts);
+        console.log("Total Amount: ", totAmount);
+        console.log("Points Redeemed: ", pointsRed);
+        console.log("Amount: ", amount);
+        console.log("Location Number: ", locNum);
+        console.log("Transaction ID: ", transactionId);
+        console.log("Points Earned: ", pointsEarned);
+        console.log("Points: ", points);
+        console.log("Litres: ", litres);
+        console.log("Date of Fuel: ", dateFuel);
+        console.log("Payment Method: ", paymentMethod);
+        console.log("Time Fuel: ", timeFuel);
+        
     }
+ 	// Function to update hidden input field based on radio button selection
+    function updateHiddenCardType() {
+        var hiddenInput = document.getElementById('paymentMethod');
+        var selectedCardType = document.querySelector('input[name="cardType"]:checked').id;
+        hiddenInput.value = selectedCardType;
+    }
+
+    // Event listener to update hidden input field when radio button changes
+    var radioButtons = document.querySelectorAll('input[name="cardType"]');
+    radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', updateHiddenCardType);
+    });
+
+    // Call the function initially to set the default value
+    updateHiddenCardType();
 </script>
 </body>
 </html>
