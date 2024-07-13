@@ -23,7 +23,6 @@ public class AddVehicleServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve parameters from request
-        String vehID = request.getParameter("addVehID");
         String plateNumber = request.getParameter("addPlateNumber");
         String vehicleType = request.getParameter("addVehicleType");
         String vin = request.getParameter("addVIN");
@@ -39,12 +38,11 @@ public class AddVehicleServlet extends HttpServlet {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // Prepare SQL insert statement
-            String sql = "INSERT INTO vehicle (vehID, vehPlateNo, vehType, vin) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO vehicle (vehPlateNo, vehType, vin) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, vehID);
-            pstmt.setString(2, plateNumber);
-            pstmt.setString(3, vehicleType);
-            pstmt.setString(4, vin);
+            pstmt.setString(1, plateNumber);
+            pstmt.setString(2, vehicleType);
+            pstmt.setString(3, vin);
 
             // Execute insert
             int rowsInserted = pstmt.executeUpdate();

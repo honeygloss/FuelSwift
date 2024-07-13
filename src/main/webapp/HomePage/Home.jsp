@@ -420,7 +420,7 @@
 		
 		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
 		        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
-		            <form id="profileForm" action="/FuelSwift/UpdateProfile/UpdateProfileServlet" method="post" onsubmit="handleSubmit(event)">
+		            <form id="profileForm" action="UpdateProfileServlet" method="post" onsubmit="UpdateProfileServlet">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
 		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>

@@ -23,7 +23,6 @@ public class UpdateVehicleServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve parameters from request
-        String vehID = request.getParameter("editVehID");
         String newPlateNumber = request.getParameter("editPlateNumber");
         String newVehicleType = request.getParameter("editVehicleType");
         String newVIN = request.getParameter("editVIN");
