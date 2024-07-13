@@ -6,7 +6,7 @@
 	Integer points = (Integer) session.getAttribute("points");
 	String username = "";
 	
-	if (fullName != null && userEmail != null && points != null) {
+	if (fullName != null && email != null && points != null) {
 	    // Extract username (first name)
 	    String[] nameParts = fullName.split(" ");
 	    username = nameParts[0]; // Assuming first part is the first name

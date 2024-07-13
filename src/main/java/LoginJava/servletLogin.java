@@ -49,10 +49,17 @@ public class servletLogin extends HttpServlet {
             if (rs.next()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", email);
+                
+                String fullName = rs.getString("fullname");
+
+                session.setAttribute("fullName", fullName);
+                session.setAttribute("email", email);
+                
                 String contextPath = request.getContextPath();
-                response.sendRedirect(contextPath + "/HomePage/HomePageFat.html"); // Redirect to a welcome page or dashboard
+                response.sendRedirect(contextPath + "/HomePage/Home.jsp"); // Redirect to a welcome page or dashboard
             } else {
-                out.println("Invalid email or password");
+            	String contextPath = request.getContextPath();
+                response.sendRedirect(contextPath + "/fail.jsp");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
