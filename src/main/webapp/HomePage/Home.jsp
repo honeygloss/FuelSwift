@@ -1289,17 +1289,33 @@
         selectedIndex = index;
     }
     
-    function fuelNow() {
+	function fuelNow() {
     	if (selectedIndex !== null) {
             const selectedLocation = locations[selectedIndex];
             const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
             
-            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}`;
+         // Send data to servlet using AJAX
+            $.ajax({
+                url: '/FuelSwift/PumpAvailability', // Replace with your servlet URL
+                type: 'GET', // Or 'POST' if needed
+                data: { title: title }, // Send the title as data
+                success: function(response) {
+                    // Assuming the response is the string you need
+                    const retrievedString = response;
 
-    	    // Redirect to the payment page with the constructed URL
-    	    window.location.href = url;
+                    // Construct the URL with the retrieved string
+                    const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}&retrievedString=${encodeURIComponent(retrievedString)}`;
+
+                    // Redirect to the payment page with the constructed URL
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors that occurred during the request
+                    console.error("Error occurred while communicating with the servlet:", error);
+                }
+            });
         
         } else {
             $('#locationModal').modal('show');
