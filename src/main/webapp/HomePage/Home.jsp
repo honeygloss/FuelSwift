@@ -4,11 +4,13 @@
 	String fullName = (String) session.getAttribute("fullName");
 	String email = (String) session.getAttribute("email");
 	Integer points = (Integer) session.getAttribute("points");
+	String username = "";
 	
 	if (fullName != null && userEmail != null && points != null) {
 	    // Extract username (first name)
 	    String[] nameParts = fullName.split(" ");
-	    String username = nameParts[0]; // Assuming first part is the first name
+	    username = nameParts[0]; // Assuming first part is the first name
+	}
 
 	ArrayList<Transaction> transactions = (ArrayList<Transaction>) request.getAttribute("transactions");
 	ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) request.getAttribute("vehicles");
@@ -418,7 +420,7 @@
 		
 		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
 		        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
-		            <form id="profileForm" action="/FuelSwift/UpdateProfileServlet" method="post" onsubmit="handleSubmit(event)">
+		            <form id="profileForm" action="/FuelSwift/UpdateProfile/UpdateProfileServlet" method="post" onsubmit="handleSubmit(event)">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
 		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>
@@ -706,21 +708,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <label for="editPlateNumber" class="form-label" style="color: black; font-weight: normal;">Plate Number:</label>
-                    <input type="text" class="form-control" id="editPlateNumber" required>
-                    <small id="plateNumberError" class="text-danger d-none">Plate number is required.</small>
-                </div>
-                <div class="mb-3">
-                    <label for="editVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
-                    <input type="text" class="form-control" id="editVehicleType" required>
-                    <small id="vehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
-                </div>
-                <div class="mb-3">
-                    <label for="editVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
-                    <input type="text" class="form-control" id="editVIN" required>
-                    <small id="vinError" class="text-danger d-none">VIN is required.</small>
-                </div>
+                <form id="editVehicleForm">
+                    <div class="mb-3">
+                        <label for="editPlateNumber" class="form-label" style="color: black; font-weight: normal;">Plate Number:</label>
+                        <input type="text" class="form-control" id="editPlateNumber" name="editPlateNumber" required>
+                        <small id="plateNumberError" class="text-danger d-none">Plate number is required.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
+                        <input type="text" class="form-control" id="editVehicleType" name="editVehicleType" required>
+                        <small id="vehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
+                        <input type="text" class="form-control" id="editVIN" name="editVIN" required>
+                        <small id="vinError" class="text-danger d-none">VIN is required.</small>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -754,34 +758,37 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Add Vehicle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="addPlateNumber" class="form-label" style="color: black; font-weight: normal;">Plate Number:</label>
-                    <input type="text" class="form-control" id="addPlateNumber" required>
-                    <small id="addPlateNumberError" class="text-danger d-none">Plate number is required.</small>
+            <form id="addVehicleForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="mb-3">
-                    <label for="addVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
-                    <input type="text" class="form-control" id="addVehicleType" required>
-                    <small id="addVehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="addPlateNumber" class="form-label" style="color: black; font-weight: normal;">Plate Number:</label>
+                        <input type="text" class="form-control" id="addPlateNumber" name="addPlateNumber" required>
+                        <small id="addPlateNumberError" class="text-danger d-none">Plate number is required.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
+                        <input type="text" class="form-control" id="addVehicleType" name="addVehicleType" required>
+                        <small id="addVehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
+                        <input type="text" class="form-control" id="addVIN" name="addVIN" required>
+                        <small id="addVINError" class="text-danger d-none">VIN is required.</small>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="addVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
-                    <input type="text" class="form-control" id="addVIN" required>
-                    <small id="addVINError" class="text-danger d-none">VIN is required.</small>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="saveAddBtn">Add Vehicle</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveAddBtn">Add Vehicle</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
+
   
 	<!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -898,7 +905,7 @@
         var formData = new FormData(document.getElementById('profileForm'));
 
         // Send the form data using fetch
-        fetch('http://localhost:8080/your-web-app/UpdateProfileServlet', {
+        fetch('/FuelSwift/UpdateProfile/UpdateProfileServlet', {
             method: 'POST',
             body: formData
         })
@@ -912,17 +919,20 @@
             // You can add any error handling here if needed
         });
     }
-
+    
     document.addEventListener('DOMContentLoaded', function() {
-    	var vehicles = [
-            <% for (Vehicle vehicle : vehicles) { %>
-                {
-                    plateNumber: '<%= vehicle.getPlateNumber() %>',
-                    type: '<%= vehicle.getType() %>'
-                },
-            <% } %>
-        ];
+    	var vehicles = [];
 
+        <% for (Vehicle vehicle : vehicles){ %>
+            var vehicle = {
+                plateNumber: '<%= vehicle.getPlateNumber() %>',
+                vehicleType: '<%= vehicle.getType() %>',
+                vin: '<%= vehicle.getVIN() %>'
+            };
+            vehicles.push(vehicle);
+        <% } %>
+        
+    
     	const vehicleDropdown = document.getElementById("vehicleDropdown");
         const vehicleTypeElement = document.getElementById("vehicleType");
 
@@ -1015,6 +1025,28 @@
 
                                     // Update dropdown item display
                                     dropdownItem.querySelector("span").textContent = newPlateNumber;
+                                    
+                                 // Send data to the servlet for database update
+                                    fetch('/FuelSwift/UpdateVehicle/UpdateVehicleServlet', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded'
+                                        },
+                                        body: `editPlateNumber=${encodeURIComponent(newPlateNumber)}&editVehicleType=${encodeURIComponent(newVehicleType)}&editVIN=${encodeURIComponent(newVIN)}`
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            console.log('Form submitted successfully');
+                                            // Handle success scenario here, such as updating UI or showing a success message
+                                        } else {
+                                            console.error('Form submission failed');
+                                            // Handle failure scenario here, such as showing an error message to the user
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        // Handle any fetch error here, such as network issues or server not responding
+                                    });
 
                                     // Hide edit modal after saving changes
                                     $('#editModal').modal('hide');
@@ -1105,6 +1137,28 @@
 
                         // Refresh dropdown after addition
                         renderDropdown();
+                        
+                     // Send data to the servlet for database update
+                        fetch('/FuelSwift/UpdateVehicle/AddVehicleServlet', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `addPlateNumber=${encodeURIComponent(plateNumber)}&addVehicleType=${encodeURIComponent(vehicleType)}&addVIN=${encodeURIComponent(vin)}`
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Form submitted successfully');
+                                // Handle success scenario here, such as updating UI or showing a success message
+                            } else {
+                                console.error('Form submission failed');
+                                // Handle failure scenario here, such as showing an error message to the user
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Handle any fetch error here, such as network issues or server not responding
+                        });
 
                         // Hide add modal after adding new vehicle
                         $('#addModal').modal('hide');
@@ -1121,13 +1175,10 @@
                     document.getElementById('addVINError').classList.add('d-none');
                 });
             });
-
-
-
             vehicleDropdown.appendChild(addBtn);
         }
-
         renderDropdown();
+        
     });
    
     function logout() {
@@ -1260,6 +1311,15 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }, 3000);
     });
+    
+    <% for (int i = 1; i <= 10; i++) { %>
+    var number = {
+        value: <%= i %>,
+        description: 'Number ' + <%= i %>
+    };
+    numbers.push(number);
+    console.log(numbers);
+<% } %>
 
 
 </script>
