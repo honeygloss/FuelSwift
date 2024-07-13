@@ -728,7 +728,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveEditBtn">Save changes</button>
+                <button type="button" class="btn btn-primary" id="saveEditBtn" style="background-color:rgb(20, 36, 105); color:yellow" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Save changes</button>
             </div>
         </div>
     </div>
@@ -782,7 +782,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="saveAddBtn">Add Vehicle</button>
+                    <button type="submit" class="btn btn-primary" id="saveAddBtn" style="background-color:rgb(20, 36, 105); color:yellow" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Add Vehicle</button>
                 </div>
             </form>
         </div>
@@ -918,6 +918,7 @@
             console.error('Error:', error);
             // You can add any error handling here if needed
         });
+        location.reload();
     }
     
     document.addEventListener('DOMContentLoaded', function() {
@@ -1050,6 +1051,7 @@
 
                                     // Hide edit modal after saving changes
                                     $('#editModal').modal('hide');
+                                    location.reload();
                                 } else {
                                     // No changes made
                                     $('#editModal').modal('hide');
@@ -1070,6 +1072,7 @@
                             vehicles.splice(vehicles.indexOf(vehicle), 1);
                             renderDropdown(); // Refresh dropdown after deletion
                             $('#deleteModal').modal('hide'); // Hide delete modal after deletion
+                            location.reload();
                         });
                     });
 
@@ -1162,6 +1165,7 @@
 
                         // Hide add modal after adding new vehicle
                         $('#addModal').modal('hide');
+                        location.reload();
                     }
                 });
 
@@ -1311,16 +1315,6 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }, 3000);
     });
-    
-    <% for (int i = 1; i <= 10; i++) { %>
-    var number = {
-        value: <%= i %>,
-        description: 'Number ' + <%= i %>
-    };
-    numbers.push(number);
-    console.log(numbers);
-<% } %>
-
 
 </script>
 </body>
