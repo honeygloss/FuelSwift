@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Login | FuelSwift</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -18,7 +18,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            max-width: 400px;
+            max-width: 300px;
             padding: 20px;
             background-color: #f8d7da;
             color: #721c24;
@@ -58,12 +58,12 @@
 
         .error-message h3 {
             margin: 0;
-            font-size: 17px;
+            font-size: 15px;
         }
 
         .error-message p {
             margin: 0;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .container {
@@ -72,13 +72,11 @@
     </style>
 </head>
 <body>
+<%@ include file="Login.jsp" %>
     <div class="error-message show" id="error-message">
         <h3>Login Failed</h3>
         <p>The email or password you entered is incorrect. Please try again.</p>
     </div>
-
-        <%@ include file="Login.jsp" %>
-   
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
