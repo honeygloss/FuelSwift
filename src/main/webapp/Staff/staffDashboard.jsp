@@ -1,11 +1,92 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.*"%>
+    
+<%
+	    String staffName = (String)session.getAttribute("staffName");
+		String noTransString = (String)session.getAttribute("noTransaction");	// Number of transactions
+		
+		int noTrans = 0;
+		if (noTransString != null && ! noTransString.isEmpty()) {
+            try {
+            	noTrans = Integer.parseInt(noTransString);		
+            } catch (NumberFormatException e) {
+                // Handle parsing error if necessary
+                e.printStackTrace();
+            }
+        }
+		
+		String noCustString =  (String)session.getAttribute("noCust");	// Number of customers
+		
+		int noCust = 0;
+		if (noCustString != null && ! noCustString.isEmpty()) {
+            try {
+            	noCust = Integer.parseInt(noCustString);		
+            } catch (NumberFormatException e) {
+                // Handle parsing error if necessary
+                e.printStackTrace();
+            }
+        }
+		ArrayList<Customer> cust = (ArrayList<Customer>) session.getAttribute("customers");
+		ArrayList<String> transId = (ArrayList<String>) session.getAttribute("transId");
+		ArrayList<String> custName = (ArrayList<String>) session.getAttribute("custName");
+		ArrayList<String> date = (ArrayList<String>) session.getAttribute("date");
+		ArrayList<String> time = (ArrayList<String>) session.getAttribute("time");
+		ArrayList<String> petrolStation = (ArrayList<String>) session.getAttribute("petrolStation");
+		ArrayList<String> totalAmt = (ArrayList<String>) session.getAttribute("totalAmt");
+		ArrayList<String> pumpStation = (ArrayList<String>) session.getAttribute("pumpStation");
+	    ArrayList<Integer> countPump = (ArrayList<Integer>) session.getAttribute("countPump");
+	    
+	 // Convert ArrayList<String> pumpStation to JavaScript array
+	    StringBuilder pumpStationArray = new StringBuilder("[");
+	    for (int i = 0; i < pumpStation.size(); i++) {
+	        pumpStationArray.append("\"").append(pumpStation.get(i)).append("\"");
+	        if (i < pumpStation.size() - 1) {
+	            pumpStationArray.append(", ");
+	        }
+	    }
+	    pumpStationArray.append("]");
+
+	    // Convert ArrayList<Integer> countPump to JavaScript array
+	    StringBuilder countPumpArray = new StringBuilder("[");
+	    for (int i = 0; i < countPump.size(); i++) {
+	        countPumpArray.append(countPump.get(i));
+	        if (i < countPump.size() - 1) {
+	            countPumpArray.append(", ");
+	        }
+	    }
+	    countPumpArray.append("]");
+	    
+	    ArrayList<Double> totalAmount = (ArrayList<Double>) session.getAttribute("totalAmount");
+	    ArrayList<String> dateTransaction = (ArrayList<String>) session.getAttribute("dateTransaction");
+
+	    // Convert totalAmount ArrayList to JavaScript array
+	    StringBuilder totalAmountArray = new StringBuilder("[");
+	    for (int i = 0; i < totalAmount.size(); i++) {
+	        totalAmountArray.append(totalAmount.get(i));
+	        if (i < totalAmount.size() - 1) {
+	            totalAmountArray.append(", ");
+	        }
+	    }
+	    totalAmountArray.append("]");
+
+	    // Convert dateTransaction ArrayList to JavaScript array
+	    StringBuilder dateTransactionArray = new StringBuilder("[");
+	    for (int i = 0; i < dateTransaction.size(); i++) {
+	        dateTransactionArray.append("\"").append(dateTransaction.get(i)).append("\"");
+	        if (i < dateTransaction.size() - 1) {
+	            dateTransactionArray.append(", ");
+	        }
+	    }
+	    dateTransactionArray.append("]");
+	%>    
+    
+    
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Staff Dashboard</title>
+    <title>Staff Dashboard | FuelSwift</title>
     <!-- Montserrat Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -357,6 +438,7 @@
 		</div>
 
         <div class="header-right">
+        	<span style="margin-right:8px";><%=staffName %></span>
 		    <span id="account-button" class="material-icons-outlined account-button" onclick="toggleDropdown()">account_circle</span>
 		    <div id="account-dropdown" class="account-dropdown">
 		      <ul>
@@ -410,14 +492,14 @@
 		    </div>
 		
 			<!-- Cards Section -->
-						<div id="mainCards" class="main-cards">
+			<div id="mainCards" class="main-cards">
 			    <a href="#" id="transaction-link" style="text-decoration: none; color: inherit;">
 			        <div class="card" style="background-color: red; height: 180px; width:345px;padding: 10px;">
 			            <div class="card-inner">
 			                <h3 style="font-size: 18px; font-weight: bold; margin-top: 10px; margin-left: 10px;margin-bottom: 5px;">TRANSACTIONS</h3>
 			                <span class="material-icons-outlined" style="font-size: 40px; margin-right: 15px;">inventory_2</span>
 			            </div>
-			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;">249</h1>
+			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;"><%=noTrans %></h1>
 			        </div>
 			    </a>
 			
@@ -427,7 +509,7 @@
 			                <h3 style="font-size: 18px; font-weight: bold; margin-top: 10px; margin-left: 10px;margin-bottom: 5px;">REPORTS</h3>
 			                <span class="material-icons-outlined" style="font-size: 40px; margin-right: 15px;">category</span>
 			            </div>
-			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;">25</h1>
+			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;">2</h1>
 			        </div>
 			    </a>
 			
@@ -437,7 +519,7 @@
 			                <h3 style="font-size: 18px; font-weight: bold; margin-top: 10px; margin-left: 10px;margin-bottom: 5px;">CUSTOMERS</h3>
 			                <span class="material-icons-outlined" style="font-size: 40px; margin-right: 15px;">groups</span>
 			            </div>
-			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;">1500</h1>
+			            <h1 style="font-size: 33px; font-weight: bold; margin-bottom: 10px; margin-left: 10px;"><%=noCust %></h1>
 			        </div>
 			    </a>
 			</div>
@@ -445,72 +527,96 @@
 			        
 			   
 		    
-		    <div id="transactions" class="main-content" style="display: none;">
-            <h1 style="text-align: center; font-weight: bold; color: yellow; font-size:30px; margin-top:20px; margin-bottom:40px;">View Transactions</h1>
-        
-        
-        <!-- Transaction Table -->
-        <table class="table table-dark table-striped">
-            <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Date</th>
-                    <th>Petrol Station</th>
-                    <th>Amount</th>
-                    <!-- Add more columns as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Example rows, replace with JSP code to dynamically populate -->
-                <tr>
-                    <td>1</td>
-                    <td>2024-07-15</td>
-                    <td>John Doe</td>
-                    <td>RM 100.00</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2024-07-14</td>
-                    <td>Jane Smith</td>
-                    <td>RM 50.00</td>
-                </tr>
-                <!-- Add more rows dynamically -->
-            </tbody>
-        </table>
+	    <div id="transactions" class="main-content" style="display: none;">
+           <h1 style="text-align: center; font-weight: bold; color: yellow; font-size:30px; margin-top:20px; margin-bottom:40px;">View Transactions</h1>
+	        
+	        <div class="dropdown mb-3">
+			    <label for="sortOption" style="margin-right: 10px; margin-bottom: 10px; font-size: 18px;">Find:</label>
+			    <div class="input-group mb-3" style="width: 500px; margin-bottom: 15px;">
+			        <input type="text" class="form-control" id="transactionSortOption" name="sortOption" oninput="filterTransactionTable()" placeholder="Search customer name...">
+			        <div class="input-group-append">
+			            <button class="btn btn-secondary" type="button">Search</button>
+			        </div>
+			    </div>
+			</div>
+	        <!-- Transaction Table -->
+			<table id="transactionTable" class="table table-dark table-striped">
+			    <thead>
+			        <tr>
+			            <th>Transaction ID</th>
+			            <th>Name</th>
+			            <th>Date</th>
+			            <th>Time</th>
+			            <th>Petrol Station</th>
+			            <th>Total Payment</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <% 
+			            // Iterate over the lists (assuming all lists have the same size)
+			            if (transId != null && !transId.isEmpty()) {
+			                for (int i = 0; i < transId.size(); i++) {
+			        %>
+			        <tr>
+			            <td><%= transId.get(i) %></td>
+			            <td><%= custName.get(i) %></td>
+			            <td><%= date.get(i) %></td>
+			            <td><%= time.get(i) %></td>
+			            <td><%= petrolStation.get(i) %></td>
+			            <td><%= totalAmt.get(i) %></td>
+			        </tr>
+			        <% 
+			                }
+			            }
+			        %>
+			    </tbody>
+			</table>
         </div>
 
         <!-- Customers Content -->
         <div id="customers" class="main-content" style="display: none;">
             <h1 style="text-align: center; font-weight: bold; color: yellow; font-size:30px; margin-top:20px; margin-bottom:40px;">View Customers</h1>
-            <!-- Transaction Table -->
-        <table class="table table-dark table-striped">
-            <thead>
-                <tr>
-                	<th>No</th>
-                    <th>Email</th>
-                    <th>Customer Name</th>
-                    <th>Gender</th>
-                    <th>Points</th>
-                    <!-- Add more columns as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Example rows, replace with JSP code to dynamically populate -->
-                <tr>
-                    <td>1</td>
-                    <td>2024-07-15</td>
-                    <td>John Doe</td>
-                    <td>RM 100.00</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2024-07-14</td>
-                    <td>Jane Smith</td>
-                    <td>RM 50.00</td>
-                </tr>
-                <!-- Add more rows dynamically -->
-            </tbody>
-        </table>
+        
+        <div class="dropdown mb-3">
+			    <label for="sortOption" style="margin-right: 10px; margin-bottom: 10px; font-size: 18px;">Find:</label>
+			    <div class="input-group mb-3" style="width: 500px; margin-bottom: 15px;">
+			        <input type="text" class="form-control" id="customerSortOption" name="sortOption" oninput="filterCustomerTable()" placeholder="Search customer name...">
+			        <div class="input-group-append">
+			            <button class="btn btn-secondary" type="button">Search</button>
+			        </div>
+			    </div>
+			</div>
+			<!-- Customer Table -->
+			<table id="customerTable" class="table table-dark table-striped">
+			    <thead>
+			        <tr>
+			            <th>No</th>
+			            <th>Email</th>
+			            <th>Customer Name</th>
+			            <th>Gender</th>
+			            <th>Points</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <% 
+			            // Iterate over the ArrayList<Customer> cust
+			            if (cust != null && !cust.isEmpty()) {
+			                int count = 1; // Initialize count variable to 1
+			                for (Customer customer : cust) {
+			        %>
+			        <tr>
+			            <td><%= count++ %></td>
+			            <td><%= customer.getEmail() %></td>
+			            <td><%= customer.getCustomerName() %></td>
+			            <td><%= customer.getGender() %></td>
+			            <td><%= customer.getPoints() %></td>
+			        </tr>
+			        <% 
+			                }
+			            }
+			        %>
+			    </tbody>
+			</table>
         </div>
 
         <!-- Reports Content -->
@@ -538,6 +644,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
     <!-- Custom JS -->
     <script>
+    
+    let sidebarOpen = false;
+    const sidebar = document.getElementById('sidebar');
+
+    function openSidebar() {
+      if (!sidebarOpen) {
+        sidebar.classList.add('sidebar-responsive');
+        sidebarOpen = true;
+      }
+    }
+
+    function closeSidebar() {
+      if (sidebarOpen) {
+        sidebar.classList.remove('sidebar-responsive');
+        sidebarOpen = false;
+      }
+    }
     
  // Close dropdowns if clicked outside
     window.onclick = function(event) {
@@ -574,6 +697,11 @@
         document.getElementById('custSide').style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
         document.getElementById('transactionsSide').style.backgroundColor = 'rgb(20, 36, 105)';
         document.getElementById('reportSide').style.backgroundColor = 'rgb(20, 36, 105)';
+        
+        var dropdown = document.getElementById("search-dropdown");
+	    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+	    
+	    closeSidebar();
     }
 
     function showTransactions(e) {
@@ -586,6 +714,11 @@
         document.getElementById('transactionsSide').style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
         document.getElementById('reportSide').style.backgroundColor = 'rgb(20, 36, 105)';
         document.getElementById('custSide').style.backgroundColor = 'rgb(20, 36, 105)';
+        
+        var dropdown = document.getElementById("search-dropdown");
+	    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+	    
+	    closeSidebar();
     }
 
     function showReports(e) {
@@ -598,194 +731,200 @@
         document.getElementById('reportSide').style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
         document.getElementById('transactionsSide').style.backgroundColor = 'rgb(20, 36, 105)';
         document.getElementById('custSide').style.backgroundColor = 'rgb(20, 36, 105)';
+
+        var dropdown = document.getElementById("search-dropdown");
+	    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+	    
+	    closeSidebar();
     }
 
 	    document.getElementById('customers-link').addEventListener('click', showCustomers);
 	    document.getElementById('transaction-link').addEventListener('click', showTransactions);
 	    document.getElementById('reports-link').addEventListener('click', showReports);
-        // SIDEBAR TOGGLE
+      
 
         // ---------- CHARTS ----------
-
+        
         // BAR CHART
-        const barChartOptions = {
-          series: [
-            {
-              data: [10, 8, 6, 4, 2],
-              name: 'Products',
-            },
-          ],
-          chart: {
-            type: 'bar',
-            background: 'transparent',
-            height: 350,
-            toolbar: {
-              show: false,
-            },
-          },
-          colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3'],
-          plotOptions: {
-            bar: {
-              distributed: true,
-              borderRadius: 4,
-              horizontal: false,
-              columnWidth: '40%',
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          fill: {
-            opacity: 1,
-          },
-          grid: {
-            borderColor: '#55596e',
-            yaxis: {
-              lines: {
-                show: true,
-              },
-            },
-            xaxis: {
-              lines: {
-                show: true,
-              },
-            },
-          },
-          legend: {
-            labels: {
-              colors: '#f5f7ff',
-            },
-            show: true,
-            position: 'top',
-          },
-          stroke: {
-            colors: ['transparent'],
-            show: true,
-            width: 2,
-          },
-          tooltip: {
-            shared: true,
-            intersect: false,
-            theme: 'dark',
-          },
-          xaxis: {
-            categories: ['Laptop', 'Phone', 'Monitor', 'Headphones', 'Camera'],
-            title: {
-              style: {
-                color: '#f5f7ff',
-              },
-            },
-            axisBorder: {
-              show: true,
-              color: '#55596e',
-            },
-            axisTicks: {
-              show: true,
-              color: '#55596e',
-            },
-            labels: {
-              style: {
-                colors: '#f5f7ff',
-              },
-            },
-          },
-          yaxis: {
-            title: {
-              text: 'Count',
-              style: {
-                color: '#f5f7ff',
-              },
-            },
-            axisBorder: {
-              color: '#55596e',
-              show: true,
-            },
-            axisTicks: {
-              color: '#55596e',
-              show: true,
-            },
-            labels: {
-              style: {
-                colors: '#f5f7ff',
-              },
-            },
-          },
-        };
+	    const pumpStation = <%= pumpStationArray.toString() %>; // JavaScript array of pumpStation values
+	    const countPump = <%= countPumpArray.toString() %>;     // JavaScript array of countPump values
+	
+	    const barChartOptions = {
+	      series: [
+	        {
+	          data: countPump, // Assigning countPump data to series data
+	          name: 'Pump Station',
+	        },
+	      ],
+	      chart: {
+	        type: 'bar',
+	        background: 'transparent',
+	        height: 350,
+	        toolbar: {
+	          show: false,
+	        },
+	      },
+	      colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3'],
+	      plotOptions: {
+	        bar: {
+	          distributed: true,
+	          borderRadius: 4,
+	          horizontal: false,
+	          columnWidth: '40%',
+	        },
+	      },
+	      dataLabels: {
+	        enabled: false,
+	      },
+	      fill: {
+	        opacity: 1,
+	      },
+	      grid: {
+	        borderColor: '#55596e',
+	        yaxis: {
+	          lines: {
+	            show: true,
+	          },
+	        },
+	        xaxis: {
+	          lines: {
+	            show: true,
+	          },
+	        },
+	      },
+	      legend: {
+	        labels: {
+	          colors: '#f5f7ff',
+	        },
+	        show: true,
+	        position: 'top',
+	      },
+	      stroke: {
+	        colors: ['transparent'],
+	        show: true,
+	        width: 2,
+	      },
+	      tooltip: {
+	        shared: true,
+	        intersect: false,
+	        theme: 'dark',
+	      },
+	      xaxis: {
+	        categories: pumpStation, // Assigning pumpStation categories (x-axis labels)
+	        title: {
+	          style: {
+	            color: '#f5f7ff',
+	          },
+	        },
+	        axisBorder: {
+	          show: true,
+	          color: '#55596e',
+	        },
+	        axisTicks: {
+	          show: true,
+	          color: '#55596e',
+	        },
+	        labels: {
+	          style: {
+	            colors: '#f5f7ff',
+	          },
+	        },
+	      },
+	      yaxis: {
+	        title: {
+	          text: 'Count',
+	          style: {
+	            color: '#f5f7ff',
+	          },
+	        },
+	        axisBorder: {
+	          color: '#55596e',
+	          show: true,
+	        },
+	        axisTicks: {
+	          color: '#55596e',
+	          show: true,
+	        },
+	        labels: {
+	          style: {
+	            colors: '#f5f7ff',
+	          },
+	        },
+	      },
+	    };
+	
+	    const barChart = new ApexCharts(
+	      document.querySelector('#bar-chart'),
+	      barChartOptions
+	    );
+	    barChart.render();
 
-        const barChart = new ApexCharts(
-          document.querySelector('#bar-chart'),
-          barChartOptions
-        );
-        barChart.render();
+	    const lineChartOptions = {
+    		  series: [
+    		    {
+    		      name: 'Sales Orders',
+    		      data: <%= totalAmountArray.toString() %>, // Data for Sales Orders (totalAmount)
+    		    },
+    		  ],
+    		  chart: {
+    		    type: 'line',
+    		    background: 'transparent',
+    		    height: 350,
+    		    toolbar: {
+    		      show: false,
+    		    },
+    		  },
+    		  colors: ['#00ab57'],
+    		  labels: <%= dateTransactionArray.toString() %>, // Labels for x-axis (dateTransaction)
+    		  markers: {
+    		    size: 6,
+    		    strokeColors: '#1b2635',
+    		    strokeWidth: 3,
+    		  },
+    		  stroke: {
+    		    curve: 'smooth',
+    		  },
+    		  xaxis: {
+    		    axisBorder: {
+    		      color: '#55596e',
+    		      show: true,
+    		    },
+    		    axisTicks: {
+    		      color: '#55596e',
+    		      show: true,
+    		    },
+    		    labels: {
+    		      offsetY: 5,
+    		      style: {
+    		        colors: '#f5f7ff',
+    		      },
+    		    },
+    		  },
+    		  yaxis: {
+    		    title: {
+    		      text: 'Sales Orders',
+    		      style: {
+    		        color: '#f5f7ff',
+    		      },
+    		    },
+    		    labels: {
+    		      style: {
+    		        colors: ['#f5f7ff'],
+    		      },
+    		    },
+    		  },
+    		  tooltip: {
+    		    shared: true,
+    		    intersect: false,
+    		    theme: 'dark',
+    		  },
+    		};
 
-        // AREA CHART
-        // LINE CHART (Single Series)
-		const lineChartOptions = {
-		  series: [
-		    {
-		      name: 'Purchase Orders',
-		      data: [31, 40, 28, 51, 42, 109, 100], // Data for Purchase Orders
-		    },
-		  ],
-		  chart: {
-		    type: 'line', // Change type to 'line'
-		    background: 'transparent',
-		    height: 350,
-		    toolbar: {
-		      show: false,
-		    },
-		  },
-		  colors: ['#00ab57'], // Color for the line
-		  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-		  markers: {
-		    size: 6,
-		    strokeColors: '#1b2635',
-		    strokeWidth: 3,
-		  },
-		  stroke: {
-		    curve: 'smooth',
-		  },
-		  xaxis: {
-		    axisBorder: {
-		      color: '#55596e',
-		      show: true,
-		    },
-		    axisTicks: {
-		      color: '#55596e',
-		      show: true,
-		    },
-		    labels: {
-		      offsetY: 5,
-		      style: {
-		        colors: '#f5f7ff',
-		      },
-		    },
-		  },
-		  yaxis: {
-		    title: {
-		      text: 'Purchase Orders',
-		      style: {
-		        color: '#f5f7ff',
-		      },
-		    },
-		    labels: {
-		      style: {
-		        colors: ['#f5f7ff'],
-		      },
-		    },
-		  },
-		  tooltip: {
-		    shared: true,
-		    intersect: false,
-		    theme: 'dark',
-		  },
-		};
-		
-		const lineChart = new ApexCharts(
-		  document.querySelector('#line-chart'),
-		  lineChartOptions
-		);
-		lineChart.render();
+    		const lineChart = new ApexCharts(
+    		  document.querySelector('#line-chart'),
+    		  lineChartOptions
+    		);
+    		lineChart.render();
 
         
         function toggleDropdown() {
@@ -820,6 +959,53 @@
                   }
               }
           }
+       
+          function filterTransactionTable() {
+              var input, filter, table, tr, td, i, txtValue;
+              input = document.getElementById("transactionSortOption");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("transactionTable");
+              tr = table.getElementsByTagName("tr");
+
+              console.log(`Filtering transaction table rows for: ${filter}`);
+
+              for (i = 0; i < tr.length; i++) {
+                  td = tr[i].getElementsByTagName("td")[1]; // Column 2 for transactionTable
+                  if (td) {
+                      txtValue = td.textContent || td.innerText;
+                      console.log(txtValue);
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                          tr[i].style.display = "";
+                      } else {
+                          tr[i].style.display = "none";
+                      }
+                  }
+              }
+          }
+
+          function filterCustomerTable() {
+              var input, filter, table, tr, td, i, txtValue;
+              input = document.getElementById("customerSortOption");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("customerTable");
+              tr = table.getElementsByTagName("tr");
+
+              console.log(`Filtering customer table rows for: ${filter}`);
+
+              for (i = 0; i < tr.length; i++) {
+                  td = tr[i].getElementsByTagName("td")[2]; // Column 3 for customerTable
+                  if (td) {
+                      txtValue = td.textContent || td.innerText;
+                      console.log(txtValue);
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                          tr[i].style.display = "";
+                      } else {
+                          tr[i].style.display = "none";
+                      }
+                  }
+              }
+          }
+
           
     </script>
   </body>

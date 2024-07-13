@@ -12,8 +12,8 @@
 	    username = nameParts[0]; // Assuming first part is the first name
 	}
 
-	ArrayList<Transaction> transactions = (ArrayList<Transaction>) request.getAttribute("transactions");
-	ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) request.getAttribute("vehicles");
+	ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactions");
+	ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) session.getAttribute("vehicles");
 %>
 
 <!DOCTYPE html>
