@@ -7,14 +7,14 @@
         String indexParam = request.getParameter("index");
     	String titleParam = request.getParameter("title");
     	String addressParam = request.getParameter("address");
+    	String pumpAvail = request.getParameter("retrievedString");
 
-        // Check if indexParam is not null and parse it to an integer
         int selectedIndex = -1; // Default value or error handling if needed
         if (indexParam != null && !indexParam.isEmpty()) {
             try {
                 selectedIndex = Integer.parseInt(indexParam);
             } catch (NumberFormatException e) {
-                // Handle parsing error if necessary
+            	
                 e.printStackTrace();
             }
         }
@@ -26,6 +26,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pump | FuelSwift</title>
     <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -126,10 +128,70 @@
 	        background-color: red; /* Selected background color */
 	        color: green; /* Selected text color */
 	    }
+	    .error-message {
+            position: fixed;
+            top: -100px; /* Initial position above the viewport */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            font-family: 'Montserrat';
+        }
+
+        .show {
+            animation: slideDown 1s forwards;
+        }
+
+        .hide {
+            animation: slideUp 1s forwards;
+        }
+
+        @keyframes slideDown {
+            to {
+                top: 20px; /* Final position */
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                top: 20px; /* Start from final position */
+                opacity: 1;
+            }
+            to {
+                top: -100px; /* Back to initial position */
+                opacity: 0;
+            }
+        }
+
+        .error-message h3 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .error-message p {
+            margin: 0;
+            font-size: 15px;
+        }
         
     </style>
 </head>
 <body>
+	<!-- Error message container -->
+    <div id="errorMessage" class="error-message">
+        <h3>Error!</h3>
+        <p id="errorMessageText">This is an error message.</p>
+    </div>
 	<!-- Navigation Bar with Logo -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid d-flex align-items-center">
@@ -225,77 +287,130 @@
      <small>&copy; FuelSwift</small>
 </div>
 <script>
-function selectOption(option) {
-    if (option !== 'other') {
-        document.getElementById('amount').value = option;
-        calculateLitres();
-    }
-}
+	function selectOption(option) {
+	    if (option !== 'other') {
+	        document.getElementById('amount').value = option;
+	        calculateLitres();
+	    }
+	}
+	
+	const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
+	function calculateLitres() {
+	    const amount = document.getElementById('amount').value / 1;
+	    const litres = amount / pricePerLiter;
+	    document.getElementById('litres').value = litres.toFixed(2); // Update litres input field
+	    document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+	    document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2); 
+	}
+	// Define initial current points
+	let currentPoints = 1; // Assuming starting points
+	const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
+	// Function to handle toggle click
+	function handleToggle() {
+		 const toggle = document.getElementById('switch');
+		 const amount = document.getElementById('amount').value / 1;
+	     const currentPointsElement = document.getElementById('currentPts');
+	     
+	     if (toggle.checked) {
+	         // Deduct points if toggle is checked
+	         const deductedAmount = amount - pointsToDeduct;
+	         // Update UI with new total amount value
+	         document.getElementById('totAmount').innerText = 'RM' + deductedAmount.toFixed(2);
+	         currentPointsElement.innerText = 'Redeem ' + currentPoints + ' pts';
+	         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+	         document.getElementById('ptsRedeem').innerText = '-RM' + pointsToDeduct;
+	     } else {
+	         // If toggle is unchecked, show the original amount
+	         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
+	    	 document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2);
+	    	 document.getElementById('ptsRedeem').innerText = '-RM0.00';
+	         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
+	     }
+	 }
+	
+	 // Add event listener to toggle
+	 document.getElementById('switch').addEventListener('change', handleToggle);
+	 
+	// Function to initialize button states based on pump availability
+	    function initializeButtons(pumpAvail) {
+	        const totalPumps = 6; // Total number of pumps
+	        for (let i = 1; i <= totalPumps; i++) {
+	            const btn = document.getElementById(`btnPump${i}`);
+	            if (pumpAvail.includes(i.toString())) {
+	                // Pump is available
+	                btn.disabled = false;
+	            } else {
+	                // Pump is not available
+	                btn.disabled = true;
+	                btn.addEventListener('click', function() {
+	                	const errorMessage = `Pump ${i} is currently occupied. Please use other pumps.`;
+	                    showError(errorMessage);
+	                });
+	            }
+	        }
+	    }
 
-const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
-function calculateLitres() {
-    const amount = document.getElementById('amount').value / 1;
-    const litres = amount / pricePerLiter;
-    document.getElementById('litres').value = litres.toFixed(2); // Update litres input field
-    document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
-    document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2); 
-}
-// Define initial current points
-let currentPoints = 1; // Assuming starting points
-const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
-// Function to handle toggle click
-function handleToggle() {
-	 const toggle = document.getElementById('switch');
-	 const amount = document.getElementById('amount').value / 1;
-     const currentPointsElement = document.getElementById('currentPts');
-     
-     if (toggle.checked) {
-         // Deduct points if toggle is checked
-         const deductedAmount = amount - pointsToDeduct;
-         // Update UI with new total amount value
-         document.getElementById('totAmount').innerText = 'RM' + deductedAmount.toFixed(2);
-         currentPointsElement.innerText = 'Redeem ' + currentPoints + ' pts';
-         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
-         document.getElementById('ptsRedeem').innerText = '-RM' + pointsToDeduct;
-     } else {
-         // If toggle is unchecked, show the original amount
-         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
-    	 document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2);
-    	 document.getElementById('ptsRedeem').innerText = '-RM0.00';
-         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
+	    // Call initializeButtons function with pumpAvail data from JSP
+	    initializeButtons('<%= pumpAvail %>');
+	 
+	 function selectPump(index) {
+		    document.getElementById('selectedPump').innerText = index;
+		}
+	 
+	// Function to show error message
+     function showError(message) {
+         var errorMessage = document.getElementById('errorMessage');
+         var errorMessageText = document.getElementById('errorMessageText');
+         
+         // Set error message text
+         errorMessageText.textContent = message;
+         
+         // Show error message
+         errorMessage.classList.add('show');
+         errorMessage.classList.remove('hide');
+         
+         // Automatically hide after 2 seconds 
+         setTimeout(function() {
+             hideError();
+         }, 2000); 
      }
- }
 
- // Add event listener to toggle
- document.getElementById('switch').addEventListener('change', handleToggle);
- 
- function selectPump(index) {
-	    document.getElementById('selectedPump').innerText = index;
-	}
- 
- function payNow() {
-	    // Retrieve values needed for parameters
-	    const index = document.getElementById('selectedPump').innerText;
-	    const totAmount = document.getElementById('totAmount').innerText;
-	    const amount = document.getElementById('amount').value;
-	    const pointsRed = document.getElementById('ptsRedeem').innerText;
-	    const litres = document.getElementById('litres').value;
-	    const currentPts = currentPoints;
-	    
-
-	    // Retrieve indexParam from JSP scripting
-	    const indexParam = '<%=indexParam %>'; // Replace with actual JSP variable name if different
-	    const titleParam = '<%=titleParam %>';
-	    // Construct the URL with parameters
-	    const url = `/FuelSwift/Payment/payment.jsp?index=`+ index + `&litres=` + litres + `&currentPts=` + currentPts +`&pointsRed=` + pointsRed + `&totAmount=` + totAmount + `&amount=` + amount +  `&indexParam=` + indexParam + `&title=` + titleParam;
-	    
-	    // Debugging: Output constructed URL to console
-	    console.log("index" + index);
-	    console.log("Redirecting to: " + url);
-
-	    // Redirect to the payment page with the constructed URL
-	    window.location.href = url;
-	}
+     // Function to hide error message
+     function hideError() {
+         var errorMessage = document.getElementById('errorMessage');
+         
+         // Hide error message
+         errorMessage.classList.remove('show');
+         errorMessage.classList.add('hide');
+     }
+	 
+	 function payNow() {
+		    // Retrieve values needed for parameters
+		    const index = document.getElementById('selectedPump').innerText;
+		    const totAmount = document.getElementById('totAmount').innerText;
+		    const amount = document.getElementById('amount').value;
+		    const pointsRed = document.getElementById('ptsRedeem').innerText;
+		    const litres = document.getElementById('litres').value;
+		    const currentPts = currentPoints;
+		    
+		 // Check if index or amount is empty or null
+            if (!index || !amount || index.trim() === '' || amount.trim() === '') {
+                showError('Please select the pump number & enter amount.');
+                return;
+            }
+		    else{
+		    	// Retrieve indexParam from JSP scripting
+			    const indexParam = '<%=indexParam %>'; 
+			    const titleParam = '<%=titleParam %>';
+			    // Construct the URL with parameters
+			    const url = `/FuelSwift/Payment/payment.jsp?index=`+ index + `&litres=` + litres + `&currentPts=` + currentPts +`&pointsRed=` + pointsRed + `&totAmount=` + totAmount + `&amount=` + amount +  `&indexParam=` + indexParam + `&title=` + titleParam;
+			    
+			    console.log("index" + index);
+			    console.log("Redirecting to: " + url);
+		
+			    window.location.href = url;
+		    }
+		}
          
 </script>
 </body>
