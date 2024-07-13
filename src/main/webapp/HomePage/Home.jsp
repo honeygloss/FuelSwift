@@ -1072,6 +1072,29 @@
                             vehicles.splice(vehicles.indexOf(vehicle), 1);
                             renderDropdown(); // Refresh dropdown after deletion
                             $('#deleteModal').modal('hide'); // Hide delete modal after deletion
+                            
+                         // Send data to the servlet for database deletion
+                            fetch('/FuelSwift/UpdateVehicle/DeleteVehicleServlet', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: `deletePlateNumber=${encodeURIComponent(vehicle.plateNumber)}`
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Form submitted successfully');
+                                    // Handle success scenario here, such as updating UI or showing a success message
+                                } else {
+                                    console.error('Form submission failed');
+                                    // Handle failure scenario here, such as showing an error message to the user
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                // Handle any fetch error here, such as network issues or server not responding
+                            });
+                            
                             location.reload();
                         });
                     });
