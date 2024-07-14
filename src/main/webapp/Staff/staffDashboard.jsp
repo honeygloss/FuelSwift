@@ -33,51 +33,13 @@
 		ArrayList<String> time = (ArrayList<String>) session.getAttribute("time");
 		ArrayList<String> petrolStation = (ArrayList<String>) session.getAttribute("petrolStation");
 		ArrayList<String> totalAmt = (ArrayList<String>) session.getAttribute("totalAmt");
+		
 		ArrayList<String> pumpStation = (ArrayList<String>) session.getAttribute("pumpStation");
 	    ArrayList<Integer> countPump = (ArrayList<Integer>) session.getAttribute("countPump");
 	    
-	 // Convert ArrayList<String> pumpStation to JavaScript array
-	    StringBuilder pumpStationArray = new StringBuilder("[");
-	    for (int i = 0; i < pumpStation.size(); i++) {
-	        pumpStationArray.append("\"").append(pumpStation.get(i)).append("\"");
-	        if (i < pumpStation.size() - 1) {
-	            pumpStationArray.append(", ");
-	        }
-	    }
-	    pumpStationArray.append("]");
-
-	    // Convert ArrayList<Integer> countPump to JavaScript array
-	    StringBuilder countPumpArray = new StringBuilder("[");
-	    for (int i = 0; i < countPump.size(); i++) {
-	        countPumpArray.append(countPump.get(i));
-	        if (i < countPump.size() - 1) {
-	            countPumpArray.append(", ");
-	        }
-	    }
-	    countPumpArray.append("]");
 	    
-	    ArrayList<Double> totalAmount = (ArrayList<Double>) session.getAttribute("totalAmount");
+	    ArrayList<Integer> totalAmount = (ArrayList<Integer>) session.getAttribute("totalAmount");
 	    ArrayList<String> dateTransaction = (ArrayList<String>) session.getAttribute("dateTransaction");
-
-	    // Convert totalAmount ArrayList to JavaScript array
-	    StringBuilder totalAmountArray = new StringBuilder("[");
-	    for (int i = 0; i < totalAmount.size(); i++) {
-	        totalAmountArray.append(totalAmount.get(i));
-	        if (i < totalAmount.size() - 1) {
-	            totalAmountArray.append(", ");
-	        }
-	    }
-	    totalAmountArray.append("]");
-
-	    // Convert dateTransaction ArrayList to JavaScript array
-	    StringBuilder dateTransactionArray = new StringBuilder("[");
-	    for (int i = 0; i < dateTransaction.size(); i++) {
-	        dateTransactionArray.append("\"").append(dateTransaction.get(i)).append("\"");
-	        if (i < dateTransaction.size() - 1) {
-	            dateTransactionArray.append(", ");
-	        }
-	    }
-	    dateTransactionArray.append("]");
 	%>    
     
     
@@ -746,13 +708,11 @@
         // ---------- CHARTS ----------
         
         // BAR CHART
-	    const pumpStation = <%= pumpStationArray.toString() %>; // JavaScript array of pumpStation values
-	    const countPump = <%= countPumpArray.toString() %>;     // JavaScript array of countPump values
-	
+	    
 	    const barChartOptions = {
 	      series: [
 	        {
-	          data: countPump, // Assigning countPump data to series data
+	          data: <%=countPump%>, // Assigning countPump data to series data
 	          name: 'Pump Station',
 	        },
 	      ],
@@ -810,7 +770,7 @@
 	        theme: 'dark',
 	      },
 	      xaxis: {
-	        categories: pumpStation, // Assigning pumpStation categories (x-axis labels)
+	        categories: <%=pumpStation%>, // Assigning pumpStation categories (x-axis labels)
 	        title: {
 	          style: {
 	            color: '#f5f7ff',
@@ -863,7 +823,7 @@
     		  series: [
     		    {
     		      name: 'Sales Orders',
-    		      data: <%= totalAmountArray.toString() %>, // Data for Sales Orders (totalAmount)
+    		      data: <%= totalAmount %>, // Data for Sales Orders (totalAmount)
     		    },
     		  ],
     		  chart: {
@@ -875,7 +835,7 @@
     		    },
     		  },
     		  colors: ['#00ab57'],
-    		  labels: <%= dateTransactionArray.toString() %>, // Labels for x-axis (dateTransaction)
+    		  labels: <%= dateTransaction %>, // Labels for x-axis (dateTransaction)
     		  markers: {
     		    size: 6,
     		    strokeColors: '#1b2635',
