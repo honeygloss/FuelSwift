@@ -12,8 +12,11 @@
 	    username = nameParts[0]; // Assuming first part is the first name
 	}
 
-	ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactions");
-	ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) session.getAttribute("vehicles");
+	 ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactions");
+	 String customerId = (String) session.getAttribute("customerId");
+	    if (customerId != null && transactions == null) {
+	        response.sendRedirect("TransactionHistoryServlet?customerId=" + customerId);
+	  ArrayList<VehicleBean> vehicles = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
 %>
 
 <!DOCTYPE html>
@@ -392,15 +395,15 @@
             <!--------------------------------- Transaction History ---------------------------------------->
             <div id="transaction-history" class="container box-area-alt" style="display: none;">
             	<h1 style="font-weight: bold;">Transaction History</h1>
-				    <% if (transactions != null) {
-			        for (Transaction transaction : transactions) { %>
-			            <div class="transaction-item">
-			                <p>Transaction ID: #<%= transaction.getTransactionId() %></p>
-			                <p>Date: <%= transaction.getDate() %></p>
-			                <p>Amount: RM <%= transaction.getAmount() %></p>
-			                <p>Status: Completed</p>
-			            </div>
-			        <% }
+				     <% if (transactions != null) {
+        				for (Transaction transaction : transactions) { %>
+            				<div class="transaction-item">
+                				<p>Transaction ID: #<%= transaction.getTransactionId() %></p>
+                				<p>Date: <%= transaction.getDate() %></p>
+               	 				<p>Amount: RM <%= transaction.getAmount() %></p>
+                				<p>Status: Completed</p>
+            				</div>
+        <% }
 				    } else { %>
 				        <div style="position: absolute; top: 50%; left: 50%; text-align:center; transform: translate(-50%, -50%);">
 						    <i class="bi bi-fuel-pump" style="color:grey; font-size:44px; text-align:center;"></i>
@@ -924,12 +927,12 @@
     document.addEventListener('DOMContentLoaded', function() {
     	var vehicles = [];
 
-        <% for (Vehicle vehicle : vehicles){ %>
-            var vehicle = {
-                plateNumber: '<%= vehicle.getPlateNumber() %>',
-                vehicleType: '<%= vehicle.getType() %>',
-                vin: '<%= vehicle.getVIN() %>'
-            };
+        <% for (VehicleBean vehicle : vehicles) { %>
+                vehicles.push({
+                    plateNumber: '<%= vehicle.getPlateNumber() %>',
+                    vehicleType: '<%= vehicle.getVehicleType() %>',
+                    vin: '<%= vehicle.getVin() %>'
+                });
             vehicles.push(vehicle);
         <% } %>
         
@@ -1028,7 +1031,7 @@
                                     dropdownItem.querySelector("span").textContent = newPlateNumber;
                                     
                                  // Send data to the servlet for database update
-                                    fetch('/FuelSwift/UpdateVehicle/UpdateVehicleServlet', {
+                                    fetch('/UpdateVehicleServlet', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -1074,7 +1077,7 @@
                             $('#deleteModal').modal('hide'); // Hide delete modal after deletion
                             
                          // Send data to the servlet for database deletion
-                            fetch('/FuelSwift/UpdateVehicle/DeleteVehicleServlet', {
+                            fetch('/DeleteVehicleServlet', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -1165,7 +1168,7 @@
                         renderDropdown();
                         
                      // Send data to the servlet for database update
-                        fetch('/FuelSwift/UpdateVehicle/AddVehicleServlet', {
+                        fetch('/AddVehicleServlet', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'

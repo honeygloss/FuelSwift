@@ -12,7 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@WebServlet("/FuelSwift/UpdateVehicle/AddVehicleServlet")
+@WebServlet("/AddVehicleServlet")
 public class AddVehicleServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
