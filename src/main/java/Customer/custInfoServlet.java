@@ -49,23 +49,21 @@ public class custInfoServlet extends HttpServlet {
 
 	private Customer getCustomerById(String customerId) {
         Customer customer = null;
-        String query = "SELECT * FROM customer WHERE id = ?";
+        String query = "SELECT * FROM customer WHERE custID = ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root", "root");
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root",
+                "root");
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-        	preparedStatement.setString(1, customerId);
+            preparedStatement.setString(1, customerId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     customer = new Customer(
-                        resultSet.getString("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("email"),
-                        resultSet.getString("plateNo"),
-                        resultSet.getString("geranNo"),
-                        resultSet.getString("vehicleType"),
-                        resultSet.getString("password"),
-                        resultSet.getString("confirmPassword"),
+                        resultSet.getString("custID"),
+                        resultSet.getString("custName"),
+                        resultSet.getString("custEmail"),
+                        resultSet.getString("custPass"),
+                        resultSet.getInt("pts"),
                         resultSet.getString("gender"),
                         resultSet.getString("phoneNo")
                     );
