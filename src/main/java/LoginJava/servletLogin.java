@@ -15,6 +15,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 //@WebServlet("/loginServlet")
 public class servletLogin extends HttpServlet {
@@ -42,7 +44,7 @@ public class servletLogin extends HttpServlet {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root", "root");
-            ps = con.prepareStatement("SELECT * FROM customer WHERE email = ? AND password = ?");
+            ps = con.prepareStatement("SELECT * FROM customer WHERE custEmail = ? AND custPassword = ?");
             ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
@@ -102,6 +104,14 @@ public class servletLogin extends HttpServlet {
                     Cookie userTypeCookie = new Cookie("userType", "staff");
                     userTypeCookie.setMaxAge(60*60*24); // 1 day
                     response.addCookie(userTypeCookie);
+                    
+                 // Get total payment summaries
+                    Map<String, Double> monthlyTotal = getMonthlyTotalPayments(con);
+                    Map<Integer, Double> weeklyTotal = getWeeklyTotalPayments(con);
+
+                    // Set the summaries as session attributes
+                    session.setAttribute("monthlyTotal", monthlyTotal);
+                    session.setAttribute("weeklyTotal", weeklyTotal);
 
                     String contextPath = request.getContextPath();
                     response.sendRedirect(contextPath + "/HomePage/home.jsp"); // Redirect to staff home page
@@ -125,5 +135,36 @@ public class servletLogin extends HttpServlet {
         }
 
         out.close();
+    }
+    private Map<String, Double> getMonthlyTotalPayments(Connection con) throws SQLException {
+        Map<String, Double> monthlyTotal = new HashMap<>();
+        PreparedStatement ps = con.prepareStatement(
+            "SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(totalPymt) AS total " +
+            "FROM refuelVehicle " +
+            "GROUP BY month"
+        );
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            monthlyTotal.put(rs.getString("month"), rs.getDouble("total"));
+        }
+        rs.close();
+        ps.close();
+        return monthlyTotal;
+    }
+    
+    private Map<Integer, Double> getWeeklyTotalPayments(Connection con) throws SQLException {
+        Map<Integer, Double> weeklyTotal = new HashMap<>();
+        PreparedStatement ps = con.prepareStatement(
+            "SELECT WEEK(date) AS week, SUM(totalPymt) AS total " +
+            "FROM refuelVehicle " +
+            "GROUP BY WEEK(date)"
+        );
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            weeklyTotal.put(rs.getInt("week"), rs.getDouble("total"));
+        }
+        rs.close();
+        ps.close();
+        return weeklyTotal;
     }
 }
