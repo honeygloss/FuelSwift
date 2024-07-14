@@ -10,7 +10,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>servletCustomer</servlet-name>
-        <url-pattern>/Registration/servletCustomer</url-pattern>
+        <url-pattern>/Customer/servletCustomer</url-pattern>
     </servlet-mapping>
     <servlet>
     <description></description>
