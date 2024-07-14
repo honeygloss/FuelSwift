@@ -105,13 +105,13 @@ public class servletLogin extends HttpServlet {
                     userTypeCookie.setMaxAge(60*60*24); // 1 day
                     response.addCookie(userTypeCookie);
                     
-                 // Get total payment summaries
-                    Map<String, Double> monthlyTotal = getMonthlyTotalPayments(con);
-                    Map<Integer, Double> weeklyTotal = getWeeklyTotalPayments(con);
+                 // Get top pump stations sales by month
+                    Map<String, Map<String, Double>> topPumpStationsByMonth = getTopPumpStationsByMonth(con);
+                    session.setAttribute("topPumpStationsByMonth", topPumpStationsByMonth);
 
-                    // Set the summaries as session attributes
-                    session.setAttribute("monthlyTotal", monthlyTotal);
-                    session.setAttribute("weeklyTotal", weeklyTotal);
+                    // Get weekly total payments by month
+                    Map<String, Map<Integer, Double>> weeklyTotalByMonth = getWeeklyTotalPaymentsByMonth(con);
+                    session.setAttribute("weeklyTotalByMonth", weeklyTotalByMonth);
 
                     String contextPath = request.getContextPath();
                     response.sendRedirect(contextPath + "/HomePage/home.jsp"); // Redirect to staff home page
@@ -136,35 +136,45 @@ public class servletLogin extends HttpServlet {
 
         out.close();
     }
-    private Map<String, Double> getMonthlyTotalPayments(Connection con) throws SQLException {
-        Map<String, Double> monthlyTotal = new HashMap<>();
-        PreparedStatement ps = con.prepareStatement(
-            "SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(totalPymt) AS total " +
-            "FROM refuelVehicle " +
-            "GROUP BY month"
-        );
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            monthlyTotal.put(rs.getString("month"), rs.getDouble("total"));
-        }
-        rs.close();
-        ps.close();
-        return monthlyTotal;
-    }
-    
-    private Map<Integer, Double> getWeeklyTotalPayments(Connection con) throws SQLException {
-        Map<Integer, Double> weeklyTotal = new HashMap<>();
-        PreparedStatement ps = con.prepareStatement(
-            "SELECT WEEK(date) AS week, SUM(totalPymt) AS total " +
-            "FROM refuelVehicle " +
-            "GROUP BY WEEK(date)"
-        );
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            weeklyTotal.put(rs.getInt("week"), rs.getDouble("total"));
-        }
-        rs.close();
-        ps.close();
-        return weeklyTotal;
-    }
+    private Map<String, Map<String, Double>> getTopPumpStationsByMonth(Connection con) throws SQLException {
+   	 Map<String, Map<String, Double>> pumpStationMonthlySales = new HashMap<>();
+       PreparedStatement ps = con.prepareStatement(
+       		"SELECT pumpStation, DATE_FORMAT(date, '%Y-%m') AS month, SUM(totalPymt) AS total " +
+       		        "FROM refuelVehicle " +
+       		        "GROUP BY pumpStation, month " +
+       		        "ORDER BY total DESC " +
+       		        "LIMIT 5"
+       );
+       ResultSet rs = ps.executeQuery();
+       while (rs.next()) {
+           String pumpStation = rs.getString("pumpStation");
+           String month = rs.getString("month");
+           Double total = rs.getDouble("total");
+
+           pumpStationMonthlySales.computeIfAbsent(pumpStation, k -> new HashMap<>()).put(month, total);
+       }
+       rs.close();
+       ps.close();
+       return pumpStationMonthlySales;
+   }
+   
+   private Map<String, Map<Integer, Double>> getWeeklyTotalPaymentsByMonth(Connection con) throws SQLException {
+       Map<String, Map<Integer, Double>> weeklyTotalByMonth = new HashMap<>();
+       PreparedStatement ps = con.prepareStatement(
+           "SELECT DATE_FORMAT(date, '%Y-%m') AS month, WEEK(date) AS week, SUM(totalPymt) AS total " +
+           "FROM refuelVehicle " +
+           "GROUP BY month, week"
+       );
+       ResultSet rs = ps.executeQuery();
+       while (rs.next()) {
+           String month = rs.getString("month");
+           int week = rs.getInt("week");
+           double total = rs.getDouble("total");
+
+           weeklyTotalByMonth.computeIfAbsent(month, k -> new HashMap<>()).put(week, total);
+       }
+       rs.close();
+       ps.close();
+       return weeklyTotalByMonth;
+   }
 }
