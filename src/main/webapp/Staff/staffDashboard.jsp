@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*"%>
+    pageEncoding="UTF-8" import="java.util.*, Customer.Customer"%>
     
 <%
 	    String staffName = (String)session.getAttribute("staffName");
@@ -569,7 +569,7 @@
 			        <tr>
 			            <td><%= count++ %></td>
 			            <td><%= customer.getEmail() %></td>
-			            <td><%= customer.getCustomerName() %></td>
+			            <td><%= customer.getName() %></td>
 			            <td><%= customer.getGender() %></td>
 			            <td><%= customer.getPoints() %></td>
 			        </tr>
