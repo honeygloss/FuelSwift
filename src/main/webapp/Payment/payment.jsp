@@ -256,7 +256,7 @@
     }
 
     function cancel() {
-        window.location.href = "/FuelSwift/HomePage/HomePage2.html";
+        window.location.href = "/FuelSwift/HomePage/Home.jsp";
     }
     // Function to format date and time
     function formatDate(date) {

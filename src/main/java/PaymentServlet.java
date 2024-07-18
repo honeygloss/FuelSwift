@@ -88,7 +88,7 @@ public class PaymentServlet extends HttpServlet {
             pstmtCustomer.executeUpdate();
 
             // Redirect to success page or send success response
-            response.sendRedirect("success.html");
+            response.sendRedirect("/HomePage/Home.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle error, redirect to error page or send error response
