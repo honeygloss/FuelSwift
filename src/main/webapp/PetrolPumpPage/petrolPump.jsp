@@ -4,10 +4,10 @@
 <%-- Java code to retrieve and display index parameter --%>
     <%
         // Retrieve index parameter from URL
-        String indexParam = request.getParameter("index");
-    	String titleParam = request.getParameter("title");
-    	String addressParam = request.getParameter("address");
-    	String pumpAvail = request.getParameter("retrievedString");
+        String indexParam = session.getAttribute("index");
+    	String titleParam = session.getAttribute("title");
+    	String addressParam = session.getAttribute("address");
+    	String pumpAvail = session.getAttribute("retrievedString");
 
         int selectedIndex = -1; // Default value or error handling if needed
         if (indexParam != null && !indexParam.isEmpty()) {
