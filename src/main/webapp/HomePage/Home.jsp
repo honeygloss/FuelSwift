@@ -15,6 +15,8 @@
 	ArrayList<TransactionHistory> transactions = (ArrayList<TransactionHistory>) session.getAttribute("transactions");
     String customerId = (String) session.getAttribute("customerId");
 	ArrayList<VehicleBean> vehicleList = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
+	String gender = (String) session.getAttribute("gender");
+	String phoneNumber = (String) session.getAttribute("phoneNumber");
 %>
 
 <!DOCTYPE html>
@@ -432,19 +434,27 @@
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Gender</label>
 		                    <div class="dropdown" id="gender">
-		                        <select class="form-select m-0 mt-0 fs-6 disabled-field" id="genderSelect" name="gender" style="background-color: white; color: black; width: 330px; padding: 0.5rem 1rem;" disabled>
-		                            <option value="" selected disabled>Select Gender</option>
-		                            <option value="male">Male</option>
-		                            <option value="female">Female</option>
-		                            <option value="other">Rather not say</option>
-		                        </select>
-		                    </div>
+		                        <% if (gender != null && !gender.isEmpty()) { %>
+		                            <p class="form-control form-control-lg bg-light fs-6"><%= gender %></p>
+		                        <% } else { %>
+		                            <select class="form-select m-0 mt-0 fs-6 disabled-field" id="genderSelect" name="gender" style="background-color: white; color: black; width: 330px; padding: 0.5rem 1rem;" disabled>
+		                                <option value="" selected disabled>Select Gender</option>
+		                                <option value="male">Male</option>
+		                                <option value="female">Female</option>
+		                                <option value="other">Rather not say</option>
+		                            </select>
+		                        <% } %>
+                    		</div>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Phone Number</label>
 		                    <div class="input-group">
 		                        <span class="input-group-text">+60</span>
-		                        <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="phoneNo" id="phoneNo" placeholder="Enter Phone Number" disabled>
+		                        <% if (phoneNumber != null && !phoneNumber.isEmpty()) { %>
+		                            <p class="form-control form-control-lg bg-light fs-6"><%= phoneNumber %></p>
+		                        <% } else { %>
+		                            <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="phoneNo" id="phoneNo" placeholder="Enter Phone Number" disabled>
+		                        <% } %>
 		                    </div>
 		                </div>
 		                <div class="input-group-alt mb-3" id="editBtn">
@@ -645,7 +655,7 @@
 	                        </div>                       
 	                    </div>
 	                    <form id="fuelNowForm" action="PumpAvailabilityServlet" method="post">
-						    <input type="hidden" id="title"name="title" value="">
+						    <input type="hidden" id="index"name="title" value="">
 						    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
 						        <button type="submit" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
 						    </div>
@@ -727,7 +737,6 @@
                     </div>
                     
                     <input type="hidden" id="plateNumBefore" value="">
-                    <input type="hidden" id="plateNumberAfter" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1022,7 +1031,6 @@
                                     newVIN !== vehicle.vin) {
                                 	
                                 	document.getElementById('plateNumBefore').value = vehicle.plateNumber;
-                                	document.getElementById('plateNumAfter').value = newPlateNumber;
                                 	
                                     // Update vehicle details
                                     vehicle.plateNumber = newPlateNumber;
@@ -1259,7 +1267,7 @@
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
             
-            document.getElementById('title').value = title;
+            document.getElementById('index').value = index;
         
         } else {
             $('#locationModal').modal('show');
