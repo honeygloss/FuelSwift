@@ -13,11 +13,11 @@ public class PumpAvailabilityServlet extends HttpServlet {
         // Assuming these are the available pump numbers
         String availablePumps = "1,2,3,4,5,6";
 
-        // Set the response type to plain text
-        response.setContentType("text/plain");
-        
-        // Write the available pumps string to the response
-        response.getWriter().write(availablePumps);
+        // Set available pumps as a request attribute
+        request.setAttribute("availablePumps", availablePumps);
+
+        // Forward the request to petrolPump.jsp
+        request.getRequestDispatcher("/petrolPump.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

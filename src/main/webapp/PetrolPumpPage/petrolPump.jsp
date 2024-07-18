@@ -4,10 +4,10 @@
 <%-- Java code to retrieve and display index parameter --%>
     <%
         // Retrieve index parameter from URL
-        String indexParam = session.getAttribute("index");
-    	String titleParam = session.getAttribute("title");
-    	String addressParam = session.getAttribute("address");
-    	String pumpAvail = session.getAttribute("retrievedString");
+        String indexParam = (String)session.getAttribute("index");
+    	String titleParam = (String)session.getAttribute("title");
+    	String addressParam = (String)session.getAttribute("address");
+    	String pumpAvail = (String)session.getAttribute("retrievedString");
 
         int selectedIndex = -1; // Default value or error handling if needed
         if (indexParam != null && !indexParam.isEmpty()) {
@@ -187,6 +187,11 @@
     </style>
 </head>
 <body>
+ <% 
+            String availablePumps = (String) request.getAttribute("availablePumps");
+            out.print(availablePumps);
+        %>
+
 	<!-- Error message container -->
     <div id="errorMessage" class="error-message">
         <h3>Error!</h3>
