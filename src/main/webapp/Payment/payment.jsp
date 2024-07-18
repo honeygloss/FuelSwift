@@ -25,21 +25,60 @@
             }
 	    }
 	    
-	    // Remove "RM" prefix and convert to appropriate data type
-	    String totAmountStr = request.getParameter("totAmount").substring(2); // Remove "RM"
-	    double totAmount = Double.parseDouble(totAmountStr); // Convert to double
+	    double totAmount = 0.0; // Convert to double
+	    
+	 // Remove "RM" prefix and convert to appropriate data type
+	    String totAmountStr = request.getParameter("totAmount");
+
+	    // Check if totAmountStr is not null and contains "RM"
+	    if (totAmountStr != null && totAmountStr.contains("RM")) {
+	        totAmountStr = totAmountStr.substring(2); // Remove "RM" prefix
+	        totAmount = Double.parseDouble(totAmountStr);
+	    }
+
 	    String formattedAmount = String.format("%.2f", totAmount);
 	    String pointsRed = request.getParameter("pointsRed");
-	    double amount = Double.parseDouble(request.getParameter("amount")); // Convert to double
-	    double litres = Double.parseDouble(request.getParameter("litres"));
-	    int locNum = Integer.parseInt(request.getParameter("indexParam")) + 1; // Convert to int and add 1
+	    
+	    String amountStr = request.getParameter("amount");
+	    double amount = 0.0; // Default value in case parsing fails or amountStr is empty
+
+	    if (amountStr != null && !amountStr.isEmpty()) {
+	        try {
+	            amount = Double.parseDouble(amountStr); // Convert to double
+	        } catch (NumberFormatException e) {
+	            // Handle parsing error if necessary
+	            e.printStackTrace(); // Log the exception or handle it based on your application's needs
+	        }
+	    }
+		
+	    String litreString = request.getParameter("litres");
+	    double litres = 0.0;
+	    if (litreString != null && !litreString.isEmpty()) {
+	        try {
+	        	litres = Double.parseDouble(amountStr); // Convert to double
+	        } catch (NumberFormatException e) {
+	            // Handle parsing error if necessary
+	            e.printStackTrace(); // Log the exception or handle it based on your application's needs
+	        }
+	    }
+	    
+	    String locString = request.getParameter("indexParam");
+	    int locNum = 0; // Convert to int and add 1
+	    if(pump != null && !pump.isEmpty()){
+	    	try{
+	    		locNum = Integer.parseInt(locString);
+	    	}catch (NumberFormatException e) {
+                // Handle parsing error if necessary
+                e.printStackTrace();
+            }
+	    }
 	    
 	    String transactionId = "SFS" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase().substring(0, 7);
 	 	
 	    // Calculate pointsEarned and points
 	    int pointsEarned = (int) totAmount; // totAmount as integer
 	    int points;
-	    if (pointsRed.equals("-RM0.00")) {		// no points redeemed
+	    if (pointsRed != null && pointsRed.equals("-RM0.00")) {		// no points redeemed
 	        points = pointsEarned  + currentPts;
 	    	currentPts = 0;
 	    } else {
@@ -101,6 +140,22 @@
                 <div class="form-group mt-3">
                     <button type="button" class="btn btn-secondary w-100" onclick="cancel()">Cancel</button>
                 </div>
+                
+                
+                <input type="hidden" id="title" value="<%= title %>">
+			    <input type="hidden" id="pumpNum" value="<%= pumpNum %>">
+			    <input type="hidden" id="currentPts" value="<%= currentPts %>">
+			    <input type="hidden" id="totAmount" value="<%= totAmount %>">
+			    <input type="hidden" id="pointsRed" value="<%= pointsRed %>">
+			    <input type="hidden" id="amount" value="<%= amount %>">
+			    <input type="hidden" id="locNum" value="<%= locNum %>">
+			    <input type="hidden" id="transactionId" value="<%= transactionId %>">
+			    <input type="hidden" id="pointsEarned" value="<%= pointsEarned %>">
+			    <input type="hidden" id="points" value="<%= points %>">
+			    <input type="hidden" id="litres" value="<%= litres %>">
+			    <input type="hidden" id="dateFuel" value="">
+			    <input type="hidden" id="paymentMethod" name="cardType" value="">
+			    <input type="hidden" id="timeFuel" value="">
             </form>
         </div>
     </div>
@@ -149,22 +204,6 @@
         </div>
     </div>
 </div>
-
-	<input type="hidden" id="title" value="<%= title %>">
-    <input type="hidden" id="pumpNum" value="<%= pumpNum %>">
-    <input type="hidden" id="currentPts" value="<%= currentPts %>">
-    <input type="hidden" id="totAmount" value="<%= totAmount %>">
-    <input type="hidden" id="pointsRed" value="<%= pointsRed %>">
-    <input type="hidden" id="amount" value="<%= amount %>">
-    <input type="hidden" id="locNum" value="<%= locNum %>">
-    <input type="hidden" id="transactionId" value="<%= transactionId %>">
-    <input type="hidden" id="pointsEarned" value="<%= pointsEarned %>">
-    <input type="hidden" id="points" value="<%= points %>">
-    <input type="hidden" id="litres" value="<%= litres %>">
-    <input type="hidden" id="dateFuel" value="">
-    <input type="hidden" id="paymentMethod" name="cardType" value="">
-    <input type="hidden" id="timeFuel" value="">
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script>
