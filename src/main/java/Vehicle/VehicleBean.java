@@ -4,19 +4,31 @@ import java.io.Serializable;
 
 public class VehicleBean implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String vehID;
     private String plateNumber;
     private String vehicleType;
     private String vin;
+    private String custID;
 
     // Constructors, getters, and setters
     public VehicleBean() {}
 
-    public VehicleBean(String plateNumber, String vehicleType, String vin) {
-        this.plateNumber = plateNumber;
+    public VehicleBean(String vehID, String plateNumber, String vehicleType, String vin, String custID) {
+        this.vehID=vehID;
+    	this.plateNumber = plateNumber;
         this.vehicleType = vehicleType;
         this.vin = vin;
+        this.custID=custID;
     }
 
+    public String getVehID() {
+    	return vehID;
+    }
+    
+    public void setVehID(String vehID) {
+    	this.vehID=vehID;
+    }
+    
     public String getPlateNumber() {
         return plateNumber;
     }
@@ -39,6 +51,14 @@ public class VehicleBean implements Serializable {
 
     public void setVin(String vin) {
         this.vin = vin;
+    }
+    
+    public String getCustID() {
+    	return custID;
+    }
+    
+    public void setCustID(String custID) {
+    	this.custID=custID;
     }
 
     @Override

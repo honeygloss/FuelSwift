@@ -9,6 +9,8 @@ public class Transaction {
     private String cardHolderName;
     private String transDate;
 
+    
+    public Transaction() {}
     public Transaction(String transactionId, String payMethod, String cardNum, String cardCVV, String cardExpiryDate, String cardHolderName, String transDate) {
     	this.transactionId=transactionId;
     	this.payMethod=payMethod;

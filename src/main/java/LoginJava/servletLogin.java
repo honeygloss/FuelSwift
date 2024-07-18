@@ -24,6 +24,8 @@ import java.util.Map;
 
 import Customer.Customer;
 import RefuelVehicle.refuelVehicleBean;
+import Transaction.Transaction;
+import Vehicle.VehicleBean;
 
 //@WebServlet("/loginServlet")
 public class servletLogin extends HttpServlet {
@@ -71,10 +73,23 @@ public class servletLogin extends HttpServlet {
                 session.setAttribute("user", email);
                 
                 String fullName = rs.getString("custName");
+                String custemail = rs.getString("custEmail");
+                int pts = rs.getInt("pts");
+                String custID = rs.getString("custID");
 
                 session.setAttribute("fullName", fullName);
-                session.setAttribute("email", email);
+                session.setAttribute("email", custemail);
+                session.setAttribute("points", pts);
+                session.setAttribute("customerId", custID);
                 session.setAttribute("userType", "customer");
+                
+             // Retrieve data from session
+                ArrayList<Transaction> transactions = getTransactions();;
+                ArrayList<VehicleBean> vehicleList = getVehicles() ;
+                
+                // Set data as request attributes
+                request.setAttribute("transactions", transactions);
+                request.setAttribute("vehicles", vehicleList);
                 
                 // Add cookies
                 Cookie emailCookie = new Cookie("email", URLEncoder.encode(email, StandardCharsets.UTF_8.toString()));
@@ -126,7 +141,7 @@ public class servletLogin extends HttpServlet {
                     ArrayList<Customer> customers = getCustomers();
                     session.setAttribute("customers", customers);
                    
-                    Map<String, ArrayList<String>> transactions = getTransactions();
+                    Map<String, ArrayList<String>> transactions = Transactions();
                     session.setAttribute("transId", transactions.get("transId"));
                     session.setAttribute("custName", transactions.get("custName"));
                     session.setAttribute("date", transactions.get("date"));
@@ -231,9 +246,61 @@ public class servletLogin extends HttpServlet {
        return customers;
    }
    
+   private ArrayList<VehicleBean> getVehicles() {
+	    ArrayList<VehicleBean> vehicles = new ArrayList<>();
+
+	    try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+	        String query = "SELECT vehID, vehPlateNo, vehType, vin, custID FROM vehicle";
+
+	        try (PreparedStatement statement = connection.prepareStatement(query);
+	             ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                VehicleBean vehicle = new VehicleBean();
+	                vehicle.setVehID(resultSet.getString("vehID"));
+	                vehicle.setPlateNumber(resultSet.getString("vehPlateNo"));
+	                vehicle.setVehicleType(resultSet.getString("vehType"));
+	                vehicle.setVin(resultSet.getString("vin"));
+	                vehicle.setCustID(resultSet.getString("custID"));
+	                vehicles.add(vehicle);
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return vehicles;
+	}
+
+   private ArrayList<Transaction> getTransactions() {
+	    ArrayList<Transaction> transactions = new ArrayList<>();
+
+	    try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+	        String query = "SELECT transactionID, paymentMethod, cardNum, cardCVV, cardExpiryDate, cardHolderName, transactionDate FROM transaction";
+
+	        try (PreparedStatement statement = connection.prepareStatement(query);
+	             ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                Transaction transaction = new Transaction();
+	                transaction.setTransactionId(resultSet.getString("transactionID"));
+	                transaction.setPayMethod(resultSet.getString("paymentMethod"));
+	                transaction.setCardNum(resultSet.getString("cardNum"));
+	                transaction.setCardCVV(resultSet.getString("cardCVV"));
+	                transaction.setExpiryDate(resultSet.getString("cardExpiryDate"));
+	                transaction.setHolderName(resultSet.getString("cardHolderName"));
+	                transactions.add(transaction);
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return transactions;
+	}
+
+   
   
    
-   private Map<String, ArrayList<String>> getTransactions() {
+   private Map<String, ArrayList<String>> Transactions() {
        Map<String, ArrayList<String>> transactions = new HashMap<>();
        transactions.put("transId", new ArrayList<>());
        transactions.put("custName", new ArrayList<>());
