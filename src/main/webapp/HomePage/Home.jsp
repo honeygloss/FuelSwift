@@ -425,11 +425,11 @@
 		            <form id="profileForm" action="UpdateProfileServlet" method="post">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
-		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder=<%=fullName %> disabled>
+		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Email</label>
-		                    <p class="form-control form-control-lg bg-light fs-6" name="email"><%=email %></p>
+		                    <p class="form-control form-control-lg bg-light fs-6" name="email">fatin@gmail.com</p>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Gender</label>
