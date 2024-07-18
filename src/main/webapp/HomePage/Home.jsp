@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="jakarta.servlet.http.*,jakarta.servlet.*, java.util.*"%>
+    pageEncoding="UTF-8" import="jakarta.servlet.http.*,jakarta.servlet.*, java.util.*, Transaction.TransactionHistory, Vehicle.VehicleBean"%>
 <%
 	String fullName = (String) session.getAttribute("fullName");
 	String email = (String) session.getAttribute("email");
@@ -14,9 +14,7 @@
 
 	ArrayList<TransactionHistory> transactions = (ArrayList<TransactionHistory>) session.getAttribute("transactions");
     String customerId = (String) session.getAttribute("customerId");
-    if (customerId != null && transactions == null) {
-        response.sendRedirect("TransactionHistoryServlet?customerId=" + customerId);
-	  ArrayList<VehicleBean> vehicles = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
+	ArrayList<VehicleBean> vehicleList = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
 %>
 
 <!DOCTYPE html>
@@ -324,7 +322,7 @@
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container-fluid d-flex align-items-center">
                 <!-- Navbar Brand (Logo) -->
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="#"onclick="window.location.reload();">
                     <img src="logo1.png" alt="Logo" width="50" height="45" class="d-inline-block align-text-top me-2">
                     <p style="font-weight: bold; color: yellow; font-size: 12px;">FuelSwift</p>
                 </a>
@@ -342,7 +340,7 @@
                         <div class="row align-items-center">
                             <div class="header-text mb-2 mt-2">
                                 <h5 style=" text-align: center;font-weight: bold; color: white">Welcome, <%=username %></h5>
-                                <h1 style=" text-align: center; font-weight: bold; font-size: 80px; margin-bottom: 10px; margin-top: 20px; color: white"><%=points %>.00</h1>
+                                <h1 style=" text-align: center; font-weight: bold; font-size: 80px; margin-bottom: 10px; margin-top: 20px; color: white"><%=points %></h1>
                                 <h2 style="text-align: center; font-size: 15px; color: white">Points</h2>
                             </div>
                         </div>
@@ -422,7 +420,7 @@
 		
 		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
 		        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
-		            <form id="profileForm" action="UpdateProfileServlet" method="post" onsubmit="UpdateProfileServlet">
+		            <form id="profileForm" action="UpdateProfileServlet" method="post">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
 		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>
@@ -453,7 +451,7 @@
 		                    <button type="button" class="btn-alt custombutton btn-lg w-100 fs-6" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="enableEditing()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
 		                </div>
 		                <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
-		                    <button type="submit" class="btn-alt btn-success btn-block">Update</button>
+		                    <button type="submit" class="btn-alt btn-success btn-block" onclick="handleSubmit()">Update</button>
 		                    <button type="button" class="btn-alt btn-danger btn-block mt-2" onclick="cancelEditing()">Cancel</button>
 		                </div>
 		            </form>
@@ -472,7 +470,6 @@
 	        <div class="box-area-alt-alt-alt bg-white rounded" style="height:80%">
 	            <h1 style="font-weight: bold;">Fuel Stations</h1>
 	            <div id="map" style="height: 400px;"></div>
-	            <form id="searchForm">
 	                <div class="form-group mt-2">
 	                    <input type="text" class="form-control" id="searchInput" placeholder="Type to search" oninput="filterLocations()">
 	                </div>
@@ -647,10 +644,12 @@
 	                        </div>
 	                        </div>                       
 	                    </div>
-	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
-					    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
-						</div> 
-	                </form>
+	                    <form id="fuelNowForm" action="PumpAvailabilityServlet" method="post">
+						    <input type="hidden" id="title"name="title" value="">
+						    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
+						        <button type="submit" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+						    </div>
+						</form>
 	            </div>
 	        </div>
 	    </div>
@@ -709,8 +708,8 @@
                 <h5 class="modal-title" id="editModalLabel">Edit Vehicle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form id="editVehicleForm" action="UpdateVehicleServlet" method="post">
             <div class="modal-body">
-                <form id="editVehicleForm">
                     <div class="mb-3">
                         <label for="editPlateNumber" class="form-label" style="color: black; font-weight: normal;">Plate Number:</label>
                         <input type="text" class="form-control" id="editPlateNumber" name="editPlateNumber" required>
@@ -726,41 +725,49 @@
                         <input type="text" class="form-control" id="editVIN" name="editVIN" required>
                         <small id="vinError" class="text-danger d-none">VIN is required.</small>
                     </div>
-                </form>
+                    
+                    <input type="hidden" id="plateNumBefore" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveEditBtn" style="background-color:rgb(20, 36, 105); color:yellow" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Save changes</button>
+                <button type="submit" class="btn btn-primary" id="saveEditBtn" style="background-color:rgb(20, 36, 105); color:yellow" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Save changes</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
 
 
-<!-- Delete Modal -->
+<!-- Delete Modal as Form -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Vehicle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this vehicle?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-            </div>
+            <form id="deleteForm" action="DeleteVehicleServlet" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this vehicle?</p>
+                    <!-- Hidden inputs for vehicle data -->
+                    <input type="hidden" id="plateNumDelete" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
 
 <!-- Add Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="addVehicleForm">
+            <form id="addVehicleForm" action="AddVehicleServlet" method="post" >
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Vehicle</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -882,9 +889,7 @@
         document.getElementById('editBtn').style.display = 'block';
     }
 
-    function handleSubmit(event) {
-        event.preventDefault(); // Prevent the form from submitting the default way
-
+    function handleSubmit() {
         // Disable input fields  
         document.getElementById('fullname').disabled = true;
         document.getElementById('phoneNo').disabled = true;
@@ -902,38 +907,31 @@
         // Hide the Update and Cancel buttons, show the Edit button
         document.getElementById('updateBtn').style.display = 'none';
         document.getElementById('editBtn').style.display = 'block';
-
         // Get form data
         var formData = new FormData(document.getElementById('profileForm'));
 
-        // Send the form data using fetch
-        fetch('/FuelSwift/UpdateProfile/UpdateProfileServlet', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(result => {
-            console.log('Success:', result);
-            // You can add any additional success handling here if needed
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // You can add any error handling here if needed
-        });
-        location.reload();
     }
     
     document.addEventListener('DOMContentLoaded', function() {
     	var vehicles = [];
 
-        <% for (VehicleBean vehicle : vehicles) { %>
-                vehicles.push({
-                    plateNumber: '<%= vehicle.getPlateNumber() %>',
-                    vehicleType: '<%= vehicle.getVehicleType() %>',
-                    vin: '<%= vehicle.getVin() %>'
-                });
-            vehicles.push(vehicle);
-        <% } %>
+    <%
+        if (vehicleList != null) {
+            for (VehicleBean vehicle : vehicleList) { 
+		    %>
+		        vehicles.push({
+		            plateNumber: '<%= vehicle.getPlateNumber() %>',
+		            vehicleType: '<%= vehicle.getVehicleType() %>',
+		            vin: '<%= vehicle.getVin() %>'
+		        });
+		    <% 
+            } 
+        } else {
+    %>
+        	console.error("No vehicles data available.");
+    <% 
+        }
+    %>
         
     
     	const vehicleDropdown = document.getElementById("vehicleDropdown");
@@ -1021,6 +1019,9 @@
                                 if (newPlateNumber !== vehicle.plateNumber ||
                                     newVehicleType !== vehicle.vehicleType ||
                                     newVIN !== vehicle.vin) {
+                                	
+                                	document.getElementById('plateNumBefore').value = vehicle.plateNumber;
+                                	
                                     // Update vehicle details
                                     vehicle.plateNumber = newPlateNumber;
                                     vehicle.vehicleType = newVehicleType;
@@ -1029,31 +1030,9 @@
                                     // Update dropdown item display
                                     dropdownItem.querySelector("span").textContent = newPlateNumber;
                                     
-                                 // Send data to the servlet for database update
-                                    fetch('/UpdateVehicleServlet', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/x-www-form-urlencoded'
-                                        },
-                                        body: `editPlateNumber=${encodeURIComponent(newPlateNumber)}&editVehicleType=${encodeURIComponent(newVehicleType)}&editVIN=${encodeURIComponent(newVIN)}`
-                                    })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            console.log('Form submitted successfully');
-                                            // Handle success scenario here, such as updating UI or showing a success message
-                                        } else {
-                                            console.error('Form submission failed');
-                                            // Handle failure scenario here, such as showing an error message to the user
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        // Handle any fetch error here, such as network issues or server not responding
-                                    });
-
                                     // Hide edit modal after saving changes
                                     $('#editModal').modal('hide');
-                                    location.reload();
+                                    
                                 } else {
                                     // No changes made
                                     $('#editModal').modal('hide');
@@ -1070,34 +1049,13 @@
 
                         // Handle confirmation for deletion in the delete modal
                         document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                        	document.getElementById('plateNumDelete').value = vehicle.plateNumber;
+                        	
                         	// Immediately delete the vehicle without additional confirmation
                             vehicles.splice(vehicles.indexOf(vehicle), 1);
                             renderDropdown(); // Refresh dropdown after deletion
                             $('#deleteModal').modal('hide'); // Hide delete modal after deletion
                             
-                         // Send data to the servlet for database deletion
-                            fetch('/DeleteVehicleServlet', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                },
-                                body: `deletePlateNumber=${encodeURIComponent(vehicle.plateNumber)}`
-                            })
-                            .then(response => {
-                                if (response.ok) {
-                                    console.log('Form submitted successfully');
-                                    // Handle success scenario here, such as updating UI or showing a success message
-                                } else {
-                                    console.error('Form submission failed');
-                                    // Handle failure scenario here, such as showing an error message to the user
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                // Handle any fetch error here, such as network issues or server not responding
-                            });
-                            
-                            location.reload();
                         });
                     });
 
@@ -1166,28 +1124,6 @@
                         // Refresh dropdown after addition
                         renderDropdown();
                         
-                     // Send data to the servlet for database update
-                        fetch('/AddVehicleServlet', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: `addPlateNumber=${encodeURIComponent(plateNumber)}&addVehicleType=${encodeURIComponent(vehicleType)}&addVIN=${encodeURIComponent(vin)}`
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                console.log('Form submitted successfully');
-                                // Handle success scenario here, such as updating UI or showing a success message
-                            } else {
-                                console.error('Form submission failed');
-                                // Handle failure scenario here, such as showing an error message to the user
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            // Handle any fetch error here, such as network issues or server not responding
-                        });
-
                         // Hide add modal after adding new vehicle
                         $('#addModal').modal('hide');
                         location.reload();
@@ -1321,26 +1257,7 @@
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
             
-         // Send data to servlet using AJAX
-            $.ajax({
-                url: '/FuelSwift/PumpAvailability', // Replace with your servlet URL
-                type: 'GET', // Or 'POST' if needed
-                data: { title: title }, // Send the title as data
-                success: function(response) {
-                    // Assuming the response is the string you need
-                    const retrievedString = response;
-
-                    // Construct the URL with the retrieved string
-                    const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}&retrievedString=${encodeURIComponent(retrievedString)}`;
-
-                    // Redirect to the payment page with the constructed URL
-                    window.location.href = url;
-                },
-                error: function(xhr, status, error) {
-                    // Handle any errors that occurred during the request
-                    console.error("Error occurred while communicating with the servlet:", error);
-                }
-            });
+            document.getElementById('title').value = title;
         
         } else {
             $('#locationModal').modal('show');
