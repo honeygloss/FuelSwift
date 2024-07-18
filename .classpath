@@ -13,7 +13,15 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user/Downloads/CSC584/apache-tomcat-10.1.19/lib/apache-tomcat-10.1.24/lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="C:/Users/user/Downloads/CSC584/apache-tomcat-10.1.19/lib/apache-tomcat-10.1.24/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Downloads/CSC584/apache-tomcat-10.1.19/lib/apache-tomcat-10.1.24/lib/jsp-api.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/user/Downloads/CSC584/apache-tomcat-10.1.19/lib/apache-tomcat-10.1.24/lib/servlet-api.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

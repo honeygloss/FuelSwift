@@ -30,7 +30,6 @@ public class servletCustomer extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        //String idStr = request.getParameter("id");
         String fullname = request.getParameter("fullName");
         String email = request.getParameter("email");
         String plateNo = request.getParameter("plateNo");
@@ -57,28 +56,24 @@ public class servletCustomer extends HttpServlet {
         PreparedStatement pstmtVehicle = null;
 
         try {
-
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root", "root");
-            //psCustomer = con.prepareStatement("INSERT INTO customer (custName, custEmail, custPass) VALUES (?, ?, ?)");
+
+            // Check if the customer already exists
             if (emailExists(conn, email)) {
                 out.println("Error: A customer with this email already exists.");
                 return;
             }
 
-         // Check if the customer already exists
-            String existingCustomerID = getCustomerID(conn, email);
-            if (existingCustomerID != null) {
-                out.println("Error: A customer with this email already exists.");
-                return;
-            }
-         // Insert into customer table
+            // Insert into customer table
             String sqlCustomer = "INSERT INTO customer (custName, custEmail, custPass, pts) VALUES (?, ?, ?, ?)";
             pstmtCustomer = conn.prepareStatement(sqlCustomer, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmtCustomer.setString(1, fullname);
             pstmtCustomer.setString(2, email);
             pstmtCustomer.setString(3, password);
             pstmtCustomer.setInt(4, 0);
+
+            System.out.println("Executing customer insert: " + pstmtCustomer);
             pstmtCustomer.executeUpdate();
 
             // Retrieve generated customer ID
@@ -88,13 +83,17 @@ public class servletCustomer extends HttpServlet {
                 return;
             }
 
+            System.out.println("Retrieved customer ID: " + customerID);
+
             // Insert into vehicle table
             String sqlVehicle = "INSERT INTO vehicle (vehPlateNo, vehType, vin, custID) VALUES (?, ?, ?, ?)";
-            pstmtVehicle = conn.prepareStatement(sqlVehicle,PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmtVehicle = conn.prepareStatement(sqlVehicle);
             pstmtVehicle.setString(1, plateNo);
             pstmtVehicle.setString(2, vehicleType);
             pstmtVehicle.setString(3, vin);
-            pstmtVehicle.setString(4, getCustomerID(conn, email));
+            pstmtVehicle.setString(4, customerID); // Use the retrieved customer ID
+
+            System.out.println("Executing vehicle insert: " + pstmtVehicle);
             int rowsAffected = pstmtVehicle.executeUpdate();
             
             if (rowsAffected > 0) {
@@ -107,7 +106,7 @@ public class servletCustomer extends HttpServlet {
             out.println("Error: " + e.getMessage());
         } finally {
             try {
-            	if (pstmtCustomer != null) pstmtCustomer.close();
+                if (pstmtCustomer != null) pstmtCustomer.close();
                 if (pstmtVehicle != null) pstmtVehicle.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
@@ -117,7 +116,7 @@ public class servletCustomer extends HttpServlet {
 
         out.close();
     }
-    
+
     private boolean emailExists(Connection conn, String email) throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM customer WHERE custEmail = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -130,16 +129,17 @@ public class servletCustomer extends HttpServlet {
         }
         return false;
     }
-   private String getCustomerID(Connection conn, String email) throws SQLException {
-    	String sql = "SELECT custID FROM customer WHERE custEmail = ?";
+
+    private String getCustomerID(Connection conn, String email) throws SQLException {
+        String sql = "SELECT custID FROM customer WHERE custEmail = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("custID");
-                } 
+                }
             }
-        }return null;
-        
+        }
+        return null;
     }
 }

@@ -10,17 +10,26 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Customer.Customer;
 
 //@WebServlet("/loginServlet")
 public class servletLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private final String jdbcUrl = "jdbc:mysql://localhost:3306/fuelswift";
+    private final String jdbcUser = "root";
+    private final String jdbcPassword = "root";
+
 
     public servletLogin() {
         super();
@@ -37,38 +46,44 @@ public class servletLogin extends HttpServlet {
         String email = request.getParameter("username");
         String password = request.getParameter("password");
 
+        System.out.println("Attempting login with email: " + email + " and password: " + password);
+
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+        	Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root", "root");
-            ps = con.prepareStatement("SELECT * FROM customer WHERE custEmail = ? AND custPassword = ?");
+            
+            System.out.println("Database connection successful.");
+
+            ps = con.prepareStatement("SELECT * FROM customer WHERE custEmail = ? AND custPass = ?");
             ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                System.out.println("Customer found in database.");
                 HttpSession session = request.getSession();
                 session.setAttribute("user", email);
                 
-                String fullName = rs.getString("fullname");
+                String fullName = rs.getString("custName");
 
                 session.setAttribute("fullName", fullName);
                 session.setAttribute("email", email);
                 session.setAttribute("userType", "customer");
                 
                 // Add cookies
-                Cookie emailCookie = new Cookie("email", email);
+                Cookie emailCookie = new Cookie("email", URLEncoder.encode(email, StandardCharsets.UTF_8.toString()));
                 emailCookie.setMaxAge(60*60*24); // 1 day
                 response.addCookie(emailCookie);
 
-                Cookie fullNameCookie = new Cookie("fullName", fullName);
+                Cookie fullNameCookie = new Cookie("fullName", URLEncoder.encode(fullName, StandardCharsets.UTF_8.toString()));
                 fullNameCookie.setMaxAge(60*60*24); // 1 day
                 response.addCookie(fullNameCookie);
 
-                Cookie userTypeCookie = new Cookie("userType", "customer");
+                Cookie userTypeCookie = new Cookie("userType", URLEncoder.encode("customer", StandardCharsets.UTF_8.toString()));
                 userTypeCookie.setMaxAge(60*60*24); // 1 day
                 response.addCookie(userTypeCookie);
                 
@@ -82,6 +97,7 @@ public class servletLogin extends HttpServlet {
                 rs = ps.executeQuery();
 
                 if (rs.next()) {
+                    System.out.println("Staff found in database.");
                     HttpSession session = request.getSession();
                     session.setAttribute("user", email);
 
@@ -93,17 +109,30 @@ public class servletLogin extends HttpServlet {
                     session.setAttribute("userType", "staff");
                     
                  // Add cookies
-                    Cookie emailCookie = new Cookie("email", staffEmail);
+                    Cookie emailCookie = new Cookie("email", URLEncoder.encode(staffEmail, StandardCharsets.UTF_8.toString()));
                     emailCookie.setMaxAge(60*60*24); // 1 day
                     response.addCookie(emailCookie);
 
-                    Cookie staffNameCookie = new Cookie("fullName", staffName);
+                    Cookie staffNameCookie = new Cookie("fullName", URLEncoder.encode(staffName, StandardCharsets.UTF_8.toString()));
                     staffNameCookie.setMaxAge(60*60*24); // 1 day
                     response.addCookie(staffNameCookie);
 
-                    Cookie userTypeCookie = new Cookie("userType", "staff");
+                    Cookie userTypeCookie = new Cookie("userType", URLEncoder.encode("staff", StandardCharsets.UTF_8.toString()));
                     userTypeCookie.setMaxAge(60*60*24); // 1 day
                     response.addCookie(userTypeCookie);
+                    
+                    ArrayList<Customer> customers = getCustomers();
+                 
+
+                    String staffID = (String) session.getAttribute("staffID");
+
+                  //get staff name
+                    if (staffID != null) {
+                        setStaffName(request, staffID);
+                    }
+                  //get number of transaction and customer
+                    session.setAttribute("noTransaction", String.valueOf(getNumberOfTransactions()));
+                    session.setAttribute("noCust", String.valueOf(getNumberOfCustomers()));
                     
                  // Get top pump stations sales by month
                     Map<String, Map<String, Double>> topPumpStationsByMonth = getTopPumpStationsByMonth(con);
@@ -114,16 +143,17 @@ public class servletLogin extends HttpServlet {
                     session.setAttribute("weeklyTotalByMonth", weeklyTotalByMonth);
 
                     String contextPath = request.getContextPath();
-                    response.sendRedirect(contextPath + "/HomePage/home.jsp"); // Redirect to staff home page
+                    response.sendRedirect(contextPath + "/Staff/staffDashboard.jsp"); // Redirect to staff home page
                 } else {
+                    System.out.println("No matching user found in database.");
                     // If not found in either table, redirect to fail.jsp
                     String contextPath = request.getContextPath();
-                    response.sendRedirect(contextPath + "/fail.jsp");
+                    response.sendRedirect(contextPath + "/Login/fail.jsp");
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/fail.jsp");
+            response.sendRedirect(request.getContextPath() + "/Login/fail.jsp");
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -136,6 +166,7 @@ public class servletLogin extends HttpServlet {
 
         out.close();
     }
+
     private Map<String, Map<String, Double>> getTopPumpStationsByMonth(Connection con) throws SQLException {
    	 Map<String, Map<String, Double>> pumpStationMonthlySales = new HashMap<>();
        PreparedStatement ps = con.prepareStatement(
@@ -176,5 +207,83 @@ public class servletLogin extends HttpServlet {
        rs.close();
        ps.close();
        return weeklyTotalByMonth;
+   }
+   
+   private ArrayList<Customer> getCustomers() {
+       ArrayList<Customer> customers = new ArrayList<>();
+
+       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+           String query = "SELECT custID, custName, custEmail, pts, gender, phoneNo FROM customer";
+
+           try (PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
+               while (resultSet.next()) {
+                   Customer customer = new Customer();
+                   customer.setId(resultSet.getString("custID"));
+                   customer.setName(resultSet.getString("custName"));
+                   customer.setEmail(resultSet.getString("custEmail"));
+                   customer.setGender(resultSet.getString("gender"));
+                   customer.setPoints(resultSet.getInt("pts"));
+                   customers.add(customer);
+               }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+
+       return customers;
+   }
+   
+   private void setStaffName(HttpServletRequest request, String staffID) {
+       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT fullName FROM staff WHERE staffID = ?")) {
+           preparedStatement.setString(1, staffID);
+           ResultSet rs = preparedStatement.executeQuery();
+
+           if (rs.next()) {
+               String staffName = rs.getString("fullName");
+               request.setAttribute("staffName", staffName);
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+   }
+   
+   private int getNumberOfTransactions() {
+       int noTrans = 0;
+       String query = "SELECT COUNT(*) FROM transaction"; // Adjust table name and query as needed
+
+       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+           if (resultSet.next()) {
+               noTrans = resultSet.getInt(1);
+           }
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+
+       return noTrans;
+   }
+
+   private int getNumberOfCustomers() {
+       int noCust = 0;
+       String query = "SELECT COUNT(*) FROM customer"; // Adjust table name and query as needed
+
+       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+           if (resultSet.next()) {
+               noCust = resultSet.getInt(1);
+           }
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+
+       return noCust;
    }
 }
