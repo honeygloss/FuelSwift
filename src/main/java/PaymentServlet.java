@@ -28,6 +28,10 @@ public class PaymentServlet extends HttpServlet {
         String cardExpiryDate = request.getParameter("cardExpiryDate");
         String cardHolderName = request.getParameter("cardHolderName");
         String transactionDate = request.getParameter("transactionDate");
+        String time = request.getParameter("time");
+        String date = request.getParameter("date");
+        String psID = request.getParameter("psID");
+        String ppID = request.getParameter("ppID");
 
         double amount = Double.parseDouble(request.getParameter("amount"));
         double litres = Double.parseDouble(request.getParameter("litres"));
@@ -45,7 +49,7 @@ public class PaymentServlet extends HttpServlet {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // Insert into TRANSACTION table
-            String insertTransactionSql = "INSERT INTO TRANSACTION (TRANSACTION_ID, PAYMENT_METHOD, CARD_NUM, CARD_CVV, CARD_EXPIRYDATE, CARDHOLDER_NAME, TRANSACTION_DATE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertTransactionSql = "INSERT INTO transaction (transactionID, paymentMethod, cardNum, cardCVV, cardExpiryDate, cardHolderName, transactionDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
             pstmtTransaction = conn.prepareStatement(insertTransactionSql);
             String transactionId = "SFS" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase().substring(0, 7);
             pstmtTransaction.setString(1, transactionId);
@@ -57,18 +61,26 @@ public class PaymentServlet extends HttpServlet {
             pstmtTransaction.setString(7, transactionDate);
             pstmtTransaction.executeUpdate();
 
-         // Insert into REFUEL_VEHICLE table
-            String insertRefuelVehicleSql = "INSERT INTO REFUEL_VEHICLE (AMOUNT, LITRES, TOTAL_PYMT, PTS_EARNED, PTS_REDEEMED) VALUES (?, ?, ?, ?, ?)";
+            // Insert into REFUEL_VEHICLE table
+            String insertRefuelVehicleSql = "INSERT INTO refuelvehicle (rvID, amount, litres, totalPymt, ptsEarned, ptsRedeemed, time, date, custID, transactionID, psID, ppID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             pstmtRefuelVehicle = conn.prepareStatement(insertRefuelVehicleSql);
-            pstmtRefuelVehicle.setDouble(1, amount);
-            pstmtRefuelVehicle.setDouble(2, litres);
-            pstmtRefuelVehicle.setDouble(3, totalPayment);
-            pstmtRefuelVehicle.setInt(4, pointsEarned);
-            pstmtRefuelVehicle.setInt(5, pointsRedeemed);
+            String rvId = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase().substring(0, 7);
+            pstmtRefuelVehicle.setString(1, rvId);
+            pstmtRefuelVehicle.setDouble(2, amount);
+            pstmtRefuelVehicle.setDouble(3, litres);
+            pstmtRefuelVehicle.setDouble(4, totalPayment);
+            pstmtRefuelVehicle.setInt(5, pointsEarned);
+            pstmtRefuelVehicle.setInt(6, pointsRedeemed);
+            pstmtRefuelVehicle.setString(7, time);
+            pstmtRefuelVehicle.setString(8, date);
+            pstmtRefuelVehicle.setString(9, customerId);
+            pstmtRefuelVehicle.setString(10, transactionId);
+            pstmtRefuelVehicle.setString(11, psID);
+            pstmtRefuelVehicle.setString(12, ppID);
             pstmtRefuelVehicle.executeUpdate();
 
             // Update CUSTOMER table
-            String updateCustomerSql = "UPDATE CUSTOMER SET PTS = PTS + ? - ? WHERE CUST_ID = ?";
+            String updateCustomerSql = "UPDATE customer SET pts = pts + ? - ? WHERE custID = ?";
             pstmtCustomer = conn.prepareStatement(updateCustomerSql);
             pstmtCustomer.setInt(1, pointsEarned);
             pstmtCustomer.setInt(2, pointsRedeemed);
