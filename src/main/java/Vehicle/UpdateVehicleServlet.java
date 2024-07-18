@@ -26,11 +26,20 @@ public class UpdateVehicleServlet extends HttpServlet {
         String newPlateNumber = request.getParameter("editPlateNumber");
         String newVehicleType = request.getParameter("editVehicleType");
         String newVIN = request.getParameter("editVIN");
+        String plateNumBefore = request.getParameter("plateNumBefore");
+        String plateNumberAfter = request.getParameter("plateNumberAfter");
 
         Connection conn = null;
         PreparedStatement pstmt = null;
+        PrintWriter out = response.getWriter();
 
         try {
+            if (newPlateNumber == null || newVehicleType == null || newVIN == null || plateNumBefore == null || plateNumberAfter == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.println("Missing required parameters.");
+                return;
+            }
+
             // Load JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -38,19 +47,18 @@ public class UpdateVehicleServlet extends HttpServlet {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // Prepare SQL update statement
-            String sql = "UPDATE vehicle SET vehPlateNo = ?, vehType = ?, vin = ? WHERE vehID = ?";
+            String sql = "UPDATE vehicle SET vehPlateNo = ?, vehType = ?, vin = ? WHERE vehPlateNo = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, newPlateNumber);
             pstmt.setString(2, newVehicleType);
             pstmt.setString(3, newVIN);
-            pstmt.setString(4, vehID);
+            pstmt.setString(4, plateNumBefore);
 
             // Execute update
             int rowsUpdated = pstmt.executeUpdate();
 
             // Set response content type
             response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
 
             if (rowsUpdated > 0) {
                 // Send success response
@@ -64,12 +72,13 @@ public class UpdateVehicleServlet extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error: " + e.getMessage());
+            out.println("Internal server error: " + e.getMessage());
         } finally {
             // Clean up resources
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
+                if (out != null) out.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -29,8 +29,15 @@ public class AddVehicleServlet extends HttpServlet {
 
         Connection conn = null;
         PreparedStatement pstmt = null;
+        PrintWriter out = response.getWriter();
 
         try {
+            if (plateNumber == null || vehicleType == null || vin == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.println("Missing required parameters.");
+                return;
+            }
+
             // Load JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -49,7 +56,6 @@ public class AddVehicleServlet extends HttpServlet {
 
             // Set response content type
             response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
 
             if (rowsInserted > 0) {
                 // Send success response
@@ -63,12 +69,13 @@ public class AddVehicleServlet extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error: " + e.getMessage());
+            out.println("Internal server error: " + e.getMessage());
         } finally {
             // Clean up resources
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
+                if (out != null) out.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

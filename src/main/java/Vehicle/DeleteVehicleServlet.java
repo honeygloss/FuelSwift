@@ -22,13 +22,20 @@ public class DeleteVehicleServlet extends HttpServlet {
     private static final String DB_PASSWORD = "root";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve parameters from request
-        String vehID = request.getParameter("deleteVehID");
+        // Retrieve the plate number to delete from the request
+        String plateNumDelete = request.getParameter("plateNumDelete");
 
         Connection conn = null;
         PreparedStatement pstmt = null;
+        PrintWriter out = response.getWriter();
 
         try {
+            if (plateNumDelete == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.println("Missing required parameters.");
+                return;
+            }
+
             // Load JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -36,16 +43,15 @@ public class DeleteVehicleServlet extends HttpServlet {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // Prepare SQL delete statement
-            String sql = "DELETE FROM vehicle WHERE vehID = ?";
+            String sql = "DELETE FROM vehicle WHERE vehPlateNo = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, vehID);
+            pstmt.setString(1, plateNumDelete);
 
             // Execute delete
             int rowsDeleted = pstmt.executeUpdate();
 
             // Set response content type
             response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
 
             if (rowsDeleted > 0) {
                 // Send success response
@@ -59,12 +65,13 @@ public class DeleteVehicleServlet extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error: " + e.getMessage());
+            out.println("Internal server error: " + e.getMessage());
         } finally {
             // Clean up resources
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
+                if (out != null) out.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
