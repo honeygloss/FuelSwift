@@ -1,16 +1,17 @@
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+package Transaction;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 @WebServlet("/TransactionHistoryServlet")
 public class TransactionHistoryServlet extends HttpServlet {
@@ -23,42 +24,35 @@ public class TransactionHistoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String customerId = request.getParameter("customerId");
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        ArrayList<TransactionHistory> transactions = new ArrayList<>();
 
-        ArrayList<Transaction> transactions = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "SELECT t.transactionID, t.transactionDate, rv.amount " +
+                           "FROM transaction t " +
+                           "JOIN refuelvehicle rv ON t.transactionID = rv.transactionID " +
+                           "WHERE t.customerID = ?";
+            
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, customerId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String transactionId = resultSet.getString("transactionID");
+                        String transactionDate = resultSet.getString("transactionDate");
+                        double amount = resultSet.getDouble("amount");
 
-        try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            String query = "SELECT * FROM TRANSACTION WHERE CUSTOMER_ID = ?";
-            pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, customerId);
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Transaction transaction = new Transaction();
-                transaction.setTransactionId(rs.getString("TRANSACTION_ID"));
-                transaction.setDate(rs.getString("TRANSACTION_DATE"));
-                transaction.setAmount(rs.getDouble("TOTAL_PYMT"));
-                transactions.add(transaction);
+                        transactions.add(new TransactionHistory(transactionId, transactionDate, amount));
+                    }
+                }
             }
 
             HttpSession session = request.getSession();
             session.setAttribute("transactions", transactions);
 
-            response.sendRedirect("Home.jsp");
-        } catch (SQLException e) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("error.html");
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

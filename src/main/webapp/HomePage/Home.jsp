@@ -12,10 +12,10 @@
 	    username = nameParts[0]; // Assuming first part is the first name
 	}
 
-	 ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactions");
-	 String customerId = (String) session.getAttribute("customerId");
-	    if (customerId != null && transactions == null) {
-	        response.sendRedirect("TransactionHistoryServlet?customerId=" + customerId);
+	ArrayList<TransactionHistory> transactions = (ArrayList<TransactionHistory>) session.getAttribute("transactions");
+    String customerId = (String) session.getAttribute("customerId");
+    if (customerId != null && transactions == null) {
+        response.sendRedirect("TransactionHistoryServlet?customerId=" + customerId);
 	  ArrayList<VehicleBean> vehicles = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
 %>
 
@@ -393,25 +393,24 @@
             </div>
 
             <!--------------------------------- Transaction History ---------------------------------------->
-            <div id="transaction-history" class="container box-area-alt" style="display: none;">
-            	<h1 style="font-weight: bold;">Transaction History</h1>
-				     <% if (transactions != null) {
-        				for (Transaction transaction : transactions) { %>
-            				<div class="transaction-item">
-                				<p>Transaction ID: #<%= transaction.getTransactionId() %></p>
-                				<p>Date: <%= transaction.getDate() %></p>
-               	 				<p>Amount: RM <%= transaction.getAmount() %></p>
-                				<p>Status: Completed</p>
-            				</div>
+             <div id="transaction-history" class="container box-area-alt" style="display: none;">
+        <h1 style="font-weight: bold;">Transaction History</h1>
+        <% if (transactions != null) {
+            for (TransactionHistory transaction : transactions) { %>
+                <div class="transaction-item">
+                    <p>Transaction ID: #<%= transaction.getTransactionId() %></p>
+                    <p>Date: <%= transaction.getTransactionDate() %></p>
+                    <p>Amount: RM <%= transaction.getAmount() %></p>
+                    <p>Status: Completed</p>
+                </div>
         <% }
-				    } else { %>
-				        <div style="position: absolute; top: 50%; left: 50%; text-align:center; transform: translate(-50%, -50%);">
-						    <i class="bi bi-fuel-pump" style="color:grey; font-size:44px; text-align:center;"></i>
-						    <p style="margin-top: 10px; color:grey; font-size:15px;">No bookings yet.<br>Make one today!</p>
-						</div>
-				    <%} %>
-			</div>
-        </div>
+        } else { %>
+            <div style="position: absolute; top: 50%; left: 50%; text-align:center; transform: translate(-50%, -50%);">
+                <i class="bi bi-fuel-pump" style="color:grey; font-size:44px; text-align:center;"></i>
+                <p style="margin-top: 10px; color:grey; font-size:15px;">No bookings yet.<br>Make one today!</p>
+            </div>
+        <% } %>
+    </div>
         
         <!---------------------------------------- Profile -------------------------------- -->
 		<div id="profile" style="display: none;">
