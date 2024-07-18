@@ -654,14 +654,9 @@
 	                        </div>
 	                        </div>                       
 	                    </div>
-	                    
 	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
-						    <button type="button" onclick="handleFormSubmission()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+						    <button type="button" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
 						</div>
-	                    <form id="fuelForm" action="PumpAvailabilityServlet" method="post">
-						    <input type="hidden" id="index"name="title" value="">
-						    <input type="hidden" id="date"name="title" value="">
-						</form>
 	            </div>
 	        </div>
 	    </div>
@@ -694,21 +689,21 @@
         
         
         <!-- Modal HTML -->
-		<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		    <div class="modal-dialog" role="document">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title" id="exampleModalLabel">No Location Selected</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                    <span aria-hidden="true">&times;</span>
-		                </button>
-		            </div>
-		            <div class="modal-body">
-		                Please select a location first.
-		            </div>
-		        </div>
-		    </div>
-		</div>
+	    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <h5 class="modal-title" id="exampleModalLabel">No Location Selected</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body">
+	            Please select a location first.
+	          </div>
+	        </div>
+	      </div>
+	    </div>
         
     </div>
     
@@ -1263,31 +1258,25 @@
     }
     
 	function fuelNow() {
-	    if (selectedIndex !== null) {
-	        const selectedLocation = locations[selectedIndex];
-	        const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
-	        const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
-	        const index = selectedIndex;
-	        var today = new Date().toISOString(); // Use ISO string for date format
+    	if (selectedIndex !== null) {
+            const selectedLocation = locations[selectedIndex];
+            const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
+            const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
+            const index = selectedIndex;
+            
+         	// Construct the URL with the retrieved string
+            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}&retrievedString=${retrievedString}`;
 
-	        document.getElementById('index').value = index;
-	        document.getElementById('date').value = today;
-	        return true; // Indicate that the conditions are met
-	    } else {
-	        $('#locationModal').modal('show');
-	        setTimeout(() => {
-	            $('#locationModal').modal('hide');
-	        }, 2000); // Hide modal after 2 seconds (2000 milliseconds)
-	        return false; // Indicate that the conditions are not met
-	    }
-	}
-
-	function handleFormSubmission() {
-	    if (fuelNow()) {
-	        document.getElementById('fuelForm').submit();
-	    }
-	}
-
+            // Redirect to the payment page with the constructed URL
+            window.location.href = url;
+        
+        } else {
+            $('#locationModal').modal('show');
+            setTimeout(() => {
+                $('#locationModal').modal('hide');
+            }, 2000); // Hide modal after 2 seconds (2000 milliseconds)
+        }
+    }
     
     document.addEventListener("DOMContentLoaded", function() {
         // Simulate loading completion after 3 seconds for demo purposes

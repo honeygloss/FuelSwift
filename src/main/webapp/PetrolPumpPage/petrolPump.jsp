@@ -4,10 +4,9 @@
 <%-- Java code to retrieve and display index parameter --%>
     <%
         // Retrieve index parameter from URL
-        String indexParam = (String)session.getAttribute("index");
-    	String titleParam = (String)session.getAttribute("title");
-    	String addressParam = (String)session.getAttribute("address");
-    	String pumpAvail = (String)session.getAttribute("retrievedString");
+        String indexParam = request.getParameter("index");
+    	String titleParam = request.getParameter("title");
+    	String addressParam = request.getParameter("address");
 
         int selectedIndex = -1; // Default value or error handling if needed
         if (indexParam != null && !indexParam.isEmpty()) {
@@ -187,11 +186,6 @@
     </style>
 </head>
 <body>
- <% 
-            String availablePumps = (String) request.getAttribute("availablePumps");
-            out.print(availablePumps);
-        %>
-
 	<!-- Error message container -->
     <div id="errorMessage" class="error-message">
         <h3>Error!</h3>
@@ -332,31 +326,7 @@
 	         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
 	     }
 	 }
-	
-	 // Add event listener to toggle
-	 document.getElementById('switch').addEventListener('change', handleToggle);
-	 
-	// Function to initialize button states based on pump availability
-	    function initializeButtons(pumpAvail) {
-	        const totalPumps = 6; // Total number of pumps
-	        for (let i = 1; i <= totalPumps; i++) {
-	            const btn = document.getElementById(`btnPump${i}`);
-	            if (pumpAvail.includes(i.toString())) {
-	                // Pump is available
-	                btn.disabled = false;
-	            } else {
-	                // Pump is not available
-	                btn.disabled = true;
-	                btn.addEventListener('click', function() {
-	                	const errorMessage = `Pump ${i} is currently occupied. Please use other pumps.`;
-	                    showError(errorMessage);
-	                });
-	            }
-	        }
-	    }
 
-	    // Call initializeButtons function with pumpAvail data from JSP
-	    initializeButtons('<%= pumpAvail %>');
 	 
 	 function selectPump(index) {
 		    document.getElementById('selectedPump').innerText = index;
