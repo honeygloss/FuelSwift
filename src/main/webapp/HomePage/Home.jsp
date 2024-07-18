@@ -417,7 +417,7 @@
 		    <!-- Icon below Navigation Bar -->
 		    <div class="container d-flex justify-content-center align-items-center">
 		        <i class="bi bi-person-circle" style="color: #cccccc; margin-right: 20px; font-size: 2rem;"></i>
-		        <h2 style="color: white; margin-right: 10px; font-weight: bold;">Fatin</h2>
+		        <h2 style="color: white; margin-right: 10px; font-weight: bold;"><%=username %></h2>
 		    </div>
 		
 		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
@@ -425,11 +425,11 @@
 		            <form id="profileForm" action="UpdateProfileServlet" method="post">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
-		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="Fatin Humaira" disabled>
+		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="<%=fullName %>" disabled>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Email</label>
-		                    <p class="form-control form-control-lg bg-light fs-6" name="email">fatin@gmail.com</p>
+		                    <p class="form-control form-control-lg bg-light fs-6" name="email"><%=email %></p>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Gender</label>
@@ -654,12 +654,13 @@
 	                        </div>
 	                        </div>                       
 	                    </div>
-	                    <form id="fuelNowForm" action="PumpAvailabilityServlet" method="post">
+	                    
+	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
+						    <button type="button" onclick="handleFormSubmission()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+						</div>
+	                    <form id="fuelForm" action="PumpAvailabilityServlet" method="post">
 						    <input type="hidden" id="index"name="title" value="">
 						    <input type="hidden" id="date"name="title" value="">
-						    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
-						        <button type="submit" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
-						    </div>
 						</form>
 	            </div>
 	        </div>
@@ -693,21 +694,21 @@
         
         
         <!-- Modal HTML -->
-	    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	      <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-	          <div class="modal-header">
-	            <h5 class="modal-title" id="exampleModalLabel">No Location Selected</h5>
-	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	              <span aria-hidden="true">&times;</span>
-	            </button>
-	          </div>
-	          <div class="modal-body">
-	            Please select a location first.
-	          </div>
-	        </div>
-	      </div>
-	    </div>
+		<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="exampleModalLabel">No Location Selected</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                Please select a location first.
+		            </div>
+		        </div>
+		    </div>
+		</div>
         
     </div>
     
@@ -1262,23 +1263,31 @@
     }
     
 	function fuelNow() {
-    	if (selectedIndex !== null) {
-            const selectedLocation = locations[selectedIndex];
-            const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
-            const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
-            const index = selectedIndex;
-            var today = new Date();
-            
-            document.getElementById('index').value = index;
-            document.getElementById('date').value = today;
-        
-        } else {
-            $('#locationModal').modal('show');
-            setTimeout(() => {
-                $('#locationModal').modal('hide');
-            }, 2000); // Hide modal after 2 seconds (2000 milliseconds)
-        }
-    }
+	    if (selectedIndex !== null) {
+	        const selectedLocation = locations[selectedIndex];
+	        const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
+	        const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
+	        const index = selectedIndex;
+	        var today = new Date().toISOString(); // Use ISO string for date format
+
+	        document.getElementById('index').value = index;
+	        document.getElementById('date').value = today;
+	        return true; // Indicate that the conditions are met
+	    } else {
+	        $('#locationModal').modal('show');
+	        setTimeout(() => {
+	            $('#locationModal').modal('hide');
+	        }, 2000); // Hide modal after 2 seconds (2000 milliseconds)
+	        return false; // Indicate that the conditions are not met
+	    }
+	}
+
+	function handleFormSubmission() {
+	    if (fuelNow()) {
+	        document.getElementById('fuelForm').submit();
+	    }
+	}
+
     
     document.addEventListener("DOMContentLoaded", function() {
         // Simulate loading completion after 3 seconds for demo purposes
