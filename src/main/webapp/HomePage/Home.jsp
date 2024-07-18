@@ -727,6 +727,7 @@
                     </div>
                     
                     <input type="hidden" id="plateNumBefore" value="">
+                    <input type="hidden" id="plateNumberAfter" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1021,6 +1022,7 @@
                                     newVIN !== vehicle.vin) {
                                 	
                                 	document.getElementById('plateNumBefore').value = vehicle.plateNumber;
+                                	document.getElementById('plateNumAfter').value = newPlateNumber;
                                 	
                                     // Update vehicle details
                                     vehicle.plateNumber = newPlateNumber;
