@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Customer.Customer;
+import RefuelVehicle.refuelVehicleBean;
 
 //@WebServlet("/loginServlet")
 public class servletLogin extends HttpServlet {
@@ -122,25 +123,37 @@ public class servletLogin extends HttpServlet {
                     response.addCookie(userTypeCookie);
                     
                     ArrayList<Customer> customers = getCustomers();
-                 
-
-                    String staffID = (String) session.getAttribute("staffID");
-
-                  //get staff name
-                    if (staffID != null) {
-                        setStaffName(request, staffID);
-                    }
+                    session.setAttribute("customers", customers);
+                   
+                    Map<String, ArrayList<String>> transactions = getTransactions();
+                    session.setAttribute("transId", transactions.get("transId"));
+                    session.setAttribute("custName", transactions.get("custName"));
+                    session.setAttribute("date", transactions.get("date"));
+                    session.setAttribute("time", transactions.get("time"));
+                    session.setAttribute("petrolStation", transactions.get("petrolStation"));
+                    session.setAttribute("totalAmt", transactions.get("amount"));
+                
                   //get number of transaction and customer
                     session.setAttribute("noTransaction", String.valueOf(getNumberOfTransactions()));
                     session.setAttribute("noCust", String.valueOf(getNumberOfCustomers()));
                     
+                 // Retrieve petrol pump data and set in session
+                    Map<String, ArrayList<?>> pumpData = getCountPump();
+                    session.setAttribute("pumpStation", pumpData.get("pumpStation"));
+                    session.setAttribute("countPump", pumpData.get("countPump"));
+                    
+                 // Get weekly total payments and dates
+                    Map<String, ArrayList<?>> weeklyData = getWeeklyData();
+                    session.setAttribute("totalAmount", weeklyData.get("totalAmount"));
+                    session.setAttribute("dateTransaction", weeklyData.get("dateTransaction"));
+                    /*
                  // Get top pump stations sales by month
                     Map<String, Map<String, Double>> topPumpStationsByMonth = getTopPumpStationsByMonth(con);
                     session.setAttribute("topPumpStationsByMonth", topPumpStationsByMonth);
 
                     // Get weekly total payments by month
                     Map<String, Map<Integer, Double>> weeklyTotalByMonth = getWeeklyTotalPaymentsByMonth(con);
-                    session.setAttribute("weeklyTotalByMonth", weeklyTotalByMonth);
+                    session.setAttribute("weeklyTotalByMonth", weeklyTotalByMonth);*/
 
                     String contextPath = request.getContextPath();
                     response.sendRedirect(contextPath + "/Staff/staffDashboard.jsp"); // Redirect to staff home page
@@ -209,6 +222,34 @@ public class servletLogin extends HttpServlet {
        return weeklyTotalByMonth;
    }
    
+   private Map<String, ArrayList<?>> getWeeklyData() {
+       Map<String, ArrayList<?>> weeklyData = new HashMap<>();
+       ArrayList<Integer> totalAmount = new ArrayList<>();
+       ArrayList<String> dateTransaction = new ArrayList<>();
+
+       try (Connection con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+           String query = "SELECT SUM(totalPymt) AS totalAmount, MAX(date) AS lastDate " +
+                          "FROM refuelvehicle " +
+                          "GROUP BY YEARWEEK(date)";
+           PreparedStatement ps = con.prepareStatement(query);
+           ResultSet rs = ps.executeQuery();
+
+           while (rs.next()) {
+               totalAmount.add(rs.getInt("totalAmount"));
+               dateTransaction.add(rs.getDate("lastDate").toString());
+           }
+
+           rs.close();
+           ps.close();
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+
+       weeklyData.put("totalAmount", totalAmount);
+       weeklyData.put("dateTransaction", dateTransaction);
+       return weeklyData;
+   }
+   
    private ArrayList<Customer> getCustomers() {
        ArrayList<Customer> customers = new ArrayList<>();
 
@@ -234,19 +275,40 @@ public class servletLogin extends HttpServlet {
        return customers;
    }
    
-   private void setStaffName(HttpServletRequest request, String staffID) {
-       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT fullName FROM staff WHERE staffID = ?")) {
-           preparedStatement.setString(1, staffID);
-           ResultSet rs = preparedStatement.executeQuery();
+  
+   
+   private Map<String, ArrayList<String>> getTransactions() {
+       Map<String, ArrayList<String>> transactions = new HashMap<>();
+       transactions.put("transId", new ArrayList<>());
+       transactions.put("custName", new ArrayList<>());
+       transactions.put("date", new ArrayList<>());
+       transactions.put("time", new ArrayList<>());
+       transactions.put("petrolStation", new ArrayList<>());
+       transactions.put("amount", new ArrayList<>());
 
-           if (rs.next()) {
-               String staffName = rs.getString("fullName");
-               request.setAttribute("staffName", staffName);
+       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+           String query = "SELECT rv.transactionID, c.custName, rv.date, rv.time, ps.psName, rv.amount " +
+                          "FROM refuelvehicle rv " +
+                          "JOIN customer c ON rv.custID = c.custID " +
+                          "JOIN petrolstation ps ON rv.psID = ps.psID " +
+                          "JOIN transaction t ON rv.transactionID = t.transactionID";
+
+           try (PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
+               while (resultSet.next()) {
+                   transactions.get("transId").add(resultSet.getString("transactionID"));
+                   transactions.get("custName").add(resultSet.getString("custName"));
+                   transactions.get("date").add(resultSet.getString("date"));
+                   transactions.get("time").add(resultSet.getString("time"));
+                   transactions.get("petrolStation").add(resultSet.getString("psName"));
+                   transactions.get("amount").add(resultSet.getString("amount"));
+               }
            }
-       } catch (SQLException e) {
+       } catch (Exception e) {
            e.printStackTrace();
        }
+
+       return transactions;
    }
    
    private int getNumberOfTransactions() {
@@ -286,4 +348,30 @@ public class servletLogin extends HttpServlet {
 
        return noCust;
    }
+   
+   private Map<String, ArrayList<?>> getCountPump() {
+	    Map<String, ArrayList<?>> pumpData = new HashMap<>();
+	    ArrayList<String> pumpStations = new ArrayList<>();
+	    ArrayList<Integer> countPumps = new ArrayList<>();
+
+	    try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
+	        String query = "SELECT ppNum, COUNT(*) AS count FROM petrolpump GROUP BY ppNum";
+	        
+	        try (PreparedStatement statement = connection.prepareStatement(query);
+	             ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                pumpStations.add(resultSet.getString("ppNum"));
+	                countPumps.add(resultSet.getInt("count"));
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    pumpData.put("pumpStation", pumpStations);
+	    pumpData.put("countPump", countPumps);
+
+	    return pumpData;
+	}
+
 }
