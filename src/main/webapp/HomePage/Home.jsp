@@ -656,6 +656,7 @@
 	                    </div>
 	                    <form id="fuelNowForm" action="PumpAvailabilityServlet" method="post">
 						    <input type="hidden" id="index"name="title" value="">
+						    <input type="hidden" id="date"name="title" value="">
 						    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
 						        <button type="submit" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
 						    </div>
@@ -1266,8 +1267,10 @@
             const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
+            var today = new Date();
             
             document.getElementById('index').value = index;
+            document.getElementById('date').value = today;
         
         } else {
             $('#locationModal').modal('show');
