@@ -712,7 +712,7 @@
 	    const barChartOptions = {
 	      series: [
 	        {
-	          data: <%=countPump%>, // Assigning countPump data to series data
+	          data:  <%=countPump%>, // Assigning countPump data to series data
 	          name: 'Pump Station',
 	        },
 	      ],
@@ -770,7 +770,7 @@
 	        theme: 'dark',
 	      },
 	      xaxis: {
-	        categories: <%=pumpStation%>, // Assigning pumpStation categories (x-axis labels)
+	        categories:  <%=pumpStation%>, // Assigning pumpStation categories (x-axis labels)
 	        title: {
 	          style: {
 	            color: '#f5f7ff',

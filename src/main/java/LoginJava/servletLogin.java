@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,22 +140,17 @@ public class servletLogin extends HttpServlet {
                     
                  // Retrieve petrol pump data and set in session
                     Map<String, ArrayList<?>> pumpData = getCountPump();
-                    session.setAttribute("pumpStation", pumpData.get("pumpStation"));
-                    session.setAttribute("countPump", pumpData.get("countPump"));
+                    ArrayList<String> pumpStation = (ArrayList<String>) pumpData.get("pumpStation");
+                    ArrayList<Double> countPump = (ArrayList<Double>) pumpData.get("countPump");
+
+                    request.setAttribute("pumpStation", pumpStation);
+                    request.setAttribute("countPump", countPump);
                     
                  // Get weekly total payments and dates
                     Map<String, ArrayList<?>> weeklyData = getWeeklyData();
                     session.setAttribute("totalAmount", weeklyData.get("totalAmount"));
                     session.setAttribute("dateTransaction", weeklyData.get("dateTransaction"));
-                    /*
-                 // Get top pump stations sales by month
-                    Map<String, Map<String, Double>> topPumpStationsByMonth = getTopPumpStationsByMonth(con);
-                    session.setAttribute("topPumpStationsByMonth", topPumpStationsByMonth);
-
-                    // Get weekly total payments by month
-                    Map<String, Map<Integer, Double>> weeklyTotalByMonth = getWeeklyTotalPaymentsByMonth(con);
-                    session.setAttribute("weeklyTotalByMonth", weeklyTotalByMonth);*/
-
+                    
                     String contextPath = request.getContextPath();
                     response.sendRedirect(contextPath + "/Staff/staffDashboard.jsp"); // Redirect to staff home page
                 } else {
@@ -180,47 +176,7 @@ public class servletLogin extends HttpServlet {
         out.close();
     }
 
-    private Map<String, Map<String, Double>> getTopPumpStationsByMonth(Connection con) throws SQLException {
-   	 Map<String, Map<String, Double>> pumpStationMonthlySales = new HashMap<>();
-       PreparedStatement ps = con.prepareStatement(
-       		"SELECT pumpStation, DATE_FORMAT(date, '%Y-%m') AS month, SUM(totalPymt) AS total " +
-       		        "FROM refuelVehicle " +
-       		        "GROUP BY pumpStation, month " +
-       		        "ORDER BY total DESC " +
-       		        "LIMIT 5"
-       );
-       ResultSet rs = ps.executeQuery();
-       while (rs.next()) {
-           String pumpStation = rs.getString("pumpStation");
-           String month = rs.getString("month");
-           Double total = rs.getDouble("total");
-
-           pumpStationMonthlySales.computeIfAbsent(pumpStation, k -> new HashMap<>()).put(month, total);
-       }
-       rs.close();
-       ps.close();
-       return pumpStationMonthlySales;
-   }
-   
-   private Map<String, Map<Integer, Double>> getWeeklyTotalPaymentsByMonth(Connection con) throws SQLException {
-       Map<String, Map<Integer, Double>> weeklyTotalByMonth = new HashMap<>();
-       PreparedStatement ps = con.prepareStatement(
-           "SELECT DATE_FORMAT(date, '%Y-%m') AS month, WEEK(date) AS week, SUM(totalPymt) AS total " +
-           "FROM refuelVehicle " +
-           "GROUP BY month, week"
-       );
-       ResultSet rs = ps.executeQuery();
-       while (rs.next()) {
-           String month = rs.getString("month");
-           int week = rs.getInt("week");
-           double total = rs.getDouble("total");
-
-           weeklyTotalByMonth.computeIfAbsent(month, k -> new HashMap<>()).put(week, total);
-       }
-       rs.close();
-       ps.close();
-       return weeklyTotalByMonth;
-   }
+    
    
    private Map<String, ArrayList<?>> getWeeklyData() {
        Map<String, ArrayList<?>> weeklyData = new HashMap<>();
@@ -228,9 +184,9 @@ public class servletLogin extends HttpServlet {
        ArrayList<String> dateTransaction = new ArrayList<>();
 
        try (Connection con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
-           String query = "SELECT SUM(totalPymt) AS totalAmount, MAX(date) AS lastDate " +
-                          "FROM refuelvehicle " +
-                          "GROUP BY YEARWEEK(date)";
+           String query = "SELECT SUM(FLOOR(totalPymt)) AS totalAmount, MAX(DATE_FORMAT(date, '%Y-%m-%d')) AS lastDate " +
+                   "FROM refuelvehicle " +
+                   "GROUP BY YEARWEEK(date)";
            PreparedStatement ps = con.prepareStatement(query);
            ResultSet rs = ps.executeQuery();
 
@@ -352,16 +308,31 @@ public class servletLogin extends HttpServlet {
    private Map<String, ArrayList<?>> getCountPump() {
 	    Map<String, ArrayList<?>> pumpData = new HashMap<>();
 	    ArrayList<String> pumpStations = new ArrayList<>();
-	    ArrayList<Integer> countPumps = new ArrayList<>();
+	    ArrayList<Double> countPumps = new ArrayList<>();
 
 	    try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)) {
-	        String query = "SELECT ppNum, COUNT(*) AS count FROM petrolpump GROUP BY ppNum";
-	        
-	        try (PreparedStatement statement = connection.prepareStatement(query);
-	             ResultSet resultSet = statement.executeQuery()) {
-	            while (resultSet.next()) {
-	                pumpStations.add(resultSet.getString("ppNum"));
-	                countPumps.add(resultSet.getInt("count"));
+	        String query = "SELECT p.ppName, SUM(r.totalPymt) AS totalPayment " +
+	                       "FROM refuel_vehicle r " +
+	                       "JOIN petrolstation p ON r.psID = p.psID " +
+	                       "WHERE r.refuelDate BETWEEN ? AND ? " +
+	                       "GROUP BY p.ppName " +
+	                       "ORDER BY totalPayment DESC " +
+	                       "LIMIT 5";
+
+	        // Assuming the start and end dates for the month are provided
+	        // You can dynamically calculate these based on the current date
+	        LocalDate startDate = LocalDate.now().withDayOfMonth(1); // Start of the current month
+	        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth()); // End of the current month
+
+	        try (PreparedStatement statement = connection.prepareStatement(query)) {
+	            statement.setDate(1, java.sql.Date.valueOf(startDate));
+	            statement.setDate(2, java.sql.Date.valueOf(endDate));
+
+	            try (ResultSet resultSet = statement.executeQuery()) {
+	                while (resultSet.next()) {
+	                    pumpStations.add(resultSet.getString("ppName"));
+	                    countPumps.add(resultSet.getDouble("totalPayment"));
+	                }
 	            }
 	        }
 	    } catch (Exception e) {
@@ -373,5 +344,6 @@ public class servletLogin extends HttpServlet {
 
 	    return pumpData;
 	}
+
 
 }
