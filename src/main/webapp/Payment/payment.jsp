@@ -142,20 +142,20 @@
                 </div>
                 
                 
-                <input type="hidden" id="title" value="<%= title %>">
-			    <input type="hidden" id="pumpNum" value="<%= pumpNum %>">
-			    <input type="hidden" id="currentPts" value="<%= currentPts %>">
-			    <input type="hidden" id="totAmount" value="<%= totAmount %>">
-			    <input type="hidden" id="pointsRed" value="<%= pointsRed %>">
-			    <input type="hidden" id="amount" value="<%= amount %>">
-			    <input type="hidden" id="locNum" value="<%= locNum %>">
-			    <input type="hidden" id="transactionId" value="<%= transactionId %>">
-			    <input type="hidden" id="pointsEarned" value="<%= pointsEarned %>">
-			    <input type="hidden" id="points" value="<%= points %>">
-			    <input type="hidden" id="litres" value="<%= litres %>">
-			    <input type="hidden" id="dateFuel" value="">
+                <input type="hidden" id="title" name="title"value="<%= title %>">
+			    <input type="hidden" id="pumpNum" name="pumpNum" value="<%= pumpNum %>">
+			    <input type="hidden" id="currentPts" name="currentPts" value="<%= currentPts %>">
+			    <input type="hidden" id="totAmount" name="totAmount" value="<%= totAmount %>">
+			    <input type="hidden" id="pointsRed" name="pointsRed" value="<%= pointsRed %>">
+			    <input type="hidden" id="amount" name="amount" value="<%= amount %>">
+			    <input type="hidden" id="locNum" name="locNum" value="<%= locNum %>">
+			    <input type="hidden" id="transactionId" name="transactionId" value="<%= transactionId %>">
+			    <input type="hidden" id="pointsEarned" name="pointsEarned" value="<%= pointsEarned %>">
+			    <input type="hidden" id="points" name="points" value="<%= points %>">
+			    <input type="hidden" id="litres" name="litres" value="<%= litres %>">
+			    <input type="hidden" id="dateFuel" name="dateFuel" value="">
 			    <input type="hidden" id="paymentMethod" name="cardType" value="">
-			    <input type="hidden" id="timeFuel" value="">
+			    <input type="hidden" id="timeFuel" name="timeFuel" value="">
             </form>
         </div>
     </div>

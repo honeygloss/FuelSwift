@@ -762,7 +762,7 @@
                 <div class="modal-body">
                     <p>Are you sure you want to delete this vehicle?</p>
                     <!-- Hidden inputs for vehicle data -->
-                    <input type="hidden" id="plateNumDelete" value="">
+                    <input type="hidden" id="plateNumDelete" name="plateNumDelete" value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
