@@ -22,22 +22,22 @@ public class PaymentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get parameters from request
         String customerId = request.getParameter("customerId");
-        String paymentMethod = request.getParameter("paymentMethod");
+        String paymentMethod = request.getParameter("cardType");
         String cardNumber = request.getParameter("cardNumber");
-        String cardCvv = request.getParameter("cardCvv");
-        String cardExpiryDate = request.getParameter("cardExpiryDate");
-        String cardHolderName = request.getParameter("cardHolderName");
+        String cardCvv = request.getParameter("cvv");
+        String cardExpiryDate = request.getParameter("expiryDate");
+        String cardHolderName = request.getParameter("cardHolder");
         String transactionDate = request.getParameter("transactionDate");
-        String time = request.getParameter("time");
-        String date = request.getParameter("date");
+        String time = request.getParameter("timeFuel");
+        String date = request.getParameter("dateFuel");
         String psID = request.getParameter("psID");
         String ppID = request.getParameter("ppID");
 
         double amount = Double.parseDouble(request.getParameter("amount"));
         double litres = Double.parseDouble(request.getParameter("litres"));
-        double totalPayment = Double.parseDouble(request.getParameter("totalPayment"));
+        double totalPayment = Double.parseDouble(request.getParameter("totAmount"));
         int pointsEarned = Integer.parseInt(request.getParameter("pointsEarned"));
-        int pointsRedeemed = Integer.parseInt(request.getParameter("pointsRedeemed"));
+        int pointsRedeemed = Integer.parseInt(request.getParameter("pointsRed"));
 
         Connection conn = null;
         PreparedStatement pstmtTransaction = null;
@@ -92,7 +92,7 @@ public class PaymentServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle error, redirect to error page or send error response
-            response.sendRedirect("error.html");
+            response.sendRedirect("/HomePage/Home.jsp");
         } finally {
             try {
                 if (pstmtTransaction != null) pstmtTransaction.close();

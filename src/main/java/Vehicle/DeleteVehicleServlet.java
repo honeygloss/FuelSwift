@@ -57,10 +57,12 @@ public class DeleteVehicleServlet extends HttpServlet {
                 // Send success response
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.println("Vehicle deleted successfully.");
+                response.sendRedirect("/HomePage/Home.jsp");
             } else {
                 // Send failure response
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.println("Failed to delete vehicle.");
+                response.sendRedirect("/HomePage/Home.jsp");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

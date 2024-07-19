@@ -64,10 +64,12 @@ public class UpdateVehicleServlet extends HttpServlet {
                 // Send success response
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.println("Vehicle details updated successfully.");
+                response.sendRedirect("/HomePage/Home.jsp");
             } else {
                 // Send failure response
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.println("Failed to update vehicle details.");
+                response.sendRedirect("/HomePage/Home.jsp");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

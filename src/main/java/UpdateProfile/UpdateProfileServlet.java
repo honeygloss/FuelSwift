@@ -6,7 +6,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
 
-
 @WebServlet("/UpdateProfileServlet")
 public class UpdateProfileServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -29,18 +28,45 @@ public class UpdateProfileServlet extends HttpServlet {
         String gender = request.getParameter("gender");
         String phoneNo = request.getParameter("phoneNo");
 
+        StringBuilder query = new StringBuilder("UPDATE customer SET ");
+        boolean needComma = false;
+
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            query.append("fullName = ?");
+            needComma = true;
+        }
+
+        if (gender != null && !gender.trim().isEmpty()) {
+            if (needComma) query.append(", ");
+            query.append("gender = ?");
+            needComma = true;
+        }
+
+        if (phoneNo != null && !phoneNo.trim().isEmpty()) {
+            if (needComma) query.append(", ");
+            query.append("phoneNo = ?");
+        }
+
+        query.append(" WHERE email = ?");
+
         try {
             // Load the database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Establish the connection to the database
             try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-                String updateQuery = "UPDATE customer SET fullName = ?, gender = ?, phoneNo = ? WHERE email = ?";
-                try (PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
-                    stmt.setString(1, fullName);
-                    stmt.setString(2, gender);
-                    stmt.setString(3, phoneNo);
-                    stmt.setString(4, userEmail);
+                try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+                    int paramIndex = 1;
+                    if (fullName != null && !fullName.trim().isEmpty()) {
+                        stmt.setString(paramIndex++, fullName);
+                    }
+                    if (gender != null && !gender.trim().isEmpty()) {
+                        stmt.setString(paramIndex++, gender);
+                    }
+                    if (phoneNo != null && !phoneNo.trim().isEmpty()) {
+                        stmt.setString(paramIndex++, phoneNo);
+                    }
+                    stmt.setString(paramIndex, userEmail);
 
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
@@ -61,6 +87,6 @@ public class UpdateProfileServlet extends HttpServlet {
             session.setAttribute("updateError", "An unexpected error occurred.");
         }
 
-        response.sendRedirect("Home.jsp");
+        response.sendRedirect("/HomePage/Home.jsp");
     }
 }

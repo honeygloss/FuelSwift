@@ -61,10 +61,12 @@ public class AddVehicleServlet extends HttpServlet {
                 // Send success response
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.println("Vehicle added successfully.");
+                response.sendRedirect("/HomePage/Home.jsp");
             } else {
                 // Send failure response
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.println("Failed to add vehicle.");
+                response.sendRedirect("/HomePage/Home.jsp");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
