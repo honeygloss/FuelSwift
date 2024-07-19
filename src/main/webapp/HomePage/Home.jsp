@@ -762,7 +762,7 @@
                 <div class="modal-body">
                     <p>Are you sure you want to delete this vehicle?</p>
                     <!-- Hidden inputs for vehicle data -->
-                    <input type="hidden" id="plateNumDelete" name="plateNumDelete" value="">
+                    <input type="hidden" id="plateNumDelete" name="plateNumDelete"value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -984,97 +984,119 @@
                     dropdownItem.style.backgroundColor = ""; // Reset to default
                 });
 
-                dropdownItem.innerHTML = `
-                    <span style="flex-grow: 1; margin-left: 20px; text-align: left; font-size:10px;">${vehicle.plateNumber}</span>
-                    <button style="padding: 0.1rem 0.2rem; margin-right: 3px; background: none; border: none;" class="edit-btn"><i class="bi bi-pen" style="font-size: 15px; color: #3843D7;"></i></button>
-                    <button style="padding: 0.1rem 0.3rem;background: none; border: none;" class="delete-btn"><i class="bi bi-x-circle" style="font-size: 15px; color: red;"></i></button>`;
+                // Create span element for plate number
+                const plateNumberSpan = document.createElement("span");
+                plateNumberSpan.style.flexGrow = "1";
+                plateNumberSpan.style.marginLeft = "20px";
+                plateNumberSpan.style.textAlign = "left";
+                plateNumberSpan.style.fontSize = "10px";
+                plateNumberSpan.textContent = vehicle.plateNumber; // Set the text content
 
-                 // Inside the edit-btn event listener
-                    dropdownItem.querySelector(".edit-btn").addEventListener('click', function(event) {
-                        event.stopPropagation(); // Prevent event from triggering the item click event
+                // Create edit button
+                const editButton = document.createElement("button");
+                editButton.style.padding = "0.1rem 0.2rem";
+                editButton.style.marginRight = "3px";
+                editButton.style.background = "none";
+                editButton.style.border = "none";
+                editButton.className = "edit-btn";
+                editButton.innerHTML = '<i class="bi bi-pen" style="font-size: 15px; color: #3843D7;"></i>';
 
-                        // Show edit modal
-                        $('#editModal').modal('show');
+                // Create delete button
+                const deleteButton = document.createElement("button");
+                deleteButton.style.padding = "0.1rem 0.3rem";
+                deleteButton.style.background = "none";
+                deleteButton.style.border = "none";
+                deleteButton.className = "delete-btn";
+                deleteButton.innerHTML = '<i class="bi bi-x-circle" style="font-size: 15px; color: red;"></i>';
 
-                        // Set up initial values in the modal inputs
-                        document.getElementById('editPlateNumber').value = vehicle.plateNumber;
-                        document.getElementById('editVehicleType').value = vehicle.vehicleType;
-                        document.getElementById('editVIN').value = vehicle.vin;
+                // Append elements to dropdown item
+                dropdownItem.appendChild(plateNumberSpan);
+                dropdownItem.appendChild(editButton);
+                dropdownItem.appendChild(deleteButton);
 
-                        // Handle saving changes in the edit modal
-                        document.getElementById('saveEditBtn').addEventListener('click', function() {
-                            const newPlateNumber = document.getElementById('editPlateNumber').value.trim();
-                            const newVehicleType = document.getElementById('editVehicleType').value.trim();
-                            const newVIN = document.getElementById('editVIN').value.trim();
-                            let formValid = true;
+                // Add event listeners for buttons
+                editButton.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent event from triggering the item click event
 
-                            // Validate and display errors
-                            if (!newPlateNumber) {
-                                document.getElementById('plateNumberError').classList.remove('d-none');
-                                formValid = false;
+                    // Show edit modal
+                    $('#editModal').modal('show');
+
+                    // Set up initial values in the modal inputs
+                    document.getElementById('editPlateNumber').value = vehicle.plateNumber;
+                    document.getElementById('editVehicleType').value = vehicle.vehicleType;
+                    document.getElementById('editVIN').value = vehicle.vin;
+
+                    // Handle saving changes in the edit modal
+                    document.getElementById('saveEditBtn').addEventListener('click', function() {
+                        const newPlateNumber = document.getElementById('editPlateNumber').value.trim();
+                        const newVehicleType = document.getElementById('editVehicleType').value.trim();
+                        const newVIN = document.getElementById('editVIN').value.trim();
+                        let formValid = true;
+
+                        // Validate and display errors
+                        if (!newPlateNumber) {
+                            document.getElementById('plateNumberError').classList.remove('d-none');
+                            formValid = false;
+                        } else {
+                            document.getElementById('plateNumberError').classList.add('d-none');
+                        }
+
+                        if (!newVehicleType) {
+                            document.getElementById('vehicleTypeError').classList.remove('d-none');
+                            formValid = false;
+                        } else {
+                            document.getElementById('vehicleTypeError').classList.add('d-none');
+                        }
+
+                        if (!newVIN) {
+                            document.getElementById('vinError').classList.remove('d-none');
+                            formValid = false;
+                        } else {
+                            document.getElementById('vinError').classList.add('d-none');
+                        }
+
+                        // If form is valid, proceed with saving changes
+                        if (formValid) {
+                            // Check if values are changed
+                            if (newPlateNumber !== vehicle.plateNumber ||
+                                newVehicleType !== vehicle.vehicleType ||
+                                newVIN !== vehicle.vin) {
+
+                                document.getElementById('plateNumBefore').value = vehicle.plateNumber;
+
+                                // Update vehicle details
+                                vehicle.plateNumber = newPlateNumber;
+                                vehicle.vehicleType = newVehicleType;
+                                vehicle.vin = newVIN;
+
+                                // Update dropdown item display
+                                plateNumberSpan.textContent = newPlateNumber;
+
+                                // Hide edit modal after saving changes
+                                $('#editModal').modal('hide');
+
                             } else {
-                                document.getElementById('plateNumberError').classList.add('d-none');
+                                // No changes made
+                                $('#editModal').modal('hide');
                             }
-
-                            if (!newVehicleType) {
-                                document.getElementById('vehicleTypeError').classList.remove('d-none');
-                                formValid = false;
-                            } else {
-                                document.getElementById('vehicleTypeError').classList.add('d-none');
-                            }
-
-                            if (!newVIN) {
-                                document.getElementById('vinError').classList.remove('d-none');
-                                formValid = false;
-                            } else {
-                                document.getElementById('vinError').classList.add('d-none');
-                            }
-
-                            // If form is valid, proceed with saving changes
-                            if (formValid) {
-                                // Check if values are changed
-                                if (newPlateNumber !== vehicle.plateNumber ||
-                                    newVehicleType !== vehicle.vehicleType ||
-                                    newVIN !== vehicle.vin) {
-                                	
-                                	document.getElementById('plateNumBefore').value = vehicle.plateNumber;
-                                	
-                                    // Update vehicle details
-                                    vehicle.plateNumber = newPlateNumber;
-                                    vehicle.vehicleType = newVehicleType;
-                                    vehicle.vin = newVIN;
-
-                                    // Update dropdown item display
-                                    dropdownItem.querySelector("span").textContent = newPlateNumber;
-                                    
-                                    // Hide edit modal after saving changes
-                                    $('#editModal').modal('hide');
-                                    
-                                } else {
-                                    // No changes made
-                                    $('#editModal').modal('hide');
-                                }
-                            }
-                        });
+                        }
                     });
+                });
 
+                deleteButton.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent event from triggering the item click event
+                    $('#deleteModal').modal('show'); // Show delete modal
 
-                    // Inside the delete-btn event listener
-                    dropdownItem.querySelector(".delete-btn").addEventListener('click', function(event) {
-                        event.stopPropagation(); // Prevent event from triggering the item click event
-                        $('#deleteModal').modal('show'); // Show delete modal
+                    // Handle confirmation for deletion in the delete modal
+                    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                        document.getElementById('plateNumDelete').value = vehicle.plateNumber;
 
-                        // Handle confirmation for deletion in the delete modal
-                        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-                        	document.getElementById('plateNumDelete').value = vehicle.plateNumber;
-                        	
-                        	// Immediately delete the vehicle without additional confirmation
-                            vehicles.splice(vehicles.indexOf(vehicle), 1);
-                            renderDropdown(); // Refresh dropdown after deletion
-                            $('#deleteModal').modal('hide'); // Hide delete modal after deletion
-                            
-                        });
+                        // Immediately delete the vehicle without additional confirmation
+                        vehicles.splice(vehicles.indexOf(vehicle), 1);
+                        renderDropdown(); // Refresh dropdown after deletion
+                        $('#deleteModal').modal('hide'); // Hide delete modal after deletion
                     });
+                });
 
                 dropdownItem.addEventListener('click', function() {
                     document.getElementById("dropdownMenuButton").textContent = vehicle.plateNumber;
