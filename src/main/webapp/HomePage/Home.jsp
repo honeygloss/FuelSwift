@@ -654,9 +654,9 @@
 	                        </div>
 	                        </div>                       
 	                    </div>
-	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif;">
-						    <button type="button" onclick="fuelNow()" class="btn" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
-						</div>
+	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
+				    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
+					</div>
 	            </div>
 	        </div>
 	    </div>
@@ -723,10 +723,15 @@
                         <small id="plateNumberError" class="text-danger d-none">Plate number is required.</small>
                     </div>
                     <div class="mb-3">
-                        <label for="editVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
-                        <input type="text" class="form-control" id="editVehicleType" name="editVehicleType" required>
-                        <small id="vehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
-                    </div>
+					    <label for="editVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
+					    <select class="form-control" id="editVehicleType" name="editVehicleType" required>
+					        <option value="" disabled selected>Select a vehicle type</option>
+					        <option value="Car">Car</option>
+					        <option value="Truck">Truck</option>
+					        <option value="Motorcycle">Motorcycle</option>
+					    </select>
+					    <small id="vehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
+					</div>
                     <div class="mb-3">
                         <label for="editVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
                         <input type="text" class="form-control" id="editVIN" name="editVIN" required>
@@ -786,10 +791,15 @@
                         <small id="addPlateNumberError" class="text-danger d-none">Plate number is required.</small>
                     </div>
                     <div class="mb-3">
-                        <label for="addVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
-                        <input type="text" class="form-control" id="addVehicleType" name="addVehicleType" required>
-                        <small id="addVehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
-                    </div>
+					    <label for="addVehicleType" class="form-label" style="color: black; font-weight: normal;">Vehicle Type:</label>
+					    <select class="form-control" id="addVehicleType" name="addVehicleType" required>
+					        <option value="" disabled selected>Select a vehicle type</option>
+					        <option value="Car">Car</option>
+					        <option value="Truck">Truck</option>
+					        <option value="Motorcycle">Motorcycle</option>
+					    </select>
+					    <small id="addVehicleTypeError" class="text-danger d-none">Vehicle type is required.</small>
+					</div>
                     <div class="mb-3">
                         <label for="addVIN" class="form-label" style="color: black; font-weight: normal;">VIN:</label>
                         <input type="text" class="form-control" id="addVIN" name="addVIN" required>
@@ -1240,20 +1250,22 @@
 	let selectedIndex = null;
     
 	function handleClick(index) {
+        // Assuming locations and markers are already defined elsewhere
         const location = locations[index];
         map.setCenter(location.coords);
         map.setZoom(15);
         markers[index].setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(() => markers[index].setAnimation(null), 1400);
-     	// Remove 'selected' class from all elements
+
+        // Remove 'selected' class from all elements
         const resultItems = document.querySelectorAll('.result-item');
         resultItems.forEach(item => item.classList.remove('selected'));
 
         // Add 'selected' class to the clicked element
-        const selectedItem = document.querySelector(`.result-item:nth-child(${index + 1})`);
+        const selectedItem = resultItems[index];
         selectedItem.classList.add('selected');
-        
-     // Store the selected index
+
+        // Store the selected index
         selectedIndex = index;
     }
     
@@ -1265,8 +1277,13 @@
             const index = selectedIndex;
             
          	// Construct the URL with the retrieved string
-            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=${index}&title=${title}&address=${address}&retrievedString=${retrievedString}`;
+            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=`+ index + `&title=` + title + `&address=`+ address;
 
+            console.log("Title: ", title);
+            console.log("address: ", address);
+            console.log("index: ", index);
+            console.log("url: ", url);
+            
             // Redirect to the payment page with the constructed URL
             window.location.href = url;
         

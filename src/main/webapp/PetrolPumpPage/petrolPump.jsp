@@ -382,6 +382,7 @@
 			    
 			    console.log("index" + index);
 			    console.log("Redirecting to: " + url);
+			    
 		
 			    window.location.href = url;
 		    }
