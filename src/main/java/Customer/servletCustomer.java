@@ -27,7 +27,7 @@ public class servletCustomer extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+		response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
         String fullname = request.getParameter("fullName");
@@ -97,7 +97,7 @@ public class servletCustomer extends HttpServlet {
             int rowsAffected = pstmtVehicle.executeUpdate();
             
             if (rowsAffected > 0) {
-                response.sendRedirect("/FuelSwift/Login/Login.jsp");
+                response.sendRedirect("Login.jsp");
             } else {
                 out.println("Error: Vehicle data was not inserted.");
             }

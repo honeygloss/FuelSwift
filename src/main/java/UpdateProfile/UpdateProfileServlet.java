@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 
 @WebServlet("/UpdateProfileServlet")
@@ -16,77 +17,67 @@ public class UpdateProfileServlet extends HttpServlet {
     private static final String DB_PASSWORD = "root";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String userEmail = (String) session.getAttribute("user");
+	    // Retrieve form parameters
+	    String fullName = request.getParameter("custName");
+	    String email = request.getParameter("custEmail");
+	    String gender = request.getParameter("gender");
+	    String phoneNo = request.getParameter("phoneNo");
 
-        if (userEmail == null) {
-            response.sendRedirect("Login.jsp");
-            return;
-        }
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    PrintWriter out = response.getWriter();
 
-        String fullName = request.getParameter("fullname");
-        String gender = request.getParameter("gender");
-        String phoneNo = request.getParameter("phoneNo");
+	    try {
+	        // Load JDBC driver
+	        Class.forName("com.mysql.jdbc.Driver");
 
-        StringBuilder query = new StringBuilder("UPDATE customer SET ");
-        boolean needComma = false;
+	        // Establish database connection
+	        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/fuelswift", "root", "root");
 
-        if (fullName != null && !fullName.trim().isEmpty()) {
-            query.append("fullName = ?");
-            needComma = true;
-        }
+	        // Prepare SQL update statement
+	        String sql = "UPDATE customer SET custName = ?, gender = ?, phoneNo = ? WHERE custEmail = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, fullName);
+	        pstmt.setString(2, gender);
+	        pstmt.setString(3, phoneNo);
+	        pstmt.setString(4, email);
 
-        if (gender != null && !gender.trim().isEmpty()) {
-            if (needComma) query.append(", ");
-            query.append("gender = ?");
-            needComma = true;
-        }
+	        // Execute update
+	        int rowsUpdated = pstmt.executeUpdate();
 
-        if (phoneNo != null && !phoneNo.trim().isEmpty()) {
-            if (needComma) query.append(", ");
-            query.append("phoneNo = ?");
-        }
+	        // Set response content type
+	        response.setContentType("text/html");
 
-        query.append(" WHERE email = ?");
+	        if (rowsUpdated > 0) {
+	            // Update session attributes
+	            HttpSession session = request.getSession();
+	            session.setAttribute("fullName", fullName);
+	            session.setAttribute("gender", gender);
+	            session.setAttribute("phoneNo", phoneNo);
 
-        try {
-            // Load the database driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Establish the connection to the database
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-                try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
-                    int paramIndex = 1;
-                    if (fullName != null && !fullName.trim().isEmpty()) {
-                        stmt.setString(paramIndex++, fullName);
-                    }
-                    if (gender != null && !gender.trim().isEmpty()) {
-                        stmt.setString(paramIndex++, gender);
-                    }
-                    if (phoneNo != null && !phoneNo.trim().isEmpty()) {
-                        stmt.setString(paramIndex++, phoneNo);
-                    }
-                    stmt.setString(paramIndex, userEmail);
-
-                    int rowsUpdated = stmt.executeUpdate();
-                    if (rowsUpdated > 0) {
-                        session.setAttribute("updateSuccess", "Profile updated successfully!");
-                    } else {
-                        session.setAttribute("updateError", "Profile update failed!");
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                session.setAttribute("updateError", "An error occurred during the update.");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            session.setAttribute("updateError", "Database driver not found.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute("updateError", "An unexpected error occurred.");
-        }
-
-        response.sendRedirect("/HomePage/Home.jsp");
-    }
+	            // Send success response
+	            String contextPath = request.getContextPath();
+	            response.sendRedirect(contextPath + "/Dashboard.jsp");
+	        } else {
+	            // Send failure response
+	            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	            out.println("Failed to update profile information.");
+	            String contextPath = request.getContextPath();
+	            response.sendRedirect(contextPath + "/Dashboard.jsp");
+	        }
+	    } catch (ClassNotFoundException | SQLException e) {
+	        e.printStackTrace();
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        out.println("Internal server error: " + e.getMessage());
+	    } finally {
+	        // Clean up resources
+	        try {
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	            if (out != null) out.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 }

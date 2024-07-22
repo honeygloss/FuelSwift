@@ -4,19 +4,13 @@
 	String fullName = (String) session.getAttribute("fullName");
 	String email = (String) session.getAttribute("email");
 	Integer points = (Integer) session.getAttribute("points");
-	String username = "";
-	
-	if (fullName != null && email != null && points != null) {
-	    // Extract username (first name)
-	    String[] nameParts = fullName.split(" ");
-	    username = nameParts[0]; // Assuming first part is the first name
-	}
 
 	ArrayList<TransactionHistory> transactions = (ArrayList<TransactionHistory>) session.getAttribute("transactions");
     String customerId = (String) session.getAttribute("customerId");
 	ArrayList<VehicleBean> vehicleList = (ArrayList<VehicleBean>) session.getAttribute("vehicles");
 	String gender = (String) session.getAttribute("gender");
-	String phoneNumber = (String) session.getAttribute("phoneNumber");
+	String phoneNumber = (String) session.getAttribute("phoneNo");
+	String userId = (String) session.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -156,7 +150,7 @@
             padding: 10px;
             color: white;
             background-color: rgb(33, 37, 41);
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         .transaction-item p {
@@ -271,7 +265,7 @@
 		    margin-right: 10px;
 		}
 		#results {
-		    max-height: 250px;
+		    max-height: 350px;
 		    overflow-y: auto;
 		    border-radius: 4px;
 		    padding: 10px;
@@ -330,7 +324,6 @@
                 </a>
             </div>
         </nav>
-
         <!-- Main Container -->
         <div class="content">
             <!-- ---------------------------------------- Home Page Content ----------------------------------------------------------------------------------->
@@ -341,7 +334,7 @@
                     <div class="col-md-6 right-box mb-3" style="padding: 0 20px; align-items: center;">
                         <div class="row align-items-center">
                             <div class="header-text mb-2 mt-2">
-                                <h5 style=" text-align: center;font-weight: bold; color: white">Welcome, <%=username %></h5>
+                                <h5 style=" text-align: center;font-weight: bold; color: white">Welcome, <%=fullName %>!</h5>
                                 <h1 style=" text-align: center; font-weight: bold; font-size: 80px; margin-bottom: 10px; margin-top: 20px; color: white"><%=points %></h1>
                                 <h2 style="text-align: center; font-size: 15px; color: white">Points</h2>
                             </div>
@@ -393,76 +386,82 @@
             </div>
 
             <!--------------------------------- Transaction History ---------------------------------------->
-             <div id="transaction-history" class="container box-area-alt" style="display: none;">
-        <h1 style="font-weight: bold;">Transaction History</h1>
-        <% if (transactions != null) {
-            for (TransactionHistory transaction : transactions) { %>
-                <div class="transaction-item">
-                    <p>Transaction ID: #<%= transaction.getTransactionId() %></p>
-                    <p>Date: <%= transaction.getTransactionDate() %></p>
-                    <p>Amount: RM <%= transaction.getAmount() %></p>
-                    <p>Status: Completed</p>
-                </div>
-        <% }
-        } else { %>
-            <div style="position: absolute; top: 50%; left: 50%; text-align:center; transform: translate(-50%, -50%);">
-                <i class="bi bi-fuel-pump" style="color:grey; font-size:44px; text-align:center;"></i>
-                <p style="margin-top: 10px; color:grey; font-size:15px;">No bookings yet.<br>Make one today!</p>
-            </div>
-        <% } %>
-    </div>
+			<div id="transaction-history" class="container box-area-alt" style="display: none;">
+			    <h1 style="font-weight: bold;">Transaction History</h1>
+			    <% if (transactions != null && !transactions.isEmpty()) {
+			        for (TransactionHistory transaction : transactions) { %>
+			            <div class="transaction-item">
+			                <p>Transaction ID: #<%= transaction.getTransactionId() %></p>
+			                <p>Date: <%= transaction.getTransactionDate() %></p>
+			                <p>Amount: RM <%= transaction.getAmount() %></p>
+			                <p>Status: Completed</p>
+			            </div>
+			    <% }
+			    } else { %>
+			        <div style="position: absolute; top: 50%; left: 50%; text-align:center; transform: translate(-50%, -50%);">
+			            <i class="bi bi-fuel-pump" style="color:grey; font-size:44px; text-align:center;"></i>
+			            <p style="margin-top: 10px; color:grey; font-size:15px;">No bookings yet.<br>Make one today!</p>
+			        </div>
+			    <% } %>
+			</div>
+
         
         <!---------------------------------------- Profile -------------------------------- -->
-		<div id="profile" style="display: none;">
+		<div id="profile" style="display: none; height: 80vh; overflow-y: auto;">
 		    <!-- Icon below Navigation Bar -->
 		    <div class="container d-flex justify-content-center align-items-center">
 		        <i class="bi bi-person-circle" style="color: #cccccc; margin-right: 20px; font-size: 2rem;"></i>
-		        <h2 style="color: white; margin-right: 10px; font-weight: bold;"><%=username %></h2>
+		        <h2 style="color: white; margin-right: 10px; font-weight: bold;">Profile</h2>
 		    </div>
 		
 		    <div class="row rounded-5 p-4 shadow box-area-alt-alt" style="background-color: rgb(20, 36, 105)">
 		        <div class="row align-items-center d-flex justify-content-center align-items-center m-0 p-0">
-		            <form id="profileForm" action="UpdateProfileServlet" method="post">
+		            <form id="profileForm" action="UpdateProfileServlet" method="post" onsubmit="return handleSubmit()">
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Full Name</label>
-		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" placeholder="<%=fullName %>" disabled>
+		                    <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="fullname" id="fullname" value=<%=fullName %> disabled>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Email</label>
-		                    <p class="form-control form-control-lg bg-light fs-6" name="email"><%=email %></p>
+		                    <input class="form-control form-control-lg bg-light fs-6" name="email" placeholder="<%=email %>"disabled>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Gender</label>
 		                    <div class="dropdown" id="gender">
-		                        <% if (gender != null && !gender.isEmpty()) { %>
-		                            <p class="form-control form-control-lg bg-light fs-6"><%= gender %></p>
-		                        <% } else { %>
-		                            <select class="form-select m-0 mt-0 fs-6 disabled-field" id="genderSelect" name="gender" style="background-color: white; color: black; width: 330px; padding: 0.5rem 1rem;" disabled>
-		                                <option value="" selected disabled>Select Gender</option>
-		                                <option value="male">Male</option>
-		                                <option value="female">Female</option>
-		                                <option value="other">Rather not say</option>
-		                            </select>
-		                        <% } %>
+                            <select class="form-control form-control-lg bg-light fs-6 disabled-field" id="genderSelect" name="gender" disabled>
+							    <option value="" <%= gender == null ? "selected" : "" %> disabled>Select Gender</option>
+							    <option value="Male" <%= "Male".equals(gender) ? "selected" : "" %>>Male</option>
+							    <option value="Female" <%= "Female".equals(gender) ? "selected" : "" %>>Female</option>
+							    <option value="Other" <%= "Other".equals(gender) ? "selected" : "" %>>Rather not say</option>
+							</select>
+		                        
                     		</div>
 		                </div>
 		                <div class="form-group mb-3">
 		                    <label class="form-label">Phone Number</label>
 		                    <div class="input-group">
 		                        <span class="input-group-text">+60</span>
-		                        <% if (phoneNumber != null && !phoneNumber.isEmpty()) { %>
-		                            <p class="form-control form-control-lg bg-light fs-6"><%= phoneNumber %></p>
-		                        <% } else { %>
-		                            <input class="form-control form-control-lg bg-light fs-6 disabled-field" name="phoneNo" id="phoneNo" placeholder="Enter Phone Number" disabled>
-		                        <% } %>
+		                            <input class="form-control form-control-lg bg-light fs-6 disabled-field" 
+								       name="phoneNo" 
+								       id="phoneNo" 
+								       placeholder="Enter Phone Number" 
+								       value="<%= phoneNumber != null ? phoneNumber : "" %>" 
+								       disabled>
+
 		                    </div>
 		                </div>
+		                <input type="hidden" id="hiddenFullName" name="custName" value="">
+		                <input type="hidden" id="hiddenEmail" name="custEmail" value="<%=email%>">
+		                <input type="hidden" id="hiddenGender" name="custGender" value="">
+		                <input type="hidden" id="hiddenPhoneNo" name="custPhone" value="">
+		                <input type="hidden" name="user" value="<%=userId %>">
+		                
 		                <div class="input-group-alt mb-3" id="editBtn">
 		                    <button type="button" class="btn-alt custombutton btn-lg w-100 fs-6" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onclick="enableEditing()" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Edit</button>
 		                </div>
 		                <div class="input-group-alt mb-3" id="updateBtn" style="display: none;">
-		                    <button type="submit" class="btn-alt btn-success btn-block" onclick="handleSubmit()">Update</button>
-		                    <button type="button" class="btn-alt btn-danger btn-block mt-2" onclick="cancelEditing()">Cancel</button>
+		                    <input type="submit" class="btn-alt btn-success btn-block" value="Submit">
+		                    <button type="reset" class="btn-alt btn-danger btn-block mt-2" onclick="cancelEditing()">Cancel</button>
 		                </div>
 		            </form>
 		            <div class="input-group-alt mb-3">
@@ -652,7 +651,8 @@
 	                                <img src="nav.png" alt="Direction Icon" style="width:24px; height:27px">
 	                            </a>
 	                        </div>
-	                        </div>                       
+	                        </div>  
+	                        <div id="noMatchMessage" style="display: none;">No matching location</div>
 	                    </div>
 	                    <div class="text-center mt-3" style="font-family: 'Poppins', sans-serif">
 				    	<button type="button" class="btn " onclick="fuelNow()" style="background-color: rgb(30, 46, 125); color: yellow; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;" onmouseover="this.style.backgroundColor='rgb(20, 36, 105)'; this.style.color='white';" onmouseout="this.style.backgroundColor='rgb(30, 46, 125)'; this.style.color='yellow';">Fuel Now</button>
@@ -738,7 +738,8 @@
                         <small id="vinError" class="text-danger d-none">VIN is required.</small>
                     </div>
                     
-                    <input type="hidden" id="plateNumBefore" value="">
+                    <input type="hidden" id="plateNumBefore" name="plateNumBefore" value="">
+                    <input type=hidden name=userID value=<%=userId %>>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -763,6 +764,7 @@
                     <p>Are you sure you want to delete this vehicle?</p>
                     <!-- Hidden inputs for vehicle data -->
                     <input type="hidden" id="plateNumDelete" name="plateNumDelete"value="">
+                    <input type=hidden name=userId value=<%=userId %>>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -805,6 +807,9 @@
                         <input type="text" class="form-control" id="addVIN" name="addVIN" required>
                         <small id="addVINError" class="text-danger d-none">VIN is required.</small>
                     </div>
+                    
+                    <input type=hidden name=userId value=<%=userId %>>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -907,7 +912,13 @@
     }
 
     function handleSubmit() {
-        // Disable input fields  
+    	document.getElementById('hiddenFullName').value = document.getElementById('fullname').value;
+        document.getElementById('hiddenEmail').value = document.getElementById('email').value;
+        document.getElementById('hiddenGender').value = document.getElementById('genderSelect').value;
+        document.getElementById('hiddenPhoneNo').value = document.getElementById('phoneNo').value;
+    
+    	
+    	// Disable input fields  
         document.getElementById('fullname').disabled = true;
         document.getElementById('phoneNo').disabled = true;
         document.getElementById('genderSelect').disabled = true;
@@ -926,6 +937,9 @@
         document.getElementById('editBtn').style.display = 'block';
         // Get form data
         var formData = new FormData(document.getElementById('profileForm'));
+        
+     // Continue with form submission
+        return true;
 
     }
     
@@ -965,6 +979,13 @@
 
         function renderDropdown() {
             vehicleDropdown.innerHTML = ""; // Clear existing dropdown items
+            
+            if (vehicles.length > 0) {
+                // Set the first vehicle as selected
+                const firstVehicle = vehicles[0];
+                dropdownMenuButton.textContent = firstVehicle.plateNumber;
+                updateVehicleType(firstVehicle.plateNumber);
+            }
 
             vehicles.forEach(vehicle => {
                 const dropdownItem = document.createElement("li");
@@ -1087,9 +1108,11 @@
                     event.stopPropagation(); // Prevent event from triggering the item click event
                     $('#deleteModal').modal('show'); // Show delete modal
 
+                    
+                    document.getElementById('plateNumDelete').value = vehicle.plateNumber;
                     // Handle confirmation for deletion in the delete modal
                     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-                        document.getElementById('plateNumDelete').value = vehicle.plateNumber;
+                        
 
                         // Immediately delete the vehicle without additional confirmation
                         vehicles.splice(vehicles.indexOf(vehicle), 1);
@@ -1188,7 +1211,7 @@
     function logout() {
         // Perform logout functionality here
         // For example, redirecting the user to the logout page
-        window.location.href = "/FuelSwift/Login/Login.jsp"; // Change "logout.php" to the actual logout URL
+        window.location.href = "\Logout"; // Change "logout.php" to the actual logout URL
     }
 	// GOOGLE MAPS 
     function loadGoogleMapsAPI() {
@@ -1247,8 +1270,10 @@
     function filterLocations() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const resultItems = document.querySelectorAll('.result-item');
+        const noMatchMessage = document.getElementById('noMatchMessage');
 
         let firstMatch = null;
+        let hasMatch = false;
 
         resultItems.forEach((item, index) => {
             const title = locations[index].title.toLowerCase();
@@ -1259,6 +1284,7 @@
                 if (!firstMatch) {
                     firstMatch = item;
                 }
+                hasMatch = true;
             } else {
                 item.style.display = 'none';
             }
@@ -1266,6 +1292,16 @@
 
         if (firstMatch) {
             firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        if (hasMatch) {
+            if (noMatchMessage) {
+                noMatchMessage.style.display = 'none';
+            }
+        } else {
+            if (noMatchMessage) {
+                noMatchMessage.style.display = '';
+            }
         }
     }
 
@@ -1297,9 +1333,11 @@
             const title = encodeURIComponent(selectedLocation.title); // Encode title for URL
             const address = encodeURIComponent(selectedLocation.address); // Encode address for URL
             const index = selectedIndex;
+            const userId = '<%=userId%>';
+            const points = '<%=points%>';
             
          	// Construct the URL with the retrieved string
-            const url = `/FuelSwift/PetrolPumpPage/petrolPump.jsp?index=`+ index + `&title=` + title + `&address=`+ address;
+            const url = `/Roslizam/PetrolPump.jsp?index=`+ index + `&title=` + title + `&address=`+ address + `&userId=` + userId +`&points=` + points;
 
             console.log("Title: ", title);
             console.log("address: ", address);

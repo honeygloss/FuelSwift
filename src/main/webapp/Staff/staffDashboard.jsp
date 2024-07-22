@@ -525,7 +525,7 @@
 			            <td><%= date.get(i) %></td>
 			            <td><%= time.get(i) %></td>
 			            <td><%= petrolStation.get(i) %></td>
-			            <td><%= totalAmt.get(i) %></td>
+			            <td>RM <%= totalAmt.get(i) %></td>
 			        </tr>
 			        <% 
 			                }
@@ -893,7 +893,7 @@
           }
 
           function logout() {
-        	  window.location.href = `/FuelSwift/Login/Login.jsp`;
+        	  window.location.href = `Login.jsp`;
           }
           
           function toggleSearch() {

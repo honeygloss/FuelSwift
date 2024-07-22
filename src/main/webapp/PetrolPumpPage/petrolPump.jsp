@@ -7,6 +7,18 @@
         String indexParam = request.getParameter("index");
     	String titleParam = request.getParameter("title");
     	String addressParam = request.getParameter("address");
+    	String userId = request.getParameter("userId");
+    	String pointsStr = request.getParameter("points");
+    	
+    	int points = 0;
+    	if (pointsStr != null && !pointsStr.isEmpty()) {
+            try {
+            	points = Integer.parseInt(pointsStr);
+            } catch (NumberFormatException e) {
+            	
+                e.printStackTrace();
+            }
+        }
 
         int selectedIndex = -1; // Default value or error handling if needed
         if (indexParam != null && !indexParam.isEmpty()) {
@@ -203,7 +215,7 @@
     </nav>
 	
 	<H3 style="text-align: center; font-weight: bold; color: white; margin-bottom:5px;"><%= titleParam  %></H3>
-	<H6 style="text-align: center; font-style: italic; color: white; margin-bottom:10px;"><%= addressParam  %></H6>
+	<H6 style="text-align: center; font-style: italic; color: white; margin-bottom:10px; padding:5px; margin-right:5px; margin-left:5px;"><%= addressParam  %></H6>
 	<div class="container d-flex justify-content-center align-items-center">    
     <!-----------------------  Container -------------------------->
     <div class="row rounded-5 p-5 shadow box-area">
@@ -244,7 +256,7 @@
 				    <div class="row">
 				            <span class="text-white" id="currentPts" style="font-size: 14px; position: absolute; left:0;">Use points</span>	        
 				        <div class="col" style="position: relative;">
-				            <input type="checkbox" id="switch" style="position: absolute; right:0;"/>
+				            <input type="checkbox" id="switch" style="position: absolute; right:0;" onclick="handleToggle()"/>
 				            <label class="text-white" for="switch" style="position: absolute; right:0;">Toggle</label>
 				        </div>
 				    </div>
@@ -286,6 +298,9 @@
      <small>&copy; FuelSwift</small>
 </div>
 <script>
+
+	document.getElementById('ptsRedeem').innerText = '-RM0.00';
+	
 	function selectOption(option) {
 	    if (option !== 'other') {
 	        document.getElementById('amount').value = option;
@@ -293,7 +308,7 @@
 	    }
 	}
 	
-	const pricePerLiter = 2.00; // Example price per liter. You can update this value as needed.
+	const pricePerLiter = 2.50; // Example price per liter. You can update this value as needed.
 	function calculateLitres() {
 	    const amount = document.getElementById('amount').value / 1;
 	    const litres = amount / pricePerLiter;
@@ -302,28 +317,30 @@
 	    document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2); 
 	}
 	// Define initial current points
-	let currentPoints = 1; // Assuming starting points
-	const pointsToDeduct = currentPoints * 0.10; // Calculate points to deduct (1 point = 10 cents)
+	let currentPoints = '<%=points%>'; // Assuming starting points
+	let pointsToDeduct = 0;
+	pointsToDeduct = '<%=points%>' * 0.10; // Calculate points to deduct (1 point = 10 cents)
 	// Function to handle toggle click
 	function handleToggle() {
 		 const toggle = document.getElementById('switch');
 		 const amount = document.getElementById('amount').value / 1;
 	     const currentPointsElement = document.getElementById('currentPts');
 	     
+	     
 	     if (toggle.checked) {
 	         // Deduct points if toggle is checked
 	         const deductedAmount = amount - pointsToDeduct;
 	         // Update UI with new total amount value
 	         document.getElementById('totAmount').innerText = 'RM' + deductedAmount.toFixed(2);
-	         currentPointsElement.innerText = 'Redeem ' + currentPoints + ' pts';
 	         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
-	         document.getElementById('ptsRedeem').innerText = '-RM' + pointsToDeduct;
+	         document.getElementById('ptsRedeem').innerText = '-RM' + pointsToDeduct.toFixed(2);
+	         currentPointsElement.innerText = 'Redeem '+ currentPoints +' points';
 	     } else {
 	         // If toggle is unchecked, show the original amount
 	         document.getElementById('amount2').innerText = 'RM' + amount.toFixed(2); 
 	    	 document.getElementById('totAmount').innerText = 'RM' + amount.toFixed(2);
 	    	 document.getElementById('ptsRedeem').innerText = '-RM0.00';
-	         currentPointsElement.innerText = `Use points`; // Added this line to reset the label
+	         currentPointsElement.innerText = 'Use points'; // Added this line to reset the label
 	     }
 	 }
 
@@ -365,7 +382,7 @@
 		    const totAmount = document.getElementById('totAmount').innerText;
 		    const amount = document.getElementById('amount').value;
 		    const pointsRed = document.getElementById('ptsRedeem').innerText;
-		    const litres = document.getElementById('litres').value;
+		    const litres = amount / pricePerLiter;
 		    const currentPts = currentPoints;
 		    
 		 // Check if index or amount is empty or null
@@ -377,10 +394,11 @@
 		    	// Retrieve indexParam from JSP scripting
 			    const indexParam = '<%=indexParam %>'; 
 			    const titleParam = '<%=titleParam %>';
+			    const userId = '<%=userId%>';
 			    // Construct the URL with parameters
-			    const url = `/FuelSwift/Payment/payment.jsp?index=`+ index + `&litres=` + litres + `&currentPts=` + currentPts +`&pointsRed=` + pointsRed + `&totAmount=` + totAmount + `&amount=` + amount +  `&indexParam=` + indexParam + `&title=` + titleParam;
+			    const url = `/Roslizam/Payment.jsp?index=`+ index + `&litres=` + litres + `&currentPts=` + currentPts +`&pointsRed=` + pointsRed + `&totAmount=` + totAmount + `&amount=` + amount +  `&indexParam=` + indexParam + `&title=` + titleParam + `&userId=` + userId;
 			    
-			    console.log("index" + index);
+			    console.log("userId" + userId);
 			    console.log("Redirecting to: " + url);
 			    
 		
